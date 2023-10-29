@@ -18,7 +18,7 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text("Вы нажали на кнопку"),
+                  content: Text("Вы нажали на"),
                 ),
               );
             },
