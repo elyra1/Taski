@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
+import 'package:taski/presentation/utils/app_text_styles.dart';
 
 @RoutePage()
 class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
@@ -17,13 +18,19 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
           ElevatedButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Вы нажали на"),
+                SnackBar(
+                  content: Text("Вы нажали на", style: AppTextStyles.bold20),
                 ),
               );
             },
             child: const Text("EXAMPLE PAGE"),
           ).toCenter(),
+          Text("Вы нажали на", style: AppTextStyles.bold18),
+          Text("Вы нажали на", style: AppTextStyles.bold20),
+          Text("Вы нажали на", style: AppTextStyles.bold24),
+          Text("Вы нажали на", style: AppTextStyles.regular18),
+          Text("Вы нажали на", style: AppTextStyles.regular20),
+          Text("Вы нажали на", style: AppTextStyles.regular24),
         ],
       ),
     );
