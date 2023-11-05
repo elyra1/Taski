@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "986583883374",
+    "project_id": "taski-e60e8",
+    "storage_bucket": "taski-e60e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986583883374:android:471253e31ce30811c8107f",
+        "android_client_info": {
+          "package_name": "com.example.taski"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaKZs0lt8wCuEOiVzeFT7ij7Q1VpX4FgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
