@@ -14,17 +14,8 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Вы нажали на", style: AppTextStyles.bold20),
-                ),
-              );
-            },
-            child: const Text("EXAMPLE PAGE"),
-          ).toCenter(),
           Text("Вы нажали на", style: AppTextStyles.bold18),
           Text("Вы нажали на", style: AppTextStyles.bold20),
           Text("Вы нажали на", style: AppTextStyles.bold24),
@@ -32,7 +23,7 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
           Text("Вы нажали на", style: AppTextStyles.regular20),
           Text("Вы нажали на", style: AppTextStyles.regular24),
         ],
-      ),
+      ).toCenter(),
     );
   }
 
