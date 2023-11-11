@@ -14,35 +14,29 @@ class CustomButton extends StatelessWidget {
     Key? key,
     required this.width,
     required this.height,
-    this.color = AppColors.elementblue,
+    this.color = AppColors.headblue,
     required this.onPressed,
     required this.text,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: width,
       height: height,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          primary: color,
+          backgroundColor: color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.r),
           ),
         ),
         child: Text(
           text,
-          style: AppTextStyles.bold18,
+          style: AppTextStyles.medium12,
         ),
       ),
     );
   }
 }
-
-
-
-
-
