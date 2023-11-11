@@ -45,4 +45,11 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.headblue,
   );
+
+  static TextStyle medium12 = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+  );
 }
