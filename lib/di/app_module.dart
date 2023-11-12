@@ -6,9 +6,9 @@ import 'package:injectable/injectable.dart';
 
 @module
 abstract class AppModule {
-  // @singleton
-  // FirebaseFirestore fireStore() => FirebaseFirestore.instance;
+  @singleton
+  FirebaseFirestore fireStore() => FirebaseFirestore.instance;
 
-  // @singleton
-  // FirebaseAuth firebaseAuth() => FirebaseAuth.instance;
+  @singleton
+  FirebaseAuth firebaseAuth() => FirebaseAuth.instance;
 }
