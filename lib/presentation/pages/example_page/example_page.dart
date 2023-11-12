@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
+import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 
 @RoutePage()
@@ -16,6 +17,7 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MainAppBar(child: Text('123text', style: AppTextStyles.bold24,),),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
