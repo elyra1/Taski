@@ -3,6 +3,7 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
@@ -29,7 +30,8 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
             width: 130.w,
             onPressed: () {},
             text: 'Сохранить',
-          )
+          ),
+          SvgPicture.asset('assets/icons/edit_icon.svg'),
         ],
       ).toCenter(),
     );
