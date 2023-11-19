@@ -19,6 +19,7 @@ class TaskEntity with _$TaskEntity {
         title: 'Название задачи',
         id: '123',
         authorId: '4234234',
+        description: 'Сделать TaskCard',
         startTime: Timestamp.fromDate(DateTime.now()),
         endTime: Timestamp.fromDate(DateTime.now()),
         color: AppColors.blue.value,

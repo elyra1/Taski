@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taski/di/locator.dart';
+import 'package:taski/domain/entities/task_entity.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
+import 'package:taski/presentation/widgets/buttons/task_card.dart';
 
 @RoutePage()
 class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
@@ -19,6 +21,11 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          TaskCard(
+              width: 300.w,
+              height: 135.h,
+              task: TaskEntity.getEmpty()
+                  .copyWith(description: 'BBBBBBBBBBBBBBBBbbbbbbB')),
           Text("Вы нажали на", style: AppTextStyles.bold18),
           Text("Вы нажали на", style: AppTextStyles.bold20),
           Text("Вы нажали на", style: AppTextStyles.bold24),
