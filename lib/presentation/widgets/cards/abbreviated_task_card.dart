@@ -21,10 +21,10 @@ class TaskCard extends StatefulWidget {
   });
 
   @override
-  State<TaskCard> createState() => _TaskCardState();
+  State<TaskCard> createState() => AbbreviatedTaskCard();
 }
 
-class _TaskCardState extends State<TaskCard> {
+class AbbreviatedTaskCard extends State<TaskCard> {
   final DateFormat format = DateFormat.Hm();
 
   @override
