@@ -11,6 +11,8 @@ import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
 import 'package:taski/presentation/widgets/buttons/circle_add_button.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
+import 'package:taski/domain/entities/task_entity.dart';
+import 'package:taski/presentation/widgets/cards/abbreviated_task_card.dart';
 
 @RoutePage()
 class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
@@ -24,23 +26,11 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppTextField(),
-          10.h.heightBox,
-          AppTextField(
-            title: 'Название',
-            hintText: 'Введите название задачи',
-            obscure: true,
+          TaskCard(
+              width: 345.w,
+              height: 50.h,
+              task: TaskEntity.getEmpty()
           ),
-          ElevatedButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Вы нажали на"),
-                ),
-              );
-            },
-            child: const Text("EXAMPLE PAGE"),
-          ).toCenter(),
           Text("Вы нажали на", style: AppTextStyles.bold18),
           Text("Вы нажали на", style: AppTextStyles.bold20),
           Text("Вы нажали на", style: AppTextStyles.bold24),

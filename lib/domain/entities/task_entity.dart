@@ -16,7 +16,7 @@ class TaskEntity with _$TaskEntity {
   }) = _TaskEntity;
 
   static TaskEntity getEmpty() => TaskEntity(
-        title: 'Название задачи',
+        title: 'Пример задачи',
         id: '123',
         authorId: '4234234',
         startTime: Timestamp.fromDate(DateTime.now()),
