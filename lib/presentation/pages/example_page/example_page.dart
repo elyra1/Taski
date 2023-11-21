@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
+import 'package:taski/domain/entities/category_entity.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
 import 'package:taski/presentation/widgets/app_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
+import 'package:taski/presentation/widgets/categoty_card.dart';
 
 @RoutePage()
 class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
@@ -18,7 +20,12 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar(child: Text('123text', style: AppTextStyles.bold24,),),
+      appBar: MainAppBar(
+        child: Text(
+          '123text',
+          style: AppTextStyles.bold24,
+        ),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -39,6 +46,9 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
             },
             child: const Text("EXAMPLE PAGE"),
           ).toCenter(),
+          CategoryCard(
+            category: CategoryEntity.getEmpty(),
+          ),
           Text("Вы нажали на", style: AppTextStyles.bold18),
           Text("Вы нажали на", style: AppTextStyles.bold20),
           Text("Вы нажали на", style: AppTextStyles.bold24),
