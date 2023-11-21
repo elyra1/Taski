@@ -23,6 +23,7 @@ mixin _$TaskEntity {
   Timestamp get startTime => throw _privateConstructorUsedError;
   Timestamp get endTime => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
+  String? get category => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TaskEntityCopyWith<TaskEntity> get copyWith =>
@@ -42,7 +43,8 @@ abstract class $TaskEntityCopyWith<$Res> {
       String authorId,
       Timestamp startTime,
       Timestamp endTime,
-      int color});
+      int color,
+      String? category});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$TaskEntityCopyWithImpl<$Res, $Val extends TaskEntity>
     Object? startTime = null,
     Object? endTime = null,
     Object? color = null,
+    Object? category = freezed,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -95,6 +98,10 @@ class _$TaskEntityCopyWithImpl<$Res, $Val extends TaskEntity>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -114,7 +121,8 @@ abstract class _$$TaskEntityImplCopyWith<$Res>
       String authorId,
       Timestamp startTime,
       Timestamp endTime,
-      int color});
+      int color,
+      String? category});
 }
 
 /// @nodoc
@@ -135,6 +143,7 @@ class __$$TaskEntityImplCopyWithImpl<$Res>
     Object? startTime = null,
     Object? endTime = null,
     Object? color = null,
+    Object? category = freezed,
   }) {
     return _then(_$TaskEntityImpl(
       title: null == title
@@ -165,6 +174,10 @@ class __$$TaskEntityImplCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -179,7 +192,8 @@ class _$TaskEntityImpl implements _TaskEntity {
       required this.authorId,
       required this.startTime,
       required this.endTime,
-      required this.color});
+      required this.color,
+      this.category = ''});
 
   @override
   final String title;
@@ -196,10 +210,13 @@ class _$TaskEntityImpl implements _TaskEntity {
   final Timestamp endTime;
   @override
   final int color;
+  @override
+  @JsonKey()
+  final String? category;
 
   @override
   String toString() {
-    return 'TaskEntity(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color)';
+    return 'TaskEntity(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color, category: $category)';
   }
 
   @override
@@ -216,12 +233,14 @@ class _$TaskEntityImpl implements _TaskEntity {
             (identical(other.startTime, startTime) ||
                 other.startTime == startTime) &&
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
-            (identical(other.color, color) || other.color == color));
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.category, category) ||
+                other.category == category));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, title, description, id, authorId, startTime, endTime, color);
+  int get hashCode => Object.hash(runtimeType, title, description, id, authorId,
+      startTime, endTime, color, category);
 
   @JsonKey(ignore: true)
   @override
@@ -238,7 +257,8 @@ abstract class _TaskEntity implements TaskEntity {
       required final String authorId,
       required final Timestamp startTime,
       required final Timestamp endTime,
-      required final int color}) = _$TaskEntityImpl;
+      required final int color,
+      final String? category}) = _$TaskEntityImpl;
 
   @override
   String get title;
@@ -254,6 +274,8 @@ abstract class _TaskEntity implements TaskEntity {
   Timestamp get endTime;
   @override
   int get color;
+  @override
+  String? get category;
   @override
   @JsonKey(ignore: true)
   _$$TaskEntityImplCopyWith<_$TaskEntityImpl> get copyWith =>

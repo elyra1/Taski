@@ -26,7 +26,6 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   final DateFormat format = DateFormat.Hm();
-  final String category = 'Category';
 
   @override
   Widget build(BuildContext context) {
@@ -61,22 +60,25 @@ class _TaskCardState extends State<TaskCard> {
               ),
               5.h.heightBox,
               if (widget.task.description != null) ...[
-                Flexible(
+                SizedBox(
+                  width: (widget.width ?? 300.w) * 22 / 30,
+                  //height: (widget.height ?? 135.h) / 3,
                   child: Text(
                     widget.task.description!,
-                    style: AppTextStyles.semibold12,
-                    overflow: TextOverflow.ellipsis,
                     softWrap: true,
+                    style: AppTextStyles.semibold12,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ]
+              ],
             ],
           ),
-          5.w.widthBox,
-          if (category != null) ...[
+          const Spacer(),
+          if (widget.task.category != null) ...[
             Container(
               width: 1.w,
-              height: 70.h,
+              height: double.maxFinite,
               decoration: const BoxDecoration(
                 color: AppColors.headblue,
               ),
@@ -84,7 +86,7 @@ class _TaskCardState extends State<TaskCard> {
             5.w.widthBox,
             RotatedBox(
               quarterTurns: -1,
-              child: Text(category),
+              child: Text(widget.task.category!),
             ),
           ]
         ],
