@@ -14,16 +14,23 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+TaskEntity _$TaskEntityFromJson(Map<String, dynamic> json) {
+  return _TaskEntity.fromJson(json);
+}
+
 /// @nodoc
 mixin _$TaskEntity {
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get authorId => throw _privateConstructorUsedError;
+  @TimestampConverter()
   Timestamp get startTime => throw _privateConstructorUsedError;
+  @TimestampConverter()
   Timestamp get endTime => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $TaskEntityCopyWith<TaskEntity> get copyWith =>
       throw _privateConstructorUsedError;
@@ -40,8 +47,8 @@ abstract class $TaskEntityCopyWith<$Res> {
       String? description,
       String id,
       String authorId,
-      Timestamp startTime,
-      Timestamp endTime,
+      @TimestampConverter() Timestamp startTime,
+      @TimestampConverter() Timestamp endTime,
       int color});
 }
 
@@ -112,8 +119,8 @@ abstract class _$$TaskEntityImplCopyWith<$Res>
       String? description,
       String id,
       String authorId,
-      Timestamp startTime,
-      Timestamp endTime,
+      @TimestampConverter() Timestamp startTime,
+      @TimestampConverter() Timestamp endTime,
       int color});
 }
 
@@ -170,16 +177,19 @@ class __$$TaskEntityImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$TaskEntityImpl implements _TaskEntity {
   const _$TaskEntityImpl(
       {required this.title,
       this.description = '',
       required this.id,
       required this.authorId,
-      required this.startTime,
-      required this.endTime,
+      @TimestampConverter() required this.startTime,
+      @TimestampConverter() required this.endTime,
       required this.color});
+
+  factory _$TaskEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TaskEntityImplFromJson(json);
 
   @override
   final String title;
@@ -191,8 +201,10 @@ class _$TaskEntityImpl implements _TaskEntity {
   @override
   final String authorId;
   @override
+  @TimestampConverter()
   final Timestamp startTime;
   @override
+  @TimestampConverter()
   final Timestamp endTime;
   @override
   final int color;
@@ -219,6 +231,7 @@ class _$TaskEntityImpl implements _TaskEntity {
             (identical(other.color, color) || other.color == color));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, title, description, id, authorId, startTime, endTime, color);
@@ -228,6 +241,13 @@ class _$TaskEntityImpl implements _TaskEntity {
   @pragma('vm:prefer-inline')
   _$$TaskEntityImplCopyWith<_$TaskEntityImpl> get copyWith =>
       __$$TaskEntityImplCopyWithImpl<_$TaskEntityImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TaskEntityImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _TaskEntity implements TaskEntity {
@@ -236,9 +256,12 @@ abstract class _TaskEntity implements TaskEntity {
       final String? description,
       required final String id,
       required final String authorId,
-      required final Timestamp startTime,
-      required final Timestamp endTime,
+      @TimestampConverter() required final Timestamp startTime,
+      @TimestampConverter() required final Timestamp endTime,
       required final int color}) = _$TaskEntityImpl;
+
+  factory _TaskEntity.fromJson(Map<String, dynamic> json) =
+      _$TaskEntityImpl.fromJson;
 
   @override
   String get title;
@@ -249,8 +272,10 @@ abstract class _TaskEntity implements TaskEntity {
   @override
   String get authorId;
   @override
+  @TimestampConverter()
   Timestamp get startTime;
   @override
+  @TimestampConverter()
   Timestamp get endTime;
   @override
   int get color;

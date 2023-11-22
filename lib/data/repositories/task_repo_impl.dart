@@ -8,9 +8,8 @@ class TaskRepositoryImpl implements TaskRepository {
   TaskRepositoryImpl(this._taskDataSource);
 
   @override
-  Future<void> createTask({required TaskEntity task}) {
-    // TODO: implement createTask
-    throw UnimplementedError();
+  Future<void> addTask({required TaskEntity task}) async {
+    await _taskDataSource.addTask(task);
   }
 
   @override

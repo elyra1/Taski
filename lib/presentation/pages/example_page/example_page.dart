@@ -1,13 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taski/data/datasources/tasks_data_sourse.dart';
+import 'package:taski/data/repositories/task_repo_impl.dart';
 import 'package:taski/di/locator.dart';
+import 'package:taski/domain/entities/task_entity.dart';
+import 'package:taski/domain/repositories/task_repository.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
+import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 
 @RoutePage()
 class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
@@ -15,6 +21,8 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) {
+    final TaskRepository _taskRepo = TaskRepositoryImpl(
+        TaskDataSource(firebaseFirestore: FirebaseFirestore.instance));
     return Scaffold(
       appBar: MainAppBar(),
       resizeToAvoidBottomInset: false,
@@ -22,6 +30,45 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         child: Column(
           children: [
+            30.h.heightBox,
+            StreamBuilder(
+              stream:
+                  TaskDataSource(firebaseFirestore: FirebaseFirestore.instance)
+                      .getUserTasks(),
+              builder: (context, snapshot) {
+                return ListView(
+                  children: snapshot.data!.docs
+                      .map((DocumentSnapshot document) {
+                        Map<String, dynamic> data =
+                            document.data()! as Map<String, dynamic>;
+                        return TaskCard(
+                          title: Text(data['full_name']),
+                          subtitle: Text(data['company']),
+                        );
+                      })
+                      .toList()
+                      .cast(),
+                );
+              },
+            ),
+            CustomButton(
+              width: 200.w,
+              height: 100.h,
+              onPressed: () => _taskRepo
+                  .addTask(
+                    task: TaskEntity(
+                      title: 'New task',
+                      id: '64536453',
+                      authorId: 'authorId',
+                      startTime: Timestamp.fromDate(DateTime.now()),
+                      endTime: Timestamp.fromDate(DateTime.now()),
+                      color: AppColors.blue.value,
+                    ),
+                  )
+                  .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Добавлена задача')))),
+              text: 'Добавить задачу',
+            ),
             Text(
               "Здесь вы пишете ваше содержимое, что вам нужно по верстке.",
               style: AppTextStyles.bold20,
