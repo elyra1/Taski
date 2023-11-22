@@ -75,19 +75,6 @@ class _ExamplePageState extends State<ExamplePage> {
                     .then((value) => ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Добавлена задача'))));
               },
-              // _taskRepo
-              //     .addTask(
-              //       task: TaskEntity(
-              //         title: 'New task',
-              //         id: '64536453',
-              //         authorId: 'authorId',
-              //         startTime: Timestamp.fromDate(DateTime.now()),
-              //         endTime: Timestamp.fromDate(DateTime.now()),
-              //         color: AppColors.blue.value,
-              //       ),
-              //     )
-              //     .then((value) => ScaffoldMessenger.of(context).showSnackBar(
-              //         SnackBar(content: Text('Добавлена задача')))),
               text: 'Добавить задачу',
             ),
             Text(
