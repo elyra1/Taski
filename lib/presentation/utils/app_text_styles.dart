@@ -12,6 +12,13 @@ abstract class AppTextStyles {
     color: AppColors.headblue,
   );
 
+  static TextStyle bold12 = TextStyle(
+    fontFamily: _montserratString,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.headblue,
+  );
+
   static TextStyle bold16 = TextStyle(
     fontFamily: _montserratString,
     fontSize: 16.sp,
@@ -79,6 +86,14 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.w600,
     color: AppColors.headblue,
   );
+
+  static TextStyle semibold20 = TextStyle(
+    fontFamily: _montserratString,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.headblue,
+  );
+
   static TextStyle semibold14 = TextStyle(
     fontFamily: _montserratString,
     fontSize: 14.sp,
