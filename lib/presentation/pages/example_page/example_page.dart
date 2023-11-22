@@ -22,11 +22,33 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TaskCard(
-              width: 300.w,
-              height: 135.h,
-              task: TaskEntity.getEmpty().copyWith(
-                  description:
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquet sit amet massa eget ultricies. Vestibulum vel leo ac purus ultricies facilisis.')),
+            onTap: () {},
+            width: 300.w,
+            height: 135.h,
+            task: TaskEntity.getEmpty().copyWith(
+              description:
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquet sit amet massa eget ultricies. Vestibulum vel leo ac purus ultricies facilisis.',
+            ),
+          ),
+          TaskCard(
+            onTap: () {},
+            width: 150.w,
+            height: 50.h,
+            task: TaskEntity.getEmpty().copyWith(
+              title: "ADASDASDASDASDASDASDASDASDASDASDD",
+              description:
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquet sit amet massa eget ultricies. Vestibulum vel leo ac purus ultricies facilisis.',
+            ),
+          ),
+          TaskCard(
+            onTap: () {},
+            width: 200.w,
+            height: 100.h,
+            task: TaskEntity.getEmpty().copyWith(
+              description:
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquet sit amet massa eget ultricies. Vestibulum vel leo ac purus ultricies facilisis.',
+            ),
+          ),
           Text("Вы нажали на", style: AppTextStyles.bold18),
           Text("Вы нажали на", style: AppTextStyles.bold20),
           Text("Вы нажали на", style: AppTextStyles.bold24),
