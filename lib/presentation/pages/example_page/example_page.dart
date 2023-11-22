@@ -5,12 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
-import 'package:taski/presentation/widgets/app_text_field.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
-import 'package:taski/presentation/widgets/buttons/circle_add_button.dart';
-import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 
 @RoutePage()
 class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
@@ -19,43 +16,90 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar(child: Text('123text', style: AppTextStyles.bold24,),),
-      floatingActionButton: CircleAddButton(onTap: (){},),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AppTextField(),
-          10.h.heightBox,
-          AppTextField(
-            title: 'Название',
-            hintText: 'Введите название задачи',
-            obscure: true,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Вы нажали на"),
-                ),
-              );
-            },
-            child: const Text("EXAMPLE PAGE"),
-          ).toCenter(),
-          Text("Вы нажали на", style: AppTextStyles.bold18),
-          Text("Вы нажали на", style: AppTextStyles.bold20),
-          Text("Вы нажали на", style: AppTextStyles.bold24),
-          Text("Вы нажали на", style: AppTextStyles.regular18),
-          Text("Вы нажали на", style: AppTextStyles.regular20),
-          Text("Вы нажали на", style: AppTextStyles.regular24),
-          CustomButton(
-            height: 40.h,
-            width: 130.w,
-            onPressed: () {},
-            text: 'Сохранить',
-          ),
-          SvgPicture.asset('assets/icons/edit_icon.svg'),
-        ],
-      ).toCenter(),
+      appBar: MainAppBar(),
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        child: Column(
+          children: [
+            Text(
+              "Здесь вы пишете ваше содержимое, что вам нужно по верстке.",
+              style: AppTextStyles.bold20,
+            ),
+            Divider(
+              thickness: 2.h,
+              color: AppColors.headblue,
+            ),
+            15.h.heightBox,
+            Text(
+              "Без библиотеки, мы делали отступы при помощи SizedBox(widgth: <ширина отступа>), SizedBox(height: <высота отступа>) - для горизонтали/вертикали соответственно",
+              style: AppTextStyles.regular18.copyWith(fontSize: 14.sp),
+            ),
+            10.h.heightBox,
+            Text(
+              "Но при помощи библиотеки awesome_extensions мы делаем отступы между виджетами, не портя красоту кода(под капотом тот же код, что и выше, но использовать быстрее и красивее)",
+              style: AppTextStyles.regular18.copyWith(fontSize: 14.sp),
+            ),
+            10.heightBox,
+            Text(
+              "<количество пикселей>.<h или w, по вертикали или по горизонтали>.<heightBox / widthBox, по вертикали или по горизонтали соответственно>",
+              style: AppTextStyles.regular18.copyWith(fontSize: 14.sp),
+            ),
+            10.heightBox,
+            Text(
+              "Пример: 10.h.heightBox - создаем отступ по вертикали на 10.h",
+              style: AppTextStyles.regular18.copyWith(fontSize: 14.sp),
+            ),
+            10.heightBox,
+            Text(
+              "Пример: 10.w.widthBox - создаем отступ по горизонтали на 10.w",
+              style: AppTextStyles.regular18.copyWith(fontSize: 14.sp),
+            ),
+            Divider(
+              thickness: 2.h,
+              color: AppColors.headblue,
+            ),
+            10.heightBox,
+            Text(
+              "Если у вас не обычный AppBar, а например со стрелкой - в параметр appBar у Scaffold передаёте AppBar(...тут ваши параметры...)",
+              style: AppTextStyles.bold18.copyWith(fontSize: 14.sp),
+            ),
+            10.heightBox,
+            Text(
+              "Для создания новой страницы, для начала, если не понимаете, можете скопировать папку ExamplePage, и создать такую же, но переименовав её(название файлов, классов в том числе) в создаваемую вами страницу.",
+              style: AppTextStyles.bold18.copyWith(fontSize: 14.sp),
+            ),
+            10.heightBox,
+            Text(
+              "Чтобы протестить свою страницу, находите папку navigation,в файле auto_router.dart заменяете ExamplePage на Вашу страницу, после чего гененрируете файлы, вызвав команду: ",
+              style: AppTextStyles.bold18.copyWith(fontSize: 14.sp),
+            ),
+            Text(
+              "flutter pub run build_runner build --delete-conflicting-outputs",
+              style: AppTextStyles.bold18.copyWith(fontSize: 14.sp),
+            ),
+            Text(
+              "После чего ждете, пока сгенерируются новые файлы, и потом перезагружаете приложение. ",
+              style: AppTextStyles.bold18.copyWith(fontSize: 14.sp),
+            ),
+            10.heightBox,
+            Text(
+              "Перед отправкой в ветку, не забываем отформатировать код, проставить запятые после скобочек там, где можно, еще раз отформатировать код)",
+              style: AppTextStyles.bold18.copyWith(fontStyle: FontStyle.italic),
+            ),
+            5.h.heightBox,
+            Text(
+              "Также, в navigation, в auto_router.dart обратно возвращаем ExamplePage, и снова генерируем файлы",
+              style: AppTextStyles.bold18.copyWith(fontStyle: FontStyle.italic),
+            ),
+            10.heightBox,
+            Text(
+              "Ну и как обычно, будут вопросы, пишите в лс",
+              style: AppTextStyles.bold18.copyWith(fontSize: 14.sp),
+            ),
+          ],
+        ).toCenter(),
+      ),
     );
   }
 
