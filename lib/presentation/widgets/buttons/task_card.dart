@@ -1,14 +1,15 @@
+import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:taski/domain/entities/task_entity.dart';
+import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 
 class TaskCard extends StatefulWidget {
   final VoidCallback onTap;
   final double? width;
   final double? height;
-  final TaskEntity task;
+  final Task task;
 
   const TaskCard({
     super.key,
@@ -27,15 +28,14 @@ class _TaskCardState extends State<TaskCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Color(widget.task.color),
-      borderRadius: BorderRadius.circular(5.r),
-      child: InkWell(
-        onTap: widget.onTap,
-        child: Container(
-          padding: EdgeInsets.all(4.r),
-          width: widget.width,
-          height: widget.height,
+    return SizedBox(
+      width: widget.width,
+      height: widget.height,
+      child: Material(
+        color: Color(widget.task.color),
+        borderRadius: BorderRadius.circular(5.r),
+        child: InkWell(
+          onTap: widget.onTap,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +60,7 @@ class _TaskCardState extends State<TaskCard> {
                 ),
               ],
             ],
-          ),
+          ).paddingAll(4.r),
         ),
       ),
     );

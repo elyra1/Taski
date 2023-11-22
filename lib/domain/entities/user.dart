@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part "user_entity.freezed.dart";
+part 'user.freezed.dart';
 
 @freezed
-class UserEntity with _$UserEntity {
-  const factory UserEntity({
+class User with _$User {
+  const factory User({
     required String email,
     required String name,
     required String photoUrl,
@@ -12,6 +12,6 @@ class UserEntity with _$UserEntity {
     @Default([]) List<String> friendsIds,
   }) = _UserEntity;
 
-  static UserEntity getEmpty() => const UserEntity(
-      email: 'email', name: 'name', photoUrl: 'photoUrl', id: 'id');
+  static User getEmpty() =>
+      const User(email: 'email', name: 'name', photoUrl: 'photoUrl', id: 'id');
 }

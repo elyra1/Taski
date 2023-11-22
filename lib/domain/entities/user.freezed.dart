@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'user_entity.dart';
+part of 'user.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$UserEntity {
+mixin _$User {
   String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get photoUrl => throw _privateConstructorUsedError;
@@ -23,15 +23,13 @@ mixin _$UserEntity {
   List<String> get friendsIds => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $UserEntityCopyWith<UserEntity> get copyWith =>
-      throw _privateConstructorUsedError;
+  $UserEntityCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $UserEntityCopyWith<$Res> {
-  factory $UserEntityCopyWith(
-          UserEntity value, $Res Function(UserEntity) then) =
-      _$UserEntityCopyWithImpl<$Res, UserEntity>;
+  factory $UserEntityCopyWith(User value, $Res Function(User) then) =
+      _$UserEntityCopyWithImpl<$Res, User>;
   @useResult
   $Res call(
       {String email,
@@ -42,7 +40,7 @@ abstract class $UserEntityCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
+class _$UserEntityCopyWithImpl<$Res, $Val extends User>
     implements $UserEntityCopyWith<$Res> {
   _$UserEntityCopyWithImpl(this._value, this._then);
 
@@ -201,7 +199,7 @@ class _$UserEntityImpl implements _UserEntity {
       __$$UserEntityImplCopyWithImpl<_$UserEntityImpl>(this, _$identity);
 }
 
-abstract class _UserEntity implements UserEntity {
+abstract class _UserEntity implements User {
   const factory _UserEntity(
       {required final String email,
       required final String name,
