@@ -1,30 +1,40 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taski/data/datasources/tasks_data_sourse.dart';
-import 'package:taski/data/repositories/task_repo_impl.dart';
 import 'package:taski/di/locator.dart';
-import 'package:taski/domain/entities/task_entity.dart';
-import 'package:taski/domain/repositories/task_repository.dart';
+import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
+import 'package:taski/presentation/widgets/buttons/task_card.dart';
 
 @RoutePage()
-class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
+class ExamplePage extends StatefulWidget implements AutoRouteWrapper {
   const ExamplePage({Key? key}) : super(key: key);
 
   @override
+  State<ExamplePage> createState() => _ExamplePageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider<ExamplePageCubit>(
+      create: (context) => getIt<ExamplePageCubit>(),
+      child: this,
+    );
+  }
+}
+
+class _ExamplePageState extends State<ExamplePage> {
+  @override
   Widget build(BuildContext context) {
-    final TaskRepository _taskRepo = TaskRepositoryImpl(
-        TaskDataSource(firebaseFirestore: FirebaseFirestore.instance));
     return Scaffold(
-      appBar: MainAppBar(),
+      appBar: const MainAppBar(),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -32,41 +42,52 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
           children: [
             30.h.heightBox,
             StreamBuilder(
-              stream:
-                  TaskDataSource(firebaseFirestore: FirebaseFirestore.instance)
-                      .getUserTasks(),
+              stream: context.read<ExamplePageCubit>().getTasks(),
               builder: (context, snapshot) {
-                return ListView(
-                  children: snapshot.data!.docs
-                      .map((DocumentSnapshot document) {
-                        Map<String, dynamic> data =
-                            document.data()! as Map<String, dynamic>;
-                        return TaskCard(
-                          title: Text(data['full_name']),
-                          subtitle: Text(data['company']),
-                        );
-                      })
-                      .toList()
-                      .cast(),
+                final tasks = snapshot.data ?? [];
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: tasks.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onLongPress: () => context
+                          .read<ExamplePageCubit>()
+                          .deleteTask(tasks[index]),
+                      child: TaskCard(
+                        task: tasks[index],
+                        onTap: () {},
+                        width: 300.w,
+                        height: 135.h,
+                      ).paddingSymmetric(vertical: 5.h),
+                    );
+                  },
                 );
               },
             ),
             CustomButton(
               width: 200.w,
               height: 100.h,
-              onPressed: () => _taskRepo
-                  .addTask(
-                    task: TaskEntity(
-                      title: 'New task',
-                      id: '64536453',
-                      authorId: 'authorId',
-                      startTime: Timestamp.fromDate(DateTime.now()),
-                      endTime: Timestamp.fromDate(DateTime.now()),
-                      color: AppColors.blue.value,
-                    ),
-                  )
-                  .then((value) => ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Добавлена задача')))),
+              onPressed: () {
+                context
+                    .read<ExamplePageCubit>()
+                    .addTask(Task.getEmpty()
+                        .copyWith(description: "123" * Random().nextInt(20)))
+                    .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Добавлена задача'))));
+              },
+              // _taskRepo
+              //     .addTask(
+              //       task: TaskEntity(
+              //         title: 'New task',
+              //         id: '64536453',
+              //         authorId: 'authorId',
+              //         startTime: Timestamp.fromDate(DateTime.now()),
+              //         endTime: Timestamp.fromDate(DateTime.now()),
+              //         color: AppColors.blue.value,
+              //       ),
+              //     )
+              //     .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+              //         SnackBar(content: Text('Добавлена задача')))),
               text: 'Добавить задачу',
             ),
             Text(
@@ -147,14 +168,6 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
           ],
         ).toCenter(),
       ),
-    );
-  }
-
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<ExamplePageCubit>(
-      create: (context) => getIt<ExamplePageCubit>(),
-      child: this,
     );
   }
 }

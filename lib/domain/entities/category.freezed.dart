@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'category_entity.dart';
+part of 'category.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,34 +15,30 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$CategoryEntity {
+mixin _$Category {
   String get title => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get authorId => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
-  List<TaskEntity> get tasks => throw _privateConstructorUsedError;
+  List<Task> get tasks => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $CategoryEntityCopyWith<CategoryEntity> get copyWith =>
+  $CategoryEntityCopyWith<Category> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $CategoryEntityCopyWith<$Res> {
   factory $CategoryEntityCopyWith(
-          CategoryEntity value, $Res Function(CategoryEntity) then) =
-      _$CategoryEntityCopyWithImpl<$Res, CategoryEntity>;
+          Category value, $Res Function(Category) then) =
+      _$CategoryEntityCopyWithImpl<$Res, Category>;
   @useResult
   $Res call(
-      {String title,
-      String id,
-      String authorId,
-      int color,
-      List<TaskEntity> tasks});
+      {String title, String id, String authorId, int color, List<Task> tasks});
 }
 
 /// @nodoc
-class _$CategoryEntityCopyWithImpl<$Res, $Val extends CategoryEntity>
+class _$CategoryEntityCopyWithImpl<$Res, $Val extends Category>
     implements $CategoryEntityCopyWith<$Res> {
   _$CategoryEntityCopyWithImpl(this._value, this._then);
 
@@ -80,7 +76,7 @@ class _$CategoryEntityCopyWithImpl<$Res, $Val extends CategoryEntity>
       tasks: null == tasks
           ? _value.tasks
           : tasks // ignore: cast_nullable_to_non_nullable
-              as List<TaskEntity>,
+              as List<Task>,
     ) as $Val);
   }
 }
@@ -94,11 +90,7 @@ abstract class _$$CategoryEntityImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String title,
-      String id,
-      String authorId,
-      int color,
-      List<TaskEntity> tasks});
+      {String title, String id, String authorId, int color, List<Task> tasks});
 }
 
 /// @nodoc
@@ -138,7 +130,7 @@ class __$$CategoryEntityImplCopyWithImpl<$Res>
       tasks: null == tasks
           ? _value._tasks
           : tasks // ignore: cast_nullable_to_non_nullable
-              as List<TaskEntity>,
+              as List<Task>,
     ));
   }
 }
@@ -151,7 +143,7 @@ class _$CategoryEntityImpl implements _CategoryEntity {
       required this.id,
       required this.authorId,
       required this.color,
-      final List<TaskEntity> tasks = const []})
+      final List<Task> tasks = const []})
       : _tasks = tasks;
 
   @override
@@ -162,10 +154,10 @@ class _$CategoryEntityImpl implements _CategoryEntity {
   final String authorId;
   @override
   final int color;
-  final List<TaskEntity> _tasks;
+  final List<Task> _tasks;
   @override
   @JsonKey()
-  List<TaskEntity> get tasks {
+  List<Task> get tasks {
     if (_tasks is EqualUnmodifiableListView) return _tasks;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_tasks);
@@ -201,13 +193,13 @@ class _$CategoryEntityImpl implements _CategoryEntity {
           this, _$identity);
 }
 
-abstract class _CategoryEntity implements CategoryEntity {
+abstract class _CategoryEntity implements Category {
   const factory _CategoryEntity(
       {required final String title,
       required final String id,
       required final String authorId,
       required final int color,
-      final List<TaskEntity> tasks}) = _$CategoryEntityImpl;
+      final List<Task> tasks}) = _$CategoryEntityImpl;
 
   @override
   String get title;
@@ -218,7 +210,7 @@ abstract class _CategoryEntity implements CategoryEntity {
   @override
   int get color;
   @override
-  List<TaskEntity> get tasks;
+  List<Task> get tasks;
   @override
   @JsonKey(ignore: true)
   _$$CategoryEntityImplCopyWith<_$CategoryEntityImpl> get copyWith =>

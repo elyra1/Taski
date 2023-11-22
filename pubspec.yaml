@@ -51,6 +51,7 @@ dependencies:
   awesome_extensions: ^2.0.10
   flutter_svg: ^2.0.9
   json_serializable: ^6.7.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

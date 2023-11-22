@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'task_entity.dart';
+part of 'task.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-TaskEntity _$TaskEntityFromJson(Map<String, dynamic> json) {
+Task _$TaskEntityFromJson(Map<String, dynamic> json) {
   return _TaskEntity.fromJson(json);
 }
 
 /// @nodoc
-mixin _$TaskEntity {
+mixin _$Task {
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
@@ -29,18 +29,17 @@ mixin _$TaskEntity {
   @TimestampConverter()
   Timestamp get endTime => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
+  String? get category => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $TaskEntityCopyWith<TaskEntity> get copyWith =>
-      throw _privateConstructorUsedError;
+  $TaskEntityCopyWith<Task> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $TaskEntityCopyWith<$Res> {
-  factory $TaskEntityCopyWith(
-          TaskEntity value, $Res Function(TaskEntity) then) =
-      _$TaskEntityCopyWithImpl<$Res, TaskEntity>;
+  factory $TaskEntityCopyWith(Task value, $Res Function(Task) then) =
+      _$TaskEntityCopyWithImpl<$Res, Task>;
   @useResult
   $Res call(
       {String title,
@@ -49,11 +48,12 @@ abstract class $TaskEntityCopyWith<$Res> {
       String authorId,
       @TimestampConverter() Timestamp startTime,
       @TimestampConverter() Timestamp endTime,
-      int color});
+      int color,
+      String? category});
 }
 
 /// @nodoc
-class _$TaskEntityCopyWithImpl<$Res, $Val extends TaskEntity>
+class _$TaskEntityCopyWithImpl<$Res, $Val extends Task>
     implements $TaskEntityCopyWith<$Res> {
   _$TaskEntityCopyWithImpl(this._value, this._then);
 
@@ -72,6 +72,7 @@ class _$TaskEntityCopyWithImpl<$Res, $Val extends TaskEntity>
     Object? startTime = null,
     Object? endTime = null,
     Object? color = null,
+    Object? category = freezed,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -102,6 +103,10 @@ class _$TaskEntityCopyWithImpl<$Res, $Val extends TaskEntity>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -121,7 +126,8 @@ abstract class _$$TaskEntityImplCopyWith<$Res>
       String authorId,
       @TimestampConverter() Timestamp startTime,
       @TimestampConverter() Timestamp endTime,
-      int color});
+      int color,
+      String? category});
 }
 
 /// @nodoc
@@ -142,6 +148,7 @@ class __$$TaskEntityImplCopyWithImpl<$Res>
     Object? startTime = null,
     Object? endTime = null,
     Object? color = null,
+    Object? category = freezed,
   }) {
     return _then(_$TaskEntityImpl(
       title: null == title
@@ -172,6 +179,10 @@ class __$$TaskEntityImplCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -186,7 +197,8 @@ class _$TaskEntityImpl implements _TaskEntity {
       required this.authorId,
       @TimestampConverter() required this.startTime,
       @TimestampConverter() required this.endTime,
-      required this.color});
+      required this.color,
+      this.category = ''});
 
   factory _$TaskEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskEntityImplFromJson(json);
@@ -208,10 +220,13 @@ class _$TaskEntityImpl implements _TaskEntity {
   final Timestamp endTime;
   @override
   final int color;
+  @override
+  @JsonKey()
+  final String? category;
 
   @override
   String toString() {
-    return 'TaskEntity(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color)';
+    return 'TaskEntity(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color, category: $category)';
   }
 
   @override
@@ -228,13 +243,15 @@ class _$TaskEntityImpl implements _TaskEntity {
             (identical(other.startTime, startTime) ||
                 other.startTime == startTime) &&
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
-            (identical(other.color, color) || other.color == color));
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.category, category) ||
+                other.category == category));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, title, description, id, authorId, startTime, endTime, color);
+  int get hashCode => Object.hash(runtimeType, title, description, id, authorId,
+      startTime, endTime, color, category);
 
   @JsonKey(ignore: true)
   @override
@@ -250,7 +267,7 @@ class _$TaskEntityImpl implements _TaskEntity {
   }
 }
 
-abstract class _TaskEntity implements TaskEntity {
+abstract class _TaskEntity implements Task {
   const factory _TaskEntity(
       {required final String title,
       final String? description,
@@ -258,7 +275,8 @@ abstract class _TaskEntity implements TaskEntity {
       required final String authorId,
       @TimestampConverter() required final Timestamp startTime,
       @TimestampConverter() required final Timestamp endTime,
-      required final int color}) = _$TaskEntityImpl;
+      required final int color,
+      final String? category}) = _$TaskEntityImpl;
 
   factory _TaskEntity.fromJson(Map<String, dynamic> json) =
       _$TaskEntityImpl.fromJson;
@@ -279,6 +297,8 @@ abstract class _TaskEntity implements TaskEntity {
   Timestamp get endTime;
   @override
   int get color;
+  @override
+  String? get category;
   @override
   @JsonKey(ignore: true)
   _$$TaskEntityImplCopyWith<_$TaskEntityImpl> get copyWith =>
