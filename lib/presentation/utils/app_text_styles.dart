@@ -4,6 +4,14 @@ import 'package:taski/presentation/utils/app_colors.dart';
 
 abstract class AppTextStyles {
   static const String _montserratString = 'Montserrat';
+
+  static TextStyle bold8 = TextStyle(
+    fontFamily: _montserratString,
+    fontSize: 8.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.headblue,
+  );
+
   static TextStyle bold12 = TextStyle(
     fontFamily: _montserratString,
     fontSize: 12.sp,
@@ -65,6 +73,18 @@ abstract class AppTextStyles {
     fontSize: 12.sp,
     fontWeight: FontWeight.w500,
     color: Colors.white,
+  );
+  static TextStyle semibold22 = TextStyle(
+    fontFamily: _montserratString,
+    fontSize: 22.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.headblue,
+  );
+  static TextStyle semibold12 = TextStyle(
+    fontFamily: _montserratString,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.headblue,
   );
 
   static TextStyle semibold20 = TextStyle(
