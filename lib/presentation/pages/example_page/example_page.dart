@@ -84,7 +84,7 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
             ),
             10.heightBox,
             Text(
-              "Перед отправкой в ветку, не забываем отформатировать код, проставить запятые после скобочек там, где можно, еще раз отформатировать код)",
+              "Перед отправкой в ветку, не забываем сделать pull с мейна, исправить конфликты(если они есть), отформатировать код, проставить запятые после скобочек там, где можно, еще раз отформатировать код)",
               style: AppTextStyles.bold18.copyWith(fontStyle: FontStyle.italic),
             ),
             5.h.heightBox,
