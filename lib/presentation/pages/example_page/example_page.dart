@@ -66,7 +66,7 @@ class _ExamplePageState extends State<ExamplePage> {
             ),
             CustomButton(
               width: 200.w,
-              height: 100.h,
+              height: 50.h,
               onPressed: () {
                 context
                     .read<ExamplePageCubit>()

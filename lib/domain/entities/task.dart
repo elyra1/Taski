@@ -18,8 +18,7 @@ class Task with _$Task {
     @Default('') String? category,
   }) = _TaskEntity;
 
-  factory Task.fromJson(Map<String, dynamic> json) =>
-      _$TaskEntityFromJson(json);
+  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
 
   static Task getEmpty() => Task(
       title: 'Название задачи',
