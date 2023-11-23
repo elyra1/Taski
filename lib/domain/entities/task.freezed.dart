@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Task _$TaskEntityFromJson(Map<String, dynamic> json) {
+Task _$TaskFromJson(Map<String, dynamic> json) {
   return _TaskEntity.fromJson(json);
 }
 
@@ -33,13 +33,13 @@ mixin _$Task {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $TaskEntityCopyWith<Task> get copyWith => throw _privateConstructorUsedError;
+  $TaskCopyWith<Task> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TaskEntityCopyWith<$Res> {
-  factory $TaskEntityCopyWith(Task value, $Res Function(Task) then) =
-      _$TaskEntityCopyWithImpl<$Res, Task>;
+abstract class $TaskCopyWith<$Res> {
+  factory $TaskCopyWith(Task value, $Res Function(Task) then) =
+      _$TaskCopyWithImpl<$Res, Task>;
   @useResult
   $Res call(
       {String title,
@@ -53,9 +53,9 @@ abstract class $TaskEntityCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TaskEntityCopyWithImpl<$Res, $Val extends Task>
-    implements $TaskEntityCopyWith<$Res> {
-  _$TaskEntityCopyWithImpl(this._value, this._then);
+class _$TaskCopyWithImpl<$Res, $Val extends Task>
+    implements $TaskCopyWith<$Res> {
+  _$TaskCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -112,8 +112,7 @@ class _$TaskEntityCopyWithImpl<$Res, $Val extends Task>
 }
 
 /// @nodoc
-abstract class _$$TaskEntityImplCopyWith<$Res>
-    implements $TaskEntityCopyWith<$Res> {
+abstract class _$$TaskEntityImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
   factory _$$TaskEntityImplCopyWith(
           _$TaskEntityImpl value, $Res Function(_$TaskEntityImpl) then) =
       __$$TaskEntityImplCopyWithImpl<$Res>;
@@ -132,7 +131,7 @@ abstract class _$$TaskEntityImplCopyWith<$Res>
 
 /// @nodoc
 class __$$TaskEntityImplCopyWithImpl<$Res>
-    extends _$TaskEntityCopyWithImpl<$Res, _$TaskEntityImpl>
+    extends _$TaskCopyWithImpl<$Res, _$TaskEntityImpl>
     implements _$$TaskEntityImplCopyWith<$Res> {
   __$$TaskEntityImplCopyWithImpl(
       _$TaskEntityImpl _value, $Res Function(_$TaskEntityImpl) _then)
@@ -226,7 +225,7 @@ class _$TaskEntityImpl implements _TaskEntity {
 
   @override
   String toString() {
-    return 'TaskEntity(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color, category: $category)';
+    return 'Task(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color, category: $category)';
   }
 
   @override

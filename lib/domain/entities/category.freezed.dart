@@ -23,24 +23,23 @@ mixin _$Category {
   List<Task> get tasks => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $CategoryEntityCopyWith<Category> get copyWith =>
+  $CategoryCopyWith<Category> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CategoryEntityCopyWith<$Res> {
-  factory $CategoryEntityCopyWith(
-          Category value, $Res Function(Category) then) =
-      _$CategoryEntityCopyWithImpl<$Res, Category>;
+abstract class $CategoryCopyWith<$Res> {
+  factory $CategoryCopyWith(Category value, $Res Function(Category) then) =
+      _$CategoryCopyWithImpl<$Res, Category>;
   @useResult
   $Res call(
       {String title, String id, String authorId, int color, List<Task> tasks});
 }
 
 /// @nodoc
-class _$CategoryEntityCopyWithImpl<$Res, $Val extends Category>
-    implements $CategoryEntityCopyWith<$Res> {
-  _$CategoryEntityCopyWithImpl(this._value, this._then);
+class _$CategoryCopyWithImpl<$Res, $Val extends Category>
+    implements $CategoryCopyWith<$Res> {
+  _$CategoryCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -83,7 +82,7 @@ class _$CategoryEntityCopyWithImpl<$Res, $Val extends Category>
 
 /// @nodoc
 abstract class _$$CategoryEntityImplCopyWith<$Res>
-    implements $CategoryEntityCopyWith<$Res> {
+    implements $CategoryCopyWith<$Res> {
   factory _$$CategoryEntityImplCopyWith(_$CategoryEntityImpl value,
           $Res Function(_$CategoryEntityImpl) then) =
       __$$CategoryEntityImplCopyWithImpl<$Res>;
@@ -95,7 +94,7 @@ abstract class _$$CategoryEntityImplCopyWith<$Res>
 
 /// @nodoc
 class __$$CategoryEntityImplCopyWithImpl<$Res>
-    extends _$CategoryEntityCopyWithImpl<$Res, _$CategoryEntityImpl>
+    extends _$CategoryCopyWithImpl<$Res, _$CategoryEntityImpl>
     implements _$$CategoryEntityImplCopyWith<$Res> {
   __$$CategoryEntityImplCopyWithImpl(
       _$CategoryEntityImpl _value, $Res Function(_$CategoryEntityImpl) _then)
@@ -165,7 +164,7 @@ class _$CategoryEntityImpl implements _CategoryEntity {
 
   @override
   String toString() {
-    return 'CategoryEntity(title: $title, id: $id, authorId: $authorId, color: $color, tasks: $tasks)';
+    return 'Category(title: $title, id: $id, authorId: $authorId, color: $color, tasks: $tasks)';
   }
 
   @override
