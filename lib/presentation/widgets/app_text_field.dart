@@ -44,7 +44,7 @@ class _AppTextFieldState extends State<AppTextField> {
             width: widget.width ?? 345.w,
             child: TextFormField(
               maxLines: widget.obscure ? 1 : null,
-              style: AppTextStyles.semibold14,
+              style: AppTextStyles.semibold12,
               obscureText: widget.obscure ? _obscureText : false,
               decoration: InputDecoration(
                 suffixIcon: widget.obscure
@@ -61,7 +61,7 @@ class _AppTextFieldState extends State<AppTextField> {
                     : null,
                 hintText: widget.hintText,
                 hintStyle:
-                    AppTextStyles.semibold14.copyWith(color: AppColors.grey),
+                    AppTextStyles.semibold12.copyWith(color: AppColors.grey),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5.r)),
                   borderSide: BorderSide(width: 1.r, color: AppColors.headblue),

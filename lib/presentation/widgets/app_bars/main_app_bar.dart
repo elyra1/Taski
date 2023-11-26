@@ -23,12 +23,14 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget{
       ).toCenter(),
       leadingWidth: 90.w,
       actions: [
-        IconButton(
-        icon: SvgPicture.asset(AppIcons.userIcon, color: AppColors.headblue),
-        onPressed: () {
-          // Заглушка функции, которая будет вызываться при нажатии на иконку
-        },
-      )
+        SizedBox(width: 44.w,height: 44.h,
+          child: IconButton(
+          icon: SvgPicture.asset(AppIcons.userIcon, color: AppColors.headblue),
+          onPressed: () {
+            // Заглушка функции, которая будет вызываться при нажатии на иконку
+          },
+                ),
+        )
       ],
       bottom: PreferredSize(
      preferredSize: Size.fromHeight(1.h),

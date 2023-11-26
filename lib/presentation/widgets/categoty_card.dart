@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taski/domain/entities/category_entity.dart';
+import 'package:taski/domain/entities/category.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 
 class CategoryCard extends StatelessWidget {
-  final CategoryEntity category;
+  final Category category;
 
   const CategoryCard({
     super.key,
