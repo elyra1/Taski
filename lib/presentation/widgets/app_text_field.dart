@@ -49,6 +49,7 @@ class _AppTextFieldState extends State<AppTextField> {
               maxLines: widget.obscure ? 1 : null,
               style: AppTextStyles.semibold12,
               obscureText: widget.obscure ? _obscureText : false,
+              controller: widget.controller,
               decoration: InputDecoration(
                 suffixIcon: widget.obscure
                     ? IconButton(

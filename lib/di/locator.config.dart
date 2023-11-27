@@ -14,11 +14,13 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:taski/data/datasources/auth_data_source.dart' as _i9;
 import 'package:taski/data/datasources/tasks_data_sourse.dart' as _i7;
-import 'package:taski/di/app_module.dart' as _i11;
+import 'package:taski/di/app_module.dart' as _i12;
 import 'package:taski/domain/repositories/auth_repository.dart' as _i8;
 import 'package:taski/domain/repositories/task_repository.dart' as _i6;
-import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart'
+import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart'
     as _i10;
+import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart'
+    as _i11;
 import 'package:taski/presentation/pages/send_reset_link/cubit/send_reset_link_page_cubit.dart'
     as _i5;
 
@@ -43,7 +45,11 @@ extension GetItInjectableX on _i1.GetIt {
       gh<_i3.FirebaseAuth>(),
       gh<_i4.FirebaseFirestore>(),
     ));
-    gh.factory<_i10.ExamplePageCubit>(() => _i10.ExamplePageCubit(
+    gh.factory<_i10.CreateTaskCubit>(() => _i10.CreateTaskCubit(
+          gh<_i6.TaskRepository>(),
+          gh<_i8.AuthRepository>(),
+        ));
+    gh.factory<_i11.ExamplePageCubit>(() => _i11.ExamplePageCubit(
           gh<_i6.TaskRepository>(),
           gh<_i8.AuthRepository>(),
         ));
@@ -51,4 +57,4 @@ extension GetItInjectableX on _i1.GetIt {
   }
 }
 
-class _$AppModule extends _i11.AppModule {}
+class _$AppModule extends _i12.AppModule {}
