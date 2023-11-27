@@ -11,6 +11,7 @@ class AppTextField extends StatefulWidget {
   final bool obscure;
   final TextEditingController? controller;
   final String? hintText;
+  final TextInputAction? textInputAction;
   const AppTextField({
     super.key,
     this.width,
@@ -19,6 +20,7 @@ class AppTextField extends StatefulWidget {
     this.obscure = false,
     this.controller,
     this.hintText,
+    this.textInputAction,
   });
 
   @override
@@ -36,16 +38,18 @@ class _AppTextFieldState extends State<AppTextField> {
           if (widget.title != null) ...[
             Text(
               widget.title!,
-              style: AppTextStyles.semibold20,
+              style: AppTextStyles.semibold18,
             ),
             5.h.heightBox,
           ],
           SizedBox(
             width: widget.width ?? 345.w,
             child: TextFormField(
+              textInputAction: widget.textInputAction ?? TextInputAction.done,
               maxLines: widget.obscure ? 1 : null,
-              style: AppTextStyles.semibold14,
+              style: AppTextStyles.semibold12,
               obscureText: widget.obscure ? _obscureText : false,
+              controller: widget.controller,
               decoration: InputDecoration(
                 suffixIcon: widget.obscure
                     ? IconButton(
@@ -61,7 +65,7 @@ class _AppTextFieldState extends State<AppTextField> {
                     : null,
                 hintText: widget.hintText,
                 hintStyle:
-                    AppTextStyles.semibold14.copyWith(color: AppColors.grey),
+                    AppTextStyles.semibold12.copyWith(color: AppColors.grey),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5.r)),
                   borderSide: BorderSide(width: 1.r, color: AppColors.headblue),
