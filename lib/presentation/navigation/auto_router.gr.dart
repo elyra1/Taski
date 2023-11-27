@@ -14,7 +14,7 @@ import 'package:taski/presentation/pages/create_task/create_task_page.dart'
 import 'package:taski/presentation/pages/example_page/example_page.dart' as _i2;
 import 'package:taski/presentation/pages/send_reset_link/send_reset_link_page.dart'
     as _i3;
-import 'package:taski/presentation/pages/SendedResetLink/sended_reset_link_page.dart'
+import 'package:taski/presentation/pages/sended_reset_link/sended_reset_link_page.dart'
     as _i4;
 import 'package:taski/presentation/pages/sign_in/sign_in_page.dart' as _i5;
 import 'package:taski/presentation/pages/sign_up/sign_up_page.dart' as _i6;

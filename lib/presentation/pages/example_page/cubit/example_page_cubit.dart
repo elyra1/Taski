@@ -6,9 +6,9 @@ import 'package:injectable/injectable.dart';
 import 'package:taski/domain/entities/task.dart';
 import 'package:taski/domain/repositories/auth_repository.dart';
 import 'package:taski/domain/repositories/task_repository.dart';
-part 'sended_reset_link_page_cubit.freezed.dart';
+part 'example_page_cubit.freezed.dart';
 
-part 'sended_reset_link_page_state.dart';
+part 'example_page_state.dart';
 
 @injectable
 class ExamplePageCubit extends Cubit<ExamplePage> {

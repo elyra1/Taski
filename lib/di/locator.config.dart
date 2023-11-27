@@ -23,7 +23,7 @@ import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.d
     as _i11;
 import 'package:taski/presentation/pages/send_reset_link/cubit/send_reset_link_page_cubit.dart'
     as _i5;
-import 'package:taski/presentation/pages/SendedResetLink/cubit/sended_reset_link_page_cubit.dart'
+import 'package:taski/presentation/pages/sended_reset_link/cubit/sended_reset_link_page_cubit.dart'
     as _i12;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -55,10 +55,11 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i6.TaskRepository>(),
           gh<_i8.AuthRepository>(),
         ));
-    gh.factory<_i12.SendedResetLinkCubit>(() => _i12.SendedResetLinkCubit(
-          gh<_i6.TaskRepository>(),
-          gh<_i8.AuthRepository>(),
-        ));
+    gh.factory<_i12.SendedResetLinkPageCubit>(
+        () => _i12.SendedResetLinkPageCubit(
+              gh<_i6.TaskRepository>(),
+              gh<_i8.AuthRepository>(),
+            ));
     return this;
   }
 }

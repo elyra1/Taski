@@ -8,14 +8,14 @@ import 'package:taski/domain/repositories/auth_repository.dart';
 import 'package:taski/domain/repositories/task_repository.dart';
 part 'sended_reset_link_page_cubit.freezed.dart';
 
-part 'sended_reset_link_page.dart';
+part 'sended_reset_link_page_state.dart';
 
 @injectable
-class SendedResetLinkCubit extends Cubit<SendedResetLinkState> {
+class SendedResetLinkPageCubit extends Cubit<SendedResetLinkPage> {
   final TaskRepository _taskRepository;
   final AuthRepository _authRepository;
-  SendedResetLinkCubit(this._taskRepository, this._authRepository)
-      : super(const SendedResetLinkState.initial());
+  SendedResetLinkPageCubit(this._taskRepository, this._authRepository)
+      : super(const SendedResetLinkPage.initial());
 
   ///test
   Stream<List<Task>> getTasks() async* {
