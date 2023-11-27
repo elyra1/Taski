@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart';
@@ -13,6 +10,7 @@ import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_text_field.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
+import 'package:taski/presentation/widgets/items/color_pick_item.dart';
 
 @RoutePage()
 class CreateTaskPage extends StatefulWidget implements AutoRouteWrapper {
@@ -109,6 +107,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   DateTime startTime = DateTime.now();
   DateTime endTime = DateTime.now().add(const Duration(minutes: 30));
+  List<Color> colors = [
+    AppColors.green,
+    AppColors.blue,
+    AppColors.red,
+    AppColors.orange,
+  ];
+  Color selectedColor = AppColors.green;
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +146,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               width: 345.w,
               height: 70.h,
               controller: titleController,
+              textInputAction: TextInputAction.next,
             ),
             20.h.heightBox,
             AppTextField(
@@ -198,7 +204,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 ),
               ],
             ).paddingSymmetric(horizontal: 15.w),
-            15.h.heightBox,
+            25.h.heightBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -243,108 +249,26 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               ],
             ).paddingSymmetric(horizontal: 15.w),
             20.h.heightBox,
-            // AppTextField(
-            //   title: 'Дата',
-            //   hintText: 'Выберете дату',
-            //   width: 345.w,
-            //   height: 70.h,
-            // ),
-            // 20.h.heightBox,
-            // Row(
-            //   children: [
-            //     AppTextField(
-            //       title: 'Начало',
-            //       hintText: 'Выберете время',
-            //       width: 162.w,
-            //       height: 70.h,
-            //     ),
-            //     SizedBox(
-            //       width: 21.w,
-            //     ),
-            //     AppTextField(
-            //       title: 'Конец',
-            //       hintText: 'Выберете время',
-            //       width: 162.w,
-            //       height: 70.h,
-            //     ),
-            //   ],
-            // ),
-            //20.h.heightBox,
             Divider(
               thickness: 1.h,
               color: AppColors.grey,
             ),
             20.h.heightBox,
             Text(
-              'Выберете цвет',
+              'Выберите цвет',
               style: AppTextStyles.semibold20.copyWith(fontSize: 18),
             ).paddingOnly(left: 15.w).alignAtCenterLeft(),
             5.h.heightBox,
             Row(
               children: [
-                InkWell(
-                  onTap: () => {},
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.green,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.headblue,
-                        width: 1.w,
-                      ),
-                    ),
+                for (Color color in colors) ...[
+                  ColorPickItem(
+                    color: color,
+                    onTap: () => setState(() => selectedColor = color),
+                    isSelected: color == selectedColor,
                   ),
-                ),
-                5.w.widthBox,
-                InkWell(
-                  onTap: () => {},
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.blue,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.headblue,
-                        width: 1.w,
-                      ),
-                    ),
-                  ),
-                ),
-                5.w.widthBox,
-                InkWell(
-                  onTap: () => {},
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.orange,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.headblue,
-                        width: 1.w,
-                      ),
-                    ),
-                  ),
-                ),
-                5.w.widthBox,
-                InkWell(
-                  onTap: () => {},
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.red,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.headblue,
-                        width: 1.w,
-                      ),
-                    ),
-                  ),
-                ),
+                  10.w.widthBox,
+                ]
               ],
             ).paddingOnly(left: 15.w).alignAtCenterLeft(),
             20.h.heightBox,
@@ -356,7 +280,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   title: titleController.text,
                   description: descriptionController.text,
                 );
-                log('${task.title} ${task.description}');
               },
               text: 'Сохранить',
             ).paddingOnly(right: 15.w).alignAtCenterRight(),
