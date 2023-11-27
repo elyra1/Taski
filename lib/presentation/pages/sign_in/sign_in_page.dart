@@ -8,7 +8,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taski/di/locator.dart';
-import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
 
 @RoutePage()
 class SignInPage extends StatefulWidget implements AutoRouteWrapper {
@@ -30,80 +29,100 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MainAppBar(),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            207.h.heightBox,
             SizedBox(
-              height: 207.h,
+              width: 375.w,
+              height: 56.h,
+              child: const Text(
+                'TASKI',
+                style: TextStyle(
+                  color: AppColors.headblue,
+                  fontSize: 40,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.center,
+              ).toCenter(),
             ),
+            15.w.widthBox,
+            25.h.heightBox,
+            const AppTextField(
+              hintText: '   Email',
+            ),
+            15.w.widthBox,
+            17.h.heightBox,
+            const AppTextField(
+              hintText: '   Пароль',
+            ),
+            15.w.widthBox,
+            10.h.heightBox,
             SizedBox(
-              width: 128.w,
-              height: 49.h,
-              child: const Column(
-                children: [
-                  Text(
-                    'TASKI',
-                    style: TextStyle(
-                      color: AppColors.headblue,
-                      fontSize: 40,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              width: 15.w,
-              height: 25.h,
-            ),
-            AppTextField(
-              hintText: 'Email',
-            ),
-            SizedBox(
-              width: 15.w,
-              height: 17.h,
-            ),
-            AppTextField(
-              hintText: 'Пароль',
-            ),
-            SizedBox(
-              width: 15.w,
-              height: 10.h,
-            ),
-            SizedBox(
-              width: 101.w,
-              height: 16.h,
-              child: TextButton(
-                onPressed: () {},
-                child: const Text(
+              width: 101,
+              height: 16,
+              child: InkWell(
+                onTap: () {},
+                child: Text(
                   'Забыли пароль?',
                   style: TextStyle(
                     color: Color.fromRGBO(52, 161, 176, 1),
                     fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ),
+            10.h.heightBox,
+            Container(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                width: 129.w,
+                height: 40.h,
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: AppColors.headblue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  child: Text(
+                    'Войти',
+                    style: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 10.h,
-            ),
-            SizedBox(
-              width: 129.w,
-              height: 40.h,
-              child: TextButton(
-                style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(AppColors.headblue)),
-                onPressed: () {},
-                child: const Text(
-                  'Войти',
+            11.h.heightBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Нет аккаунта? ',
                   style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, 1), fontSize: 16),
+                      color: Color.fromRGBO(0, 0, 0, 1),
+                      fontWeight: FontWeight.w500),
                 ),
-              ),
+                InkWell(
+                  onTap: () {},
+                  child: Text(
+                    'Создать',
+                    style: TextStyle(
+                        color: Color.fromRGBO(52, 161, 176, 1),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ],
             )
           ],
         ).toCenter(),
