@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/task.dart';
-import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
+import 'package:taski/presentation/pages/example_page/cubit/sended_reset_link_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';

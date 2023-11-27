@@ -1,4 +1,4 @@
-part of 'example_page_cubit.dart';
+part of 'sended_reset_link_page_cubit.dart';
 
 @freezed
 abstract class ExamplePage with _$ExamplePage {
