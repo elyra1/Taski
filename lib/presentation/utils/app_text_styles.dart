@@ -47,6 +47,13 @@ abstract class AppTextStyles {
     color: AppColors.headblue,
   );
 
+  static TextStyle regular12 = TextStyle(
+    fontFamily: _montserratString,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.grey,
+  );
+
   static TextStyle regular18 = TextStyle(
     fontFamily: _montserratString,
     fontSize: 18.sp,
