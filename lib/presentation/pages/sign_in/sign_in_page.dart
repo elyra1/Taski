@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/presentation/pages/sign_in/cubit/sign_in_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
+import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_text_field.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taski/di/locator.dart';
+import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 
 @RoutePage()
 class SignInPage extends StatefulWidget implements AutoRouteWrapper {
@@ -26,6 +28,8 @@ class SignInPage extends StatefulWidget implements AutoRouteWrapper {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,90 +40,53 @@ class _SignInPageState extends State<SignInPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             207.h.heightBox,
-            SizedBox(
-              width: 375.w,
-              height: 56.h,
-              child: const Text(
-                'TASKI',
-                style: TextStyle(
-                  color: AppColors.headblue,
-                  fontSize: 40,
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.center,
-              ).toCenter(),
-            ),
-            15.w.widthBox,
+            Text(
+              'TASKI',
+              style: AppTextStyles.bold40,
+            ).toCenter(),
             25.h.heightBox,
-            const AppTextField(
-              hintText: '   Email',
+            AppTextField(
+              hintText: 'Email',
+              controller: emailController,
+              textInputAction: TextInputAction.next,
             ),
-            15.w.widthBox,
-            17.h.heightBox,
-            const AppTextField(
-              hintText: '   Пароль',
+            20.h.heightBox,
+            AppTextField(
+              hintText: 'Пароль',
+              obscure: true,
+              controller: passwordController,
             ),
-            15.w.widthBox,
             10.h.heightBox,
-            SizedBox(
-              width: 101,
-              height: 16,
-              child: InkWell(
-                onTap: () {},
-                child: Text(
-                  'Забыли пароль?',
-                  style: TextStyle(
-                    color: Color.fromRGBO(52, 161, 176, 1),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.end,
-                ),
+            InkWell(
+              onTap: () {},
+              child: Text(
+                'Забыли пароль?',
+                style:
+                    AppTextStyles.medium12.copyWith(color: AppColors.iconblue),
               ),
             ),
             10.h.heightBox,
-            Container(
-              alignment: Alignment.topCenter,
-              child: SizedBox(
-                width: 129.w,
-                height: 40.h,
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: AppColors.headblue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  child: Text(
-                    'Войти',
-                    style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
-            ),
-            11.h.heightBox,
+            CustomButton(
+              width: 130.w,
+              height: 40.h,
+              onPressed: () {},
+              text: "Войти",
+            ).toCenter(),
+            15.h.heightBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Нет аккаунта? ',
-                  style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 1),
-                      fontWeight: FontWeight.w500),
+                  style: AppTextStyles.medium12
+                      .copyWith(color: AppColors.headblue),
                 ),
                 InkWell(
                   onTap: () {},
                   child: Text(
                     'Создать',
-                    style: TextStyle(
-                        color: Color.fromRGBO(52, 161, 176, 1),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.end,
+                    style: AppTextStyles.medium12
+                        .copyWith(color: AppColors.iconblue),
                   ),
                 ),
               ],
