@@ -11,6 +11,7 @@ class AppTextField extends StatefulWidget {
   final bool obscure;
   final TextEditingController? controller;
   final String? hintText;
+  final TextInputAction? textInputAction;
   const AppTextField({
     super.key,
     this.width,
@@ -19,6 +20,7 @@ class AppTextField extends StatefulWidget {
     this.obscure = false,
     this.controller,
     this.hintText,
+    this.textInputAction,
   });
 
   @override
@@ -36,13 +38,14 @@ class _AppTextFieldState extends State<AppTextField> {
           if (widget.title != null) ...[
             Text(
               widget.title!,
-              style: AppTextStyles.semibold20.copyWith(fontSize: 16.sp),
+              style: AppTextStyles.semibold18,
             ),
             5.h.heightBox,
           ],
           SizedBox(
             width: widget.width ?? 345.w,
             child: TextFormField(
+              textInputAction: widget.textInputAction ?? TextInputAction.done,
               maxLines: widget.obscure ? 1 : null,
               style: AppTextStyles.semibold12,
               obscureText: widget.obscure ? _obscureText : false,

@@ -77,33 +77,33 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               controller: descriptionController,
             ),
             20.h.heightBox,
-            AppTextField(
-              title: 'Дата',
-              hintText: 'Выберете дату',
-              width: 345.w,
-              height: 70.h,
-            ),
-            20.h.heightBox,
-            Row(
-              children: [
-                AppTextField(
-                  title: 'Начало',
-                  hintText: 'Выберете время',
-                  width: 162.w,
-                  height: 70.h,
-                ),
-                SizedBox(
-                  width: 21.w,
-                ),
-                AppTextField(
-                  title: 'Конец',
-                  hintText: 'Выберете время',
-                  width: 162.w,
-                  height: 70.h,
-                ),
-              ],
-            ),
-            20.h.heightBox,
+            // AppTextField(
+            //   title: 'Дата',
+            //   hintText: 'Выберете дату',
+            //   width: 345.w,
+            //   height: 70.h,
+            // ),
+            // 20.h.heightBox,
+            // Row(
+            //   children: [
+            //     AppTextField(
+            //       title: 'Начало',
+            //       hintText: 'Выберете время',
+            //       width: 162.w,
+            //       height: 70.h,
+            //     ),
+            //     SizedBox(
+            //       width: 21.w,
+            //     ),
+            //     AppTextField(
+            //       title: 'Конец',
+            //       hintText: 'Выберете время',
+            //       width: 162.w,
+            //       height: 70.h,
+            //     ),
+            //   ],
+            // ),
+            //20.h.heightBox,
             Row(
               children: [
                 Text(
