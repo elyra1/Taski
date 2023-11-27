@@ -6,7 +6,7 @@ class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
-          page: SendedResetLinkPage.page,
+          page: ExamplePage.page,
           initial: true,
         ),
       ];

@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
+import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,43 +32,44 @@ class _SendedResetLinkPageState extends State<SendedResetLinkPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1.h),
+          child: Container(
+            height: 1.h,
+            width: double.maxFinite,
+            color: AppColors.headblue,
+          ),
+        ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {},
           color: AppColors.headblue,
         ),
-        title: Text('Восстановление',
+        title: Text(
+          'Восстановление',
           style: AppTextStyles.bold18,
         ),
       ),
-      body: Center(
-        child: Container(
-          width: 375.w,
-          height: 812.h,
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0)
-              ),
-              Text(
-                'Сообщение отправлено! Проверьте свою электронную почту, мы выслали вам ссылку для сброса пароля.',
-                textAlign: TextAlign.start,
-                style: AppTextStyles.semibold12,
-              ),
-              SizedBox(height: 20),
-              CustomButton(
-                width: 160.w,
-                height: 40.h,
-                color: AppColors.headblue,
-                onPressed: () {},
-                text: 'Войти',
-              ),
-            ],
-          ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 25.h),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'Сообщение отправлено! Проверьте свою электронную почту, мы выслали вам ссылку для сброса пароля.',
+              textAlign: TextAlign.start,
+              style: AppTextStyles.semibold12,
+            ),
+            20.h.heightBox,
+            CustomButton(
+              width: 160.w,
+              height: 40.h,
+              color: AppColors.headblue,
+              onPressed: () {},
+              text: 'Войти',
+            ),
+          ],
         ),
       ),
     );
