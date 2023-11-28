@@ -12,11 +12,14 @@ class AuthDataSource implements AuthRepository {
   AuthDataSource(this._firebaseAuth, this._firebaseFirestore);
 
   @override
-  Future<void> signIn({required String email, required String password}) async {
-    await _firebaseAuth.signInWithEmailAndPassword(
+  Future<UserModel> signIn(
+      {required String email, required String password}) async {
+    final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
+    final user = getCurrentUser();
+    return user;
   }
 
   @override
@@ -51,5 +54,15 @@ class AuthDataSource implements AuthRepository {
   @override
   Future<void> resetPassword({required String email}) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  @override
+  bool get isUserAuthorizedWithEmail {
+    return _firebaseAuth.currentUser != null;
+  }
+
+  @override
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
   }
 }
