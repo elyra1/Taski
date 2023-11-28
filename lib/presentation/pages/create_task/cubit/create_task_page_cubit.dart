@@ -1,6 +1,3 @@
-// ignore: unused_import
-// ignore_for_file: unused_field
-
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';

@@ -1,10 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taski/di/locator.dart';
-import 'package:taski/presentation/pages/sended_reset_link/cubit/sended_reset_link_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
@@ -18,10 +15,7 @@ class SendedResetLinkPage extends StatefulWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<SendedResetLinkPageCubit>(
-      create: (context) => getIt<SendedResetLinkPageCubit>(),
-      child: this,
-    );
+    return this;
   }
 }
 
@@ -43,7 +37,7 @@ class _SendedResetLinkPageState extends State<SendedResetLinkPage> {
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: context.router.pop,
           color: AppColors.headblue,
         ),
         title: Text(
@@ -66,7 +60,7 @@ class _SendedResetLinkPageState extends State<SendedResetLinkPage> {
               width: 160.w,
               height: 40.h,
               color: AppColors.headblue,
-              onPressed: () {},
+              onPressed: context.router.popUntilRoot,
               text: 'Войти',
             ),
           ],

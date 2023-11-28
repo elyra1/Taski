@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
@@ -34,7 +35,19 @@ class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MainAppBar(),
+      appBar: MainAppBar(
+        child: CustomButton(
+          height: 40.h,
+          width: 200.w,
+          text: "Выйти",
+          onPressed: () async {
+            context.read<ExamplePageCubit>().signOut().then((value) {
+              context.router.popUntilRoot();
+              context.router.replace(const SignInPage());
+            });
+          },
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),

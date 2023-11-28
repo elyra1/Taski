@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/sign_in/cubit/sign_in_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
+import 'package:taski/presentation/utils/validation.dart';
 import 'package:taski/presentation/widgets/app_text_field.dart';
 
 import 'package:auto_route/auto_route.dart';
@@ -32,6 +34,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<SignInPageCubit>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -58,7 +61,7 @@ class _SignInPageState extends State<SignInPage> {
             ),
             10.h.heightBox,
             InkWell(
-              onTap: () {},
+              onTap: () => context.router.push(const SendResetLinkPage()),
               child: Text(
                 'Забыли пароль?',
                 style:
@@ -69,7 +72,37 @@ class _SignInPageState extends State<SignInPage> {
             CustomButton(
               width: 130.w,
               height: 40.h,
-              onPressed: () {},
+              onPressed: () async {
+                // to do validation
+                FocusScope.of(context).unfocus();
+                List<String> errors = [];
+                if (Validation.validateEmail(emailController.text) != null) {
+                  errors.add(Validation.validateEmail(emailController.text)!);
+                }
+                if (Validation.validatePassword(passwordController.text) !=
+                    null) {
+                  errors.add(
+                      Validation.validatePassword(passwordController.text)!);
+                }
+                if (errors.isEmpty) {
+                  final isLogined = await cubit.signIn(
+                    email: emailController.text,
+                    password: passwordController.text,
+                  );
+                  if (isLogined == null && context.mounted) {
+                    context.router.push(const ExamplePage());
+                  }
+                  if (isLogined != null) {
+                    errors.add(isLogined);
+                  }
+                }
+                if (errors.isNotEmpty && context.mounted) {
+                  Validation.showAppSnackBar(
+                    context: context,
+                    text: errors.first,
+                  );
+                }
+              },
               text: "Войти",
             ).toCenter(),
             15.h.heightBox,
@@ -82,7 +115,7 @@ class _SignInPageState extends State<SignInPage> {
                       .copyWith(color: AppColors.headblue),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () => context.router.push(const SignUpPage()),
                   child: Text(
                     'Создать',
                     style: AppTextStyles.medium12
