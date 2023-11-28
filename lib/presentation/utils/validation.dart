@@ -10,11 +10,11 @@ abstract class Validation {
     RegExp regex = RegExp(pattern);
 
     if (email.isEmpty) {
-      return 'Email не может быть пустым';
+      return 'Email не может быть пустым.';
     }
 
     if (!regex.hasMatch(email)) {
-      return 'Некорректный email';
+      return 'Некорректный email.';
     }
 
     return null;
@@ -25,11 +25,11 @@ abstract class Validation {
     RegExp regex = RegExp(pattern);
 
     if (password.isEmpty) {
-      return "Пароль не может быть пустым";
+      return "Пароль не может быть пустым.";
     }
 
     if (!regex.hasMatch(password)) {
-      return 'Пароль содержит как минимум 8 символов, 1 заглавный символ и 1 цифру';
+      return 'Пароль содержит как минимум 8 символов, 1 заглавный символ и 1 цифру.';
     }
 
     return null;
@@ -37,11 +37,11 @@ abstract class Validation {
 
   static String? validateUsername(String username) {
     if (username.length < 5) {
-      return 'Имя пользователя должно быть длиннее 5 символов';
+      return 'Имя пользователя должно быть длиннее 5 символов.';
     }
 
     if (username.contains(RegExp(r'[^a-z0-9]'))) {
-      return 'Имя пользователя должно содержать только буквы и цифры';
+      return 'Имя пользователя должно содержать только буквы и цифры.';
     }
 
     return null;
@@ -57,7 +57,7 @@ abstract class Validation {
           duration: const Duration(seconds: 3),
           content: Text(
             text,
-            style: AppTextStyles.medium12.copyWith(color: AppColors.headblue),
+            style: AppTextStyles.semibold12.copyWith(color: AppColors.headblue),
           ),
           backgroundColor: AppColors.pastelgreen,
         ),

@@ -17,7 +17,7 @@ class ExamplePageCubit extends Cubit<ExamplePage> {
 
   ///test
   Stream<List<Task>> getTasks() async* {
-    final snapStream = _taskRepository.getUserTasks();
+    final snapStream = _taskRepository.getUserTasks(userId: "4234234");
     final taskStream = snapStream.map((event) => event.docs
         .map((e) => Task.fromJson(e.data()! as Map<String, dynamic>))
         .toList());

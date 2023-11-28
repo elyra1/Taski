@@ -7,6 +7,19 @@ class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
+          initial: true,
+          page: HomePage.page,
+          guards: [AuthGuard()],
+          children: [
+            AutoRoute(
+              page: TasksSingleDayPage.page,
+            ),
+            AutoRoute(
+              page: ExamplePage.page,
+            ),
+          ],
+        ),
+        AutoRoute(
           page: SignInPage.page,
         ),
         AutoRoute(
@@ -21,10 +34,5 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: CreateTaskPage.page,
         ),
-        AutoRoute(
-          page: ExamplePage.page,
-          initial: true,
-          guards: [AuthGuard()],
-        )
       ];
 }

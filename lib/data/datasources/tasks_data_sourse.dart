@@ -20,12 +20,10 @@ class TaskDataSource implements TaskRepository {
   }
 
   @override
-
-  ///test
-  Stream<QuerySnapshot> getUserTasks() async* {
+  Stream<QuerySnapshot> getUserTasks({required String userId}) async* {
     final stream = _firebaseFirestore
         .collection(FirebaseCollections.tasks)
-        .orderBy('startTime')
+        .where('authorId', isEqualTo: userId)
         .snapshots();
     yield* stream;
   }
@@ -39,9 +37,11 @@ class TaskDataSource implements TaskRepository {
   }
 
   @override
-  Future<void> editTask({required String taskId}) {
-    // TODO: implement editTask
-    throw UnimplementedError();
+  Future<void> editTask({required Task task}) async {
+    await _firebaseFirestore
+        .collection(FirebaseCollections.tasks)
+        .doc(task.id)
+        .set(task.toJson());
   }
 
   @override

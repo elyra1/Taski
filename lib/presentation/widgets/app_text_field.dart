@@ -45,11 +45,11 @@ class _AppTextFieldState extends State<AppTextField> {
           SizedBox(
             width: widget.width ?? 345.w,
             child: TextFormField(
+              controller: widget.controller,
               textInputAction: widget.textInputAction ?? TextInputAction.done,
               maxLines: widget.obscure ? 1 : null,
               style: AppTextStyles.semibold12,
               obscureText: widget.obscure ? _obscureText : false,
-              controller: widget.controller,
               decoration: InputDecoration(
                 suffixIcon: widget.obscure
                     ? IconButton(
