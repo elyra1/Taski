@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:taski/presentation/navigation/auth_guard.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
@@ -8,6 +9,22 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           initial: true,
           page: TasksSingleDayPage.page,
+          guards: [AuthGuard()],
+        ),
+        AutoRoute(
+          page: SignInPage.page,
+        ),
+        AutoRoute(
+          page: SignUpPage.page,
+        ),
+        AutoRoute(
+          page: SendResetLinkPage.page,
+        ),
+        AutoRoute(
+          page: SendedResetLinkPage.page,
+        ),
+        AutoRoute(
+          page: CreateTaskPage.page,
         ),
       ];
 }
