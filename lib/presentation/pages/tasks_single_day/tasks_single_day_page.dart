@@ -9,7 +9,7 @@ import 'package:taski/presentation/pages/tasks_single_day/cubit/tasks_single_day
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
 import 'package:taski/presentation/widgets/buttons/circle_add_button.dart';
-import 'package:taski/presentation/widgets/task_grids/single_day_task_grid.dart';
+import 'package:taski/presentation/widgets/task_grids/single_day/single_day_task_grid.dart';
 
 @RoutePage()
 class TasksSingleDayPage extends StatefulWidget implements AutoRouteWrapper {

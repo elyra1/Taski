@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
-import 'package:taski/presentation/widgets/task_grids/single_day_task_grid.dart';
 
 @RoutePage()
 class ExamplePage extends StatefulWidget implements AutoRouteWrapper {
