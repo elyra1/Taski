@@ -10,7 +10,6 @@ import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_date_utils.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
-import 'package:taski/presentation/widgets/buttons/circle_add_button.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 import 'package:taski/presentation/widgets/task_grids/single_day/single_day_task_grid.dart';
 
@@ -74,9 +73,6 @@ class _TasksSingleDayPageState extends State<TasksSingleDayPage> {
         ),
       ),
       resizeToAvoidBottomInset: false,
-      floatingActionButton: CircleAddButton(
-        onTap: () => context.router.push(const CreateTaskPage()),
-      ),
       body: StreamBuilder(
         stream: cubit.getTasks(dayOfTasks: selectedDate),
         builder: (context, snapshot) {

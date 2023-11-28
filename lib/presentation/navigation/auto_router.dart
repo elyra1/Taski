@@ -8,8 +8,16 @@ class AppRouter extends $AppRouter {
   List<AutoRoute> get routes => [
         AutoRoute(
           initial: true,
-          page: TasksSingleDayPage.page,
+          page: HomePage.page,
           guards: [AuthGuard()],
+          children: [
+            AutoRoute(
+              page: TasksSingleDayPage.page,
+            ),
+            AutoRoute(
+              page: ExamplePage.page,
+            ),
+          ],
         ),
         AutoRoute(
           page: SignInPage.page,

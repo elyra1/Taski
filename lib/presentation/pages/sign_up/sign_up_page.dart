@@ -85,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             25.h.heightBox,
             CustomButton(
-              width: 175.w,
+              width: 200.w,
               height: 40.h,
               onPressed: () async {
                 FocusScope.of(context).unfocus();
