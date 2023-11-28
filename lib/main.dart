@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/firebase_options.dart';
 import 'package:taski/presentation/navigation/auto_router.dart';
+import 'package:taski/presentation/utils/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +41,12 @@ class _TaskiAppState extends State<TaskiApp> {
             leadingDistribution: TextLeadingDistribution.even,
           ),
           child: MaterialApp.router(
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSwatch().copyWith(
+                primary: AppColors.headblue,
+                secondary: AppColors.pastelblue,
+              ),
+            ),
             title: "Taski",
             debugShowCheckedModeBanner: false,
             routerConfig: _appRouter.config(),

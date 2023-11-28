@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
-import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
@@ -41,6 +40,7 @@ class _ExamplePageState extends State<ExamplePage> {
             });
           },
         ),
+        onTap: () {},
       ),
       resizeToAvoidBottomInset: false,
       body: SizedBox(),

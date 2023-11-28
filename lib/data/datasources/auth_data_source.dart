@@ -14,7 +14,7 @@ class AuthDataSource implements AuthRepository {
   @override
   Future<UserModel> signIn(
       {required String email, required String password}) async {
-    final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+    await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );

@@ -90,7 +90,7 @@ class _SignInPageState extends State<SignInPage> {
                     password: passwordController.text,
                   );
                   if (isLogined == null && context.mounted) {
-                    context.router.push(const ExamplePage());
+                    context.router.push(const TasksSingleDayPage());
                   }
                   if (isLogined != null) {
                     errors.add(isLogined);

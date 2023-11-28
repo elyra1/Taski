@@ -50,7 +50,6 @@ class _TaskCardState extends State<TaskCard> {
         borderRadius: BorderRadius.circular(5.r),
         child: InkWell(
           onTap: widget.onTap,
-          splashColor: AppColors.headblue,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,

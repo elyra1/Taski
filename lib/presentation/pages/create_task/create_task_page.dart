@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +8,9 @@ import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
+import 'package:taski/presentation/utils/app_date_utils.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
+import 'package:taski/presentation/utils/validation.dart';
 import 'package:taski/presentation/widgets/app_text_field.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 import 'package:taski/presentation/widgets/items/color_pick_item.dart';
@@ -31,79 +34,6 @@ class CreateTaskPage extends StatefulWidget implements AutoRouteWrapper {
 class _CreateTaskPageState extends State<CreateTaskPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-
-  String formatDate(DateTime date) {
-    String dayOfWeek = '';
-    switch (date.weekday) {
-      case 1:
-        dayOfWeek = 'Понедельник';
-        break;
-      case 2:
-        dayOfWeek = 'Вторник';
-        break;
-      case 3:
-        dayOfWeek = 'Среда';
-        break;
-      case 4:
-        dayOfWeek = 'Четверг';
-        break;
-      case 5:
-        dayOfWeek = 'Пятница';
-        break;
-      case 6:
-        dayOfWeek = 'Суббота';
-        break;
-      case 7:
-        dayOfWeek = 'Воскресенье';
-        break;
-    }
-
-    String month = '';
-    switch (date.month) {
-      case 1:
-        month = 'января';
-        break;
-      case 2:
-        month = 'февраля';
-        break;
-      case 3:
-        month = 'марта';
-        break;
-      case 4:
-        month = 'апреля';
-        break;
-      case 5:
-        month = 'мая';
-        break;
-      case 6:
-        month = 'июня';
-        break;
-      case 7:
-        month = 'июля';
-        break;
-      case 8:
-        month = 'августа';
-        break;
-      case 9:
-        month = 'сентября';
-        break;
-      case 10:
-        month = 'октября';
-        break;
-      case 11:
-        month = 'ноября';
-        break;
-      case 12:
-        month = 'декабря';
-        break;
-    }
-
-    return '$dayOfWeek, ${date.day} $month ${date.year} г.';
-  }
-
-  String toHHMM(DateTime dateTime) {
-    return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-  }
 
   DateTime startTime = DateTime.now();
   DateTime endTime = DateTime.now().add(const Duration(minutes: 30));
@@ -179,7 +109,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     );
                   },
                   child: Text(
-                    formatDate(startTime),
+                    AppDateUtils.formatDate(startTime),
                     style: AppTextStyles.semibold14,
                   ),
                 ),
@@ -198,7 +128,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     );
                   },
                   child: Text(
-                    toHHMM(startTime),
+                    AppDateUtils.toHHMM(startTime),
                     style: AppTextStyles.semibold14,
                   ),
                 ),
@@ -223,7 +153,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     );
                   },
                   child: Text(
-                    formatDate(endTime),
+                    AppDateUtils.formatDate(endTime),
                     style: AppTextStyles.semibold14,
                   ),
                 ),
@@ -242,7 +172,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     );
                   },
                   child: Text(
-                    toHHMM(endTime),
+                    AppDateUtils.toHHMM(endTime),
                     style: AppTextStyles.semibold14,
                   ),
                 ),
@@ -275,11 +205,42 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             CustomButton(
               width: 129.w,
               height: 40.h,
-              onPressed: () {
-                final task = Task.getEmpty().copyWith(
+              onPressed: () async {
+                bool titleIsEmpty = titleController.text == '';
+                bool startIsAfterEnd = startTime.isAfter(endTime);
+                final task = Task(
                   title: titleController.text,
-                  description: descriptionController.text,
+                  id: '',
+                  authorId: '',
+                  startTime: Timestamp.fromDate(startTime),
+                  endTime: Timestamp.fromDate(endTime),
+                  color: selectedColor.value,
                 );
+                if (titleIsEmpty) {
+                  Validation.showAppSnackBar(
+                    text: 'Название не может быть пустым.',
+                    context: context,
+                  );
+                } else if (startIsAfterEnd) {
+                  Validation.showAppSnackBar(
+                    text:
+                        'Время старта не может быть позже времени окончания задачи.',
+                    context: context,
+                  );
+                } else {
+                  final textError =
+                      await context.read<CreateTaskCubit>().addTask(task);
+                  if (textError != null && context.mounted) {
+                    Validation.showAppSnackBar(
+                      text: textError,
+                      context: context,
+                    );
+                  } else {
+                    if (context.mounted) {
+                      context.router.pop();
+                    }
+                  }
+                }
               },
               text: 'Сохранить',
             ).paddingOnly(right: 15.w).alignAtCenterRight(),

@@ -10,12 +10,16 @@ import 'package:taski/presentation/widgets/task_grids/single_day/single_day_task
 
 class SingleDayTaskGrid extends StatefulWidget {
   final List<Task> tasks;
+  final void Function(DateTime date) onDateChanged;
+  final DateTime selectedDate;
   final void Function(Task task) onTaskShifted;
 
   const SingleDayTaskGrid({
     Key? key,
     required this.tasks,
     required this.onTaskShifted,
+    required this.onDateChanged,
+    required this.selectedDate,
   }) : super(key: key);
 
   @override
