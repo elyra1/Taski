@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
-import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/pages/tasks_single_day/cubit/tasks_single_day_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
@@ -39,22 +37,12 @@ class _TasksSingleDayPageState extends State<TasksSingleDayPage> {
         setState(() {
           isLoading = true;
         });
-        await cubit.addTask(
-          Task.getEmpty().copyWith(
-            startTime: Timestamp.fromDate(
-              DateTime(2023, 11, 26, 20),
-            ),
-            endTime: Timestamp.fromDate(
-              DateTime(2023, 11, 26, 23),
-            ),
-          ),
-        );
         setState(() {
           isLoading = false;
         });
       }),
       body: StreamBuilder(
-        stream: cubit.getTasks(userId: "4234234"),
+        stream: cubit.getTasks(),
         builder: (context, snapshot) {
           final tasks = snapshot.data;
           return Stack(

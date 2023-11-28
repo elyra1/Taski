@@ -6,8 +6,8 @@ class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
-          page: TasksSingleDayPage.page,
           initial: true,
+          page: TasksSingleDayPage.page,
         ),
       ];
 }
