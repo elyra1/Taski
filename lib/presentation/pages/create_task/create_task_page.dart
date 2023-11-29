@@ -104,7 +104,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       lastDate: endTime,
                     ).then(
                       (value) => setState(() => startTime = value?.copyWith(
-                              hour: startTime.hour, minute: startTime.minute) ??
+                            hour: startTime.hour,
+                            minute: startTime.minute,
+                          ) ??
                           startTime),
                     );
                   },

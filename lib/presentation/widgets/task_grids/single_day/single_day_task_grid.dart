@@ -112,23 +112,23 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                           }
                         }
                       : null,
-                  onVerticalDragEnd: (details) {
-                    setState(
-                      () {
-                        if (startMove[i]) {
-                          final newTask = widget.tasks[i].copyWith(
-                            startTime: SingleDayTaskGridHelper.countPeriod(
-                                    widget.tasks[i], positions[i])
-                                .$1,
-                            endTime: SingleDayTaskGridHelper.countPeriod(
-                                    widget.tasks[i], positions[i])
-                                .$2,
+                  onVerticalDragEnd: startMove[i]
+                      ? (details) {
+                          setState(
+                            () {
+                              final newTask = widget.tasks[i].copyWith(
+                                startTime: SingleDayTaskGridHelper.countPeriod(
+                                        widget.tasks[i], positions[i])
+                                    .$1,
+                                endTime: SingleDayTaskGridHelper.countPeriod(
+                                        widget.tasks[i], positions[i])
+                                    .$2,
+                              );
+                              widget.onTaskShifted(newTask);
+                            },
                           );
-                          widget.onTaskShifted(newTask);
                         }
-                      },
-                    );
-                  },
+                      : null,
                   child: TaskCard(
                     isShifting: startMove[i],
                     task: widget.tasks[i],
@@ -145,24 +145,13 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
             Positioned(
               left: 12.w,
               top: positions[startMove.indexOf(true)] - 7.h,
-              child: Row(
-                children: [
-                  Text(
-                    SingleDayTaskGridHelper.getTimeHHMM(
-                      widget.tasks[startMove.indexOf(true)],
-                      positions[startMove.indexOf(true)],
-                    ).$1,
-                    style: AppTextStyles.medium12.copyWith(
-                        color:
-                            Color(widget.tasks[startMove.indexOf(true)].color)),
-                  ),
-                  5.w.widthBox,
-                  Container(
-                    height: 1.h,
-                    width: 335.w,
-                    color: Color(widget.tasks[startMove.indexOf(true)].color),
-                  ),
-                ],
+              child: Text(
+                SingleDayTaskGridHelper.getTimeHHMM(
+                  widget.tasks[startMove.indexOf(true)],
+                  positions[startMove.indexOf(true)],
+                ).$1,
+                style: AppTextStyles.medium12.copyWith(
+                    color: Color(widget.tasks[startMove.indexOf(true)].color)),
               ),
             ),
             Positioned(
@@ -172,24 +161,13 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                     widget.tasks[startMove.indexOf(true)],
                   ).$2 -
                   7.h,
-              child: Row(
-                children: [
-                  Text(
-                    SingleDayTaskGridHelper.getTimeHHMM(
-                      widget.tasks[startMove.indexOf(true)],
-                      positions[startMove.indexOf(true)],
-                    ).$2,
-                    style: AppTextStyles.medium12.copyWith(
-                        color:
-                            Color(widget.tasks[startMove.indexOf(true)].color)),
-                  ),
-                  5.w.widthBox,
-                  Container(
-                    height: 2.h,
-                    width: 335.w,
-                    color: Color(widget.tasks[startMove.indexOf(true)].color),
-                  ),
-                ],
+              child: Text(
+                SingleDayTaskGridHelper.getTimeHHMM(
+                  widget.tasks[startMove.indexOf(true)],
+                  positions[startMove.indexOf(true)],
+                ).$2,
+                style: AppTextStyles.medium12.copyWith(
+                    color: Color(widget.tasks[startMove.indexOf(true)].color)),
               ),
             ),
           ],

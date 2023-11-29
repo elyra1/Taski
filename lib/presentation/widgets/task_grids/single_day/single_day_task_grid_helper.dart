@@ -48,8 +48,8 @@ abstract class SingleDayTaskGridHelper {
     final endTime =
         SingleDayTaskGridHelper.countPeriod(task, position).$2.toDate();
     return (
-      "${startTime.hour}:${startTime.minute.toString().padRight(2, '0')}",
-      "${endTime.hour}:${endTime.minute.toString().padRight(2, '0')}"
+      "${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')}",
+      "${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')}"
     );
   }
 }
