@@ -7,7 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:taski/data/datasources/firebase_notifications_service.dart';
 import 'package:taski/di/locator.dart';
-import 'package:taski/domain/entities/task.dart';
+import 'package:taski/domain/repositories/auth_repository.dart';
+import 'package:taski/domain/repositories/task_repository.dart';
 import 'package:taski/firebase_options.dart';
 import 'package:taski/presentation/navigation/auto_router.dart';
 
@@ -87,7 +88,28 @@ Future<void> initBackgroundNotificationService(ServiceInstance service) async {
   final fns = getIt<FirebaseNotificationService>();
   await fns.initialize();
 
-  Timer.periodic(const Duration(seconds: 20), (timer) async {
-    fns.send(Task.getEmpty());
+  getIt<TaskRepository>()
+      .getUserTasks(userId: (await getIt<AuthRepository>().getCurrentUser()).id)
+      .listen((event) {
+    checkTasksAndSendNotifications(fns);
   });
+
+  Timer.periodic(const Duration(minutes: 1), (_) {
+    checkTasksAndSendNotifications(fns);
+  });
+}
+
+Future<void> checkTasksAndSendNotifications(
+    FirebaseNotificationService fns) async {
+  final allTasks = await getIt<TaskRepository>().getAllTodayUserTasks();
+  for (var task in allTasks) {
+    final diffInSeconds =
+        task.startTime.toDate().difference(DateTime.now()).inSeconds;
+    if (diffInSeconds < 900 &&
+        diffInSeconds >= 0 &&
+        !task.isNotificationSended) {
+      await getIt<TaskRepository>().changeIsNotificationSended(task: task);
+      fns.send(task);
+    }
+  }
 }

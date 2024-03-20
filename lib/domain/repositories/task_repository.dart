@@ -23,4 +23,8 @@ abstract class TaskRepository {
 
   ///Возвращает список задач из категории
   Future<List<Task>> getTasksByCategory({String? categoryId});
+
+  Future<List<Task>> getAllTodayUserTasks({String? userId});
+
+  Future<void> changeIsNotificationSended({required Task task});
 }

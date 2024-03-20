@@ -16,6 +16,7 @@ _$TaskEntityImpl _$$TaskEntityImplFromJson(Map<String, dynamic> json) =>
       endTime: const TimestampConverter().fromJson(json['endTime']),
       color: json['color'] as int,
       category: json['category'] as String? ?? '',
+      isNotificationSended: json['isNotificationSended'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$TaskEntityImplToJson(_$TaskEntityImpl instance) =>
@@ -28,4 +29,5 @@ Map<String, dynamic> _$$TaskEntityImplToJson(_$TaskEntityImpl instance) =>
       'endTime': const TimestampConverter().toJson(instance.endTime),
       'color': instance.color,
       'category': instance.category,
+      'isNotificationSended': instance.isNotificationSended,
     };

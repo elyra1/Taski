@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/presentation/utils/app_date_utils.dart';
 
 @injectable
 class FirebaseNotificationService {
@@ -58,7 +59,8 @@ class FirebaseNotificationService {
   Future<void> send(Task task) async {
     final data = {
       "notification": {
-        "body": "Через 30 минут запланирована задача: ${task.title}",
+        "body":
+            "В ${AppDateUtils.toHHMM(task.startTime.toDate())} запланирована задача: ${task.title}",
         "title": "Taski",
       },
       "priority": "high",

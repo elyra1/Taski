@@ -1,3 +1,4 @@
+import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taski/data/firebase_collections.dart';
@@ -68,4 +69,20 @@ class TaskDataSource implements TaskRepository {
     // TODO: implement getTasksForWeek
     throw UnimplementedError();
   }
+
+  @override
+  Future<List<Task>> getAllTodayUserTasks({String? userId}) async {
+    final snap = await _firebaseFirestore
+        .collection(FirebaseCollections.tasks)
+        .where('authorId', isEqualTo: userId)
+        .get();
+    return snap.docs
+        .map((e) => Task.fromJson(e.data()))
+        .where((element) => element.startTime.toDate().isToday)
+        .toList();
+  }
+
+  @override
+  Future<void> changeIsNotificationSended({required Task task}) async =>
+      await editTask(task: task.copyWith(isNotificationSended: true));
 }

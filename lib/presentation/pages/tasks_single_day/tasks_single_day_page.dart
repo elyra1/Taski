@@ -3,9 +3,7 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taski/data/datasources/firebase_notifications_service.dart';
 import 'package:taski/di/locator.dart';
-import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/tasks_single_day/cubit/tasks_single_day_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
@@ -39,31 +37,21 @@ class _TasksSingleDayPageState extends State<TasksSingleDayPage> {
     final cubit = context.read<TasksSingleDayPageCubit>();
     return Scaffold(
       appBar: MainAppBar(
-        child: Column(
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  getIt<FirebaseNotificationService>().send(Task.getEmpty());
-                },
-                child: Text('123')),
-            GestureDetector(
-              onTap: () {
-                showDatePicker(
-                  context: context,
-                  initialDate: selectedDate,
-                  firstDate: DateTime.now(),
-                  lastDate:
-                      DateTime.now().copyWith(year: DateTime.now().year + 1),
-                ).then((value) {
-                  setState(() => selectedDate = value ?? selectedDate);
-                });
-              },
-              child: Text(
-                AppDateUtils.formatDate(selectedDate),
-                style: AppTextStyles.semibold14,
-              ),
-            ),
-          ],
+        child: GestureDetector(
+          onTap: () {
+            showDatePicker(
+              context: context,
+              initialDate: selectedDate,
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().copyWith(year: DateTime.now().year + 1),
+            ).then((value) {
+              setState(() => selectedDate = value ?? selectedDate);
+            });
+          },
+          child: Text(
+            AppDateUtils.formatDate(selectedDate),
+            style: AppTextStyles.semibold14,
+          ),
         ),
         onTap: () => showDialog(
           context: context,
