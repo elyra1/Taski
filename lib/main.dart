@@ -80,6 +80,7 @@ Future<void> initializeService() async {
   );
 }
 
+@pragma('vm:entry-point')
 Future<void> initBackgroundNotificationService(ServiceInstance service) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
