@@ -74,6 +74,7 @@ Future<void> initializeService() async {
     androidConfiguration: AndroidConfiguration(
       onStart: initBackgroundNotificationService,
       autoStart: true,
+      autoStartOnBoot: true,
       isForegroundMode: false,
     ),
     iosConfiguration: IosConfiguration(),
