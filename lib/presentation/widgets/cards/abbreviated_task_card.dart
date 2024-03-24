@@ -3,28 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:taski/domain/entities/task_entity.dart';
-import 'package:taski/presentation/utils/app_colors.dart';
+import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/utils/app_icons.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 
-class TaskCard extends StatefulWidget {
+class AbbreviatedTaskCard extends StatelessWidget {
   final double? width;
   final double? height;
-  final TaskEntity task;
+  final Task task;
 
-  const TaskCard({
+  AbbreviatedTaskCard({
     super.key,
     this.width,
     this.height,
     required this.task,
   });
-
-  @override
-  State<TaskCard> createState() => AbbreviatedTaskCard();
-}
-
-class AbbreviatedTaskCard extends State<TaskCard> {
   final DateFormat format = DateFormat.Hm();
 
   @override
@@ -32,17 +25,23 @@ class AbbreviatedTaskCard extends State<TaskCard> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 18.0),
       decoration: BoxDecoration(
-        color: Color(widget.task.color),
+        color: Color(task.color),
         borderRadius: BorderRadius.circular(5.r),
       ),
-      width: widget.width,
-      height: widget.height,
+      width: width,
+      height: height,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-            SizedBox(width:150.w, child:Text(widget.task.title, style: AppTextStyles.bold16, overflow: TextOverflow.ellipsis,)),
-              Row(
-                children: [
+          SizedBox(
+              width: 150.w,
+              child: Text(
+                task.title,
+                style: AppTextStyles.bold16,
+                overflow: TextOverflow.ellipsis,
+              )),
+          Row(
+            children: [
               SvgPicture.asset(
                 AppIcons.calendarIconNew,
                 width: 15.w,
@@ -50,12 +49,11 @@ class AbbreviatedTaskCard extends State<TaskCard> {
               ),
               7.w.widthBox,
               Text(
-                  "${format.format(widget.task.startTime.toDate())} - ${format.format(widget.task.endTime.toDate())}",
-                  style: AppTextStyles.semibold14
-              ),
-            ]
-            ),
-        ]
+                  "${format.format(task.startTime.toDate())} - ${format.format(task.endTime.toDate())}",
+                  style: AppTextStyles.semibold14),
+            ],
+          ),
+        ],
       ),
     );
   }
