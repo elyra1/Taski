@@ -9,6 +9,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i9;
+import 'package:flutter/material.dart' as _i10;
+import 'package:taski/domain/entities/task.dart' as _i11;
 import 'package:taski/presentation/pages/create_task/create_task_page.dart'
     as _i1;
 import 'package:taski/presentation/pages/example_page/example_page.dart' as _i2;
@@ -28,9 +30,15 @@ abstract class $AppRouter extends _i9.RootStackRouter {
   @override
   final Map<String, _i9.PageFactory> pagesMap = {
     CreateTaskPage.name: (routeData) {
+      final args = routeData.argsAs<CreateTaskPageArgs>(
+          orElse: () => const CreateTaskPageArgs());
       return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i9.WrappedRoute(child: const _i1.CreateTaskPage()),
+        child: _i9.WrappedRoute(
+            child: _i1.CreateTaskPage(
+          key: args.key,
+          task: args.task,
+        )),
       );
     },
     ExamplePage.name: (routeData) {
@@ -80,16 +88,40 @@ abstract class $AppRouter extends _i9.RootStackRouter {
 
 /// generated route for
 /// [_i1.CreateTaskPage]
-class CreateTaskPage extends _i9.PageRouteInfo<void> {
-  const CreateTaskPage({List<_i9.PageRouteInfo>? children})
-      : super(
+class CreateTaskPage extends _i9.PageRouteInfo<CreateTaskPageArgs> {
+  CreateTaskPage({
+    _i10.Key? key,
+    _i11.Task? task,
+    List<_i9.PageRouteInfo>? children,
+  }) : super(
           CreateTaskPage.name,
+          args: CreateTaskPageArgs(
+            key: key,
+            task: task,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'CreateTaskPage';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i9.PageInfo<CreateTaskPageArgs> page =
+      _i9.PageInfo<CreateTaskPageArgs>(name);
+}
+
+class CreateTaskPageArgs {
+  const CreateTaskPageArgs({
+    this.key,
+    this.task,
+  });
+
+  final _i10.Key? key;
+
+  final _i11.Task? task;
+
+  @override
+  String toString() {
+    return 'CreateTaskPageArgs{key: $key, task: $task}';
+  }
 }
 
 /// generated route for

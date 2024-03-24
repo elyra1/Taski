@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           body: child,
           floatingActionButton: CircleAddButton(
-            onTap: () => context.router.push(const CreateTaskPage()),
+            onTap: () => context.router.push(CreateTaskPage()),
           ),
           bottomNavigationBar: AppBottomNavigationBar(
             currentIndex: tabsRouter.activeIndex,

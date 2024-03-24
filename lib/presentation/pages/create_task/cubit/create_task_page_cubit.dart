@@ -25,4 +25,13 @@ class CreateTaskCubit extends Cubit<CreateTask> {
       return e.message;
     }
   }
+
+  Future<String?> editTask(Task task) async {
+    try {
+      await _taskRepository.editTask(task: task);
+      return null;
+    } on FirebaseException catch (e, _) {
+      return e.message;
+    }
+  }
 }

@@ -17,7 +17,8 @@ import 'package:taski/presentation/widgets/items/color_pick_item.dart';
 
 @RoutePage()
 class CreateTaskPage extends StatefulWidget implements AutoRouteWrapper {
-  const CreateTaskPage({Key? key}) : super(key: key);
+  final Task? task;
+  const CreateTaskPage({Key? key, this.task}) : super(key: key);
 
   @override
   State<CreateTaskPage> createState() => _CreateTaskPageState();
@@ -32,18 +33,31 @@ class CreateTaskPage extends StatefulWidget implements AutoRouteWrapper {
 }
 
 class _CreateTaskPageState extends State<CreateTaskPage> {
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
 
-  DateTime startTime = DateTime.now();
-  DateTime endTime = DateTime.now().add(const Duration(minutes: 30));
+  late DateTime startTime;
+  late DateTime endTime;
   List<Color> colors = [
     AppColors.green,
     AppColors.blue,
     AppColors.red,
     AppColors.orange,
   ];
-  Color selectedColor = AppColors.green;
+  late Color selectedColor;
+  @override
+  void initState() {
+    titleController = TextEditingController(text: widget.task?.title);
+    descriptionController =
+        TextEditingController(text: widget.task?.description);
+    startTime = widget.task?.startTime.toDate() ?? DateTime.now();
+    endTime = widget.task?.endTime.toDate() ??
+        DateTime.now().add(const Duration(minutes: 30));
+    selectedColor = widget.task?.color == null
+        ? AppColors.green
+        : Color(widget.task!.color);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +76,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         leading: const BackButton(
           color: AppColors.headblue,
         ),
-        title: Text('Создать задачу', style: AppTextStyles.bold20),
+        title: Text(
+          widget.task != null ? "Редактирование задачи" : 'Создание задачи',
+          style: AppTextStyles.bold20,
+        ),
       ),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -217,6 +234,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   startTime: Timestamp.fromDate(startTime),
                   endTime: Timestamp.fromDate(endTime),
                   color: selectedColor.value,
+                  description: descriptionController.text,
                 );
                 if (titleIsEmpty) {
                   Validation.showAppSnackBar(
@@ -230,8 +248,17 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     context: context,
                   );
                 } else {
-                  final textError =
-                      await context.read<CreateTaskCubit>().addTask(task);
+                  final textError = widget.task != null
+                      ? await context.read<CreateTaskCubit>().editTask(
+                            widget.task!.copyWith(
+                              startTime: Timestamp.fromDate(startTime),
+                              endTime: Timestamp.fromDate(endTime),
+                              title: titleController.text,
+                              description: descriptionController.text,
+                              color: selectedColor.value,
+                            ),
+                          )
+                      : await context.read<CreateTaskCubit>().addTask(task);
                   if (textError != null && context.mounted) {
                     Validation.showAppSnackBar(
                       text: textError,
