@@ -1,53 +1,15 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart';
-import 'package:taski/presentation/widgets/app_text_field.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:taski/presentation/utils/app_text_styles.dart';
-import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
-import 'package:taski/presentation/widgets/buttons/circle_add_button.dart';
-import 'package:taski/presentation/widgets/buttons/custom_button.dart';
-import 'package:taski/domain/entities/task_entity.dart';
-import 'package:taski/presentation/widgets/cards/abbreviated_task_card.dart';
 
 @RoutePage()
-class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
+class ExamplePage extends StatefulWidget implements AutoRouteWrapper {
   const ExamplePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MainAppBar(child: Text('123text', style: AppTextStyles.bold24,),),
-      floatingActionButton: CircleAddButton(onTap: (){},),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TaskCard(
-              width: 345.w,
-              height: 50.h,
-              task: TaskEntity.getEmpty()
-          ),
-          Text("Вы нажали на", style: AppTextStyles.bold18),
-          Text("Вы нажали на", style: AppTextStyles.bold20),
-          Text("Вы нажали на", style: AppTextStyles.bold24),
-          Text("Вы нажали на", style: AppTextStyles.regular18),
-          Text("Вы нажали на", style: AppTextStyles.regular20),
-          Text("Вы нажали на", style: AppTextStyles.regular24),
-          CustomButton(
-            height: 40.h,
-            width: 130.w,
-            onPressed: () {},
-            text: 'Сохранить',
-          ),
-          SvgPicture.asset('assets/icons/edit_icon.svg'),
-        ],
-      ).toCenter(),
-    );
-  }
+  State<ExamplePage> createState() => _ExamplePageState();
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -55,5 +17,12 @@ class ExamplePage extends StatelessWidget implements AutoRouteWrapper {
       create: (context) => getIt<ExamplePageCubit>(),
       child: this,
     );
+  }
+}
+
+class _ExamplePageState extends State<ExamplePage> {
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox();
   }
 }

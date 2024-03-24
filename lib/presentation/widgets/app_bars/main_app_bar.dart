@@ -6,9 +6,10 @@ import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_icons.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 
-class MainAppBar extends StatelessWidget implements PreferredSizeWidget{
+class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? child;
-  const MainAppBar({super.key, this.child});
+  final VoidCallback onTap;
+  const MainAppBar({super.key, this.child, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,23 +24,24 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget{
       ).toCenter(),
       leadingWidth: 90.w,
       actions: [
-        SizedBox(width: 44.w,height: 44.h,
+        SizedBox(
+          width: 44.w,
+          height: 44.h,
           child: IconButton(
-          icon: SvgPicture.asset(AppIcons.userIcon, color: AppColors.headblue),
-          onPressed: () {
-            // Заглушка функции, которая будет вызываться при нажатии на иконку
-          },
-                ),
+            icon:
+                SvgPicture.asset(AppIcons.userIcon, color: AppColors.headblue),
+            onPressed: onTap,
+          ),
         )
       ],
       bottom: PreferredSize(
-     preferredSize: Size.fromHeight(1.h),
-     child: Container(
-        color: AppColors.headblue,
-        height: 1.h,
-     ),
-    ),
-   );
+        preferredSize: Size.fromHeight(1.h),
+        child: Container(
+          color: AppColors.headblue,
+          height: 1.h,
+        ),
+      ),
+    );
   }
 
   @override
