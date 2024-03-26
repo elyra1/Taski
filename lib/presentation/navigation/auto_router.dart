@@ -34,5 +34,8 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: CreateTaskPage.page,
         ),
+        AutoRoute(
+          page: TaskPage.page,
+        ),
       ];
 }

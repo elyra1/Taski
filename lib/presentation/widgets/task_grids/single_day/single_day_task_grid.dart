@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/buttons/task_card.dart';
@@ -73,7 +75,11 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                       widget.tasks[startMove.indexOf(true)],
                     ).$2,
                     task: widget.tasks[startMove.indexOf(true)],
-                    onTap: () {},
+                    onTap: () => context.router.push(
+                      TaskPage(
+                        task: widget.tasks[startMove.indexOf(true)],
+                      ),
+                    ),
                   ),
                   Container(
                     color: AppColors.grey.withOpacity(0.6),
@@ -132,7 +138,9 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                   child: TaskCard(
                     isShifting: startMove[i],
                     task: widget.tasks[i],
-                    onTap: () {},
+                    onTap: () => context.router.push(TaskPage(
+                      task: widget.tasks[i],
+                    )),
                     height:
                         SingleDayTaskGridHelper.findHeight(widget.tasks[i]).$2,
                     width: 300.w, //todo
