@@ -7,8 +7,9 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
-  Future<UserModel> getCurrentUser();
+  Future<UserModel> getUser({String? userId});
   Future<void> resetPassword({required String email});
   bool get isUserAuthorizedWithEmail;
   Future<void> signOut();
+  Future<List<UserModel>> getUserFriends();
 }
