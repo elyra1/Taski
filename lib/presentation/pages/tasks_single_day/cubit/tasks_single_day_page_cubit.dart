@@ -19,7 +19,7 @@ class TasksSingleDayPageCubit extends Cubit<TasksSingleDayPageState> {
   Stream<List<Task>> getTasks({String? userId, DateTime? dayOfTasks}) async* {
     String uid;
     if (userId == null) {
-      final user = await _authRepository.getCurrentUser();
+      final user = await _authRepository.getUser();
       uid = user.id;
     } else {
       uid = userId;

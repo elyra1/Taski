@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final Color color;
   final void Function() onPressed;
   final String text;
+  final Widget? child;
 
   const CustomButton({
     Key? key,
@@ -16,7 +17,8 @@ class CustomButton extends StatelessWidget {
     required this.height,
     this.color = AppColors.headblue,
     required this.onPressed,
-    required this.text,
+    this.text = "",
+    this.child,
   }) : super(key: key);
 
   @override
@@ -32,10 +34,11 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.r),
           ),
         ),
-        child: Text(
-          text,
-          style: AppTextStyles.medium12,
-        ),
+        child: child ??
+            Text(
+              text,
+              style: AppTextStyles.medium12,
+            ),
       ),
     );
   }
