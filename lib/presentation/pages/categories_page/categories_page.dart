@@ -54,8 +54,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
             loaded: (loaded) {
               return loaded.categories.isEmpty
                   ? Text(
-                      'NO CATEGORIES',
-                      style: AppTextStyles.medium12,
+                      'Вы ещё не добавили ни одной категории!',
+                      style: AppTextStyles.regular12.copyWith(fontSize: 14.sp),
                     ).toCenter()
                   : GridView.builder(
                       physics: const BouncingScrollPhysics(

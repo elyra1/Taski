@@ -15,7 +15,10 @@ class CategoriesPageCubit extends Cubit<CategoriesPageState> {
   Future<void> init() async {
     final categories = await _categoryRepository.getUserCategories();
     await Future.delayed(const Duration(milliseconds: 500));
-    emit(CategoriesPageState.loaded(
-        categories: categories + categories + categories));
+    emit(
+      CategoriesPageState.loaded(
+        categories: categories,
+      ),
+    );
   }
 }
