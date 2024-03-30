@@ -40,9 +40,15 @@ abstract class $AppRouter extends _i12.RootStackRouter {
       );
     },
     CreateTaskPage.name: (routeData) {
+      final args = routeData.argsAs<CreateTaskPageArgs>(
+          orElse: () => const CreateTaskPageArgs());
       return _i12.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i12.WrappedRoute(child: const _i2.CreateTaskPage()),
+        child: _i12.WrappedRoute(
+            child: _i2.CreateTaskPage(
+          key: args.key,
+          task: args.task,
+        )),
       );
     },
     ExamplePage.name: (routeData) {
@@ -123,16 +129,40 @@ class CategoriesPage extends _i12.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.CreateTaskPage]
-class CreateTaskPage extends _i12.PageRouteInfo<void> {
-  const CreateTaskPage({List<_i12.PageRouteInfo>? children})
-      : super(
+class CreateTaskPage extends _i12.PageRouteInfo<CreateTaskPageArgs> {
+  CreateTaskPage({
+    _i13.Key? key,
+    _i14.Task? task,
+    List<_i12.PageRouteInfo>? children,
+  }) : super(
           CreateTaskPage.name,
+          args: CreateTaskPageArgs(
+            key: key,
+            task: task,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'CreateTaskPage';
 
-  static const _i12.PageInfo<void> page = _i12.PageInfo<void>(name);
+  static const _i12.PageInfo<CreateTaskPageArgs> page =
+      _i12.PageInfo<CreateTaskPageArgs>(name);
+}
+
+class CreateTaskPageArgs {
+  const CreateTaskPageArgs({
+    this.key,
+    this.task,
+  });
+
+  final _i13.Key? key;
+
+  final _i14.Task? task;
+
+  @override
+  String toString() {
+    return 'CreateTaskPageArgs{key: $key, task: $task}';
+  }
 }
 
 /// generated route for
