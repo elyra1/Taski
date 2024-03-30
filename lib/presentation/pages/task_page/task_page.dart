@@ -1,17 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/task.dart';
-import 'package:taski/presentation/pages/task_page/cubit/task_page_cubit.dart';
+import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_date_utils.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 
 @RoutePage()
-class TaskPage extends StatelessWidget implements AutoRouteWrapper {
+class TaskPage extends StatelessWidget {
   final Task task;
   const TaskPage({Key? key, required this.task}) : super(key: key);
 
@@ -33,7 +31,7 @@ class TaskPage extends StatelessWidget implements AutoRouteWrapper {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => context.router.push(CreateTaskPage(task: task)),
             icon: const Icon(
               Icons.edit,
               color: AppColors.headblue,
@@ -100,14 +98,6 @@ class TaskPage extends StatelessWidget implements AutoRouteWrapper {
           ],
         ),
       ),
-    );
-  }
-
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<TaskPageCubit>(
-      create: (context) => getIt<TaskPageCubit>(),
-      child: this,
     );
   }
 }

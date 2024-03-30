@@ -97,11 +97,10 @@ abstract class $AppRouter extends _i12.RootStackRouter {
       final args = routeData.argsAs<TaskPageArgs>();
       return _i12.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i12.WrappedRoute(
-            child: _i10.TaskPage(
+        child: _i10.TaskPage(
           key: args.key,
           task: args.task,
-        )),
+        ),
       );
     },
     TasksSingleDayPage.name: (routeData) {

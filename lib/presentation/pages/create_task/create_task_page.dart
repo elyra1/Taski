@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_date_utils.dart';
@@ -266,7 +267,23 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     );
                   } else {
                     if (context.mounted) {
-                      context.router.pop();
+                      if (widget.task != null) {
+                        context.router.pop().then((value) {
+                          context.router.replace(
+                            TaskPage(
+                              task: widget.task!.copyWith(
+                                startTime: Timestamp.fromDate(startTime),
+                                endTime: Timestamp.fromDate(endTime),
+                                title: titleController.text,
+                                description: descriptionController.text,
+                                color: selectedColor.value,
+                              ),
+                            ),
+                          );
+                        });
+                      } else {
+                        context.router.pop();
+                      }
                     }
                   }
                 }
