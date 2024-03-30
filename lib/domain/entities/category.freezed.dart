@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Category _$CategoryFromJson(Map<String, dynamic> json) {
+  return _CategoryEntity.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Category {
   String get title => throw _privateConstructorUsedError;
@@ -22,6 +26,7 @@ mixin _$Category {
   int get color => throw _privateConstructorUsedError;
   List<Task> get tasks => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CategoryCopyWith<Category> get copyWith =>
       throw _privateConstructorUsedError;
@@ -135,7 +140,7 @@ class __$$CategoryEntityImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$CategoryEntityImpl implements _CategoryEntity {
   const _$CategoryEntityImpl(
       {required this.title,
@@ -144,6 +149,9 @@ class _$CategoryEntityImpl implements _CategoryEntity {
       required this.color,
       final List<Task> tasks = const []})
       : _tasks = tasks;
+
+  factory _$CategoryEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CategoryEntityImplFromJson(json);
 
   @override
   final String title;
@@ -180,6 +188,7 @@ class _$CategoryEntityImpl implements _CategoryEntity {
             const DeepCollectionEquality().equals(other._tasks, _tasks));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, title, id, authorId, color,
       const DeepCollectionEquality().hash(_tasks));
@@ -190,6 +199,13 @@ class _$CategoryEntityImpl implements _CategoryEntity {
   _$$CategoryEntityImplCopyWith<_$CategoryEntityImpl> get copyWith =>
       __$$CategoryEntityImplCopyWithImpl<_$CategoryEntityImpl>(
           this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CategoryEntityImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _CategoryEntity implements Category {
@@ -199,6 +215,9 @@ abstract class _CategoryEntity implements Category {
       required final String authorId,
       required final int color,
       final List<Task> tasks}) = _$CategoryEntityImpl;
+
+  factory _CategoryEntity.fromJson(Map<String, dynamic> json) =
+      _$CategoryEntityImpl.fromJson;
 
   @override
   String get title;

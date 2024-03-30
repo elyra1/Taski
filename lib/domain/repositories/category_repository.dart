@@ -1,6 +1,6 @@
 import 'package:taski/domain/entities/category.dart';
 
-abstract class TaskRepository {
+abstract class CategoryRepository {
   ///при удалении категории пройтись по всем задачам из категории с editTask, и сделать null категорию.
   Future<void> deleteCategory({required String categoryId});
   Future<void> createCategory({required Category category});
@@ -10,4 +10,6 @@ abstract class TaskRepository {
       {required String categoryId, required String taskId});
   Future<void> deleteFromCategory(
       {required String categoryId, required String taskId});
+
+  Future<List<Category>> getUserCategories();
 }

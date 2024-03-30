@@ -34,5 +34,14 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: CreateTaskPage.page,
         ),
+        AutoRoute(
+          page: TaskPage.page,
+        ),
+        AutoRoute(
+          page: FriendsPage.page,
+        ),
+        AutoRoute(
+          page: CategoriesPage.page,
+        ),
       ];
 }
