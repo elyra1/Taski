@@ -9,9 +9,11 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i15;
+import 'package:flutter/cupertino.dart' as _i20;
 import 'package:flutter/material.dart' as _i16;
 import 'package:taski/domain/entities/category.dart' as _i17;
 import 'package:taski/domain/entities/task.dart' as _i18;
+import 'package:taski/domain/entities/user_model.dart' as _i19;
 import 'package:taski/presentation/pages/categories_page/categories_page.dart'
     as _i1;
 import 'package:taski/presentation/pages/category_page/category_page.dart'
@@ -82,9 +84,15 @@ abstract class $AppRouter extends _i15.RootStackRouter {
       );
     },
     HomePage.name: (routeData) {
+      final args =
+          routeData.argsAs<HomePageArgs>(orElse: () => const HomePageArgs());
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i15.WrappedRoute(child: const _i6.HomePage()),
+        child: _i15.WrappedRoute(
+            child: _i6.HomePage(
+          key: args.key,
+          user: args.user,
+        )),
       );
     },
     SendResetLinkPage.name: (routeData) {
@@ -122,15 +130,27 @@ abstract class $AppRouter extends _i15.RootStackRouter {
       );
     },
     TasksMonthPage.name: (routeData) {
+      final args = routeData.argsAs<TasksMonthPageArgs>(
+          orElse: () => const TasksMonthPageArgs());
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i15.WrappedRoute(child: const _i12.TasksMonthPage()),
+        child: _i15.WrappedRoute(
+            child: _i12.TasksMonthPage(
+          key: args.key,
+          user: args.user,
+        )),
       );
     },
     TasksSingleDayPage.name: (routeData) {
+      final args = routeData.argsAs<TasksSingleDayPageArgs>(
+          orElse: () => const TasksSingleDayPageArgs());
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i15.WrappedRoute(child: const _i13.TasksSingleDayPage()),
+        child: _i15.WrappedRoute(
+            child: _i13.TasksSingleDayPage(
+          key: args.key,
+          user: args.user,
+        )),
       );
     },
     UserSearchPage.name: (routeData) {
@@ -262,16 +282,40 @@ class FriendsPage extends _i15.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i6.HomePage]
-class HomePage extends _i15.PageRouteInfo<void> {
-  const HomePage({List<_i15.PageRouteInfo>? children})
-      : super(
+class HomePage extends _i15.PageRouteInfo<HomePageArgs> {
+  HomePage({
+    _i16.Key? key,
+    _i19.UserModel? user,
+    List<_i15.PageRouteInfo>? children,
+  }) : super(
           HomePage.name,
+          args: HomePageArgs(
+            key: key,
+            user: user,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'HomePage';
 
-  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
+  static const _i15.PageInfo<HomePageArgs> page =
+      _i15.PageInfo<HomePageArgs>(name);
+}
+
+class HomePageArgs {
+  const HomePageArgs({
+    this.key,
+    this.user,
+  });
+
+  final _i16.Key? key;
+
+  final _i19.UserModel? user;
+
+  @override
+  String toString() {
+    return 'HomePageArgs{key: $key, user: $user}';
+  }
 }
 
 /// generated route for
@@ -370,30 +414,78 @@ class TaskPageArgs {
 
 /// generated route for
 /// [_i12.TasksMonthPage]
-class TasksMonthPage extends _i15.PageRouteInfo<void> {
-  const TasksMonthPage({List<_i15.PageRouteInfo>? children})
-      : super(
+class TasksMonthPage extends _i15.PageRouteInfo<TasksMonthPageArgs> {
+  TasksMonthPage({
+    _i20.Key? key,
+    _i19.UserModel? user,
+    List<_i15.PageRouteInfo>? children,
+  }) : super(
           TasksMonthPage.name,
+          args: TasksMonthPageArgs(
+            key: key,
+            user: user,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'TasksMonthPage';
 
-  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
+  static const _i15.PageInfo<TasksMonthPageArgs> page =
+      _i15.PageInfo<TasksMonthPageArgs>(name);
+}
+
+class TasksMonthPageArgs {
+  const TasksMonthPageArgs({
+    this.key,
+    this.user,
+  });
+
+  final _i20.Key? key;
+
+  final _i19.UserModel? user;
+
+  @override
+  String toString() {
+    return 'TasksMonthPageArgs{key: $key, user: $user}';
+  }
 }
 
 /// generated route for
 /// [_i13.TasksSingleDayPage]
-class TasksSingleDayPage extends _i15.PageRouteInfo<void> {
-  const TasksSingleDayPage({List<_i15.PageRouteInfo>? children})
-      : super(
+class TasksSingleDayPage extends _i15.PageRouteInfo<TasksSingleDayPageArgs> {
+  TasksSingleDayPage({
+    _i16.Key? key,
+    _i19.UserModel? user,
+    List<_i15.PageRouteInfo>? children,
+  }) : super(
           TasksSingleDayPage.name,
+          args: TasksSingleDayPageArgs(
+            key: key,
+            user: user,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'TasksSingleDayPage';
 
-  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
+  static const _i15.PageInfo<TasksSingleDayPageArgs> page =
+      _i15.PageInfo<TasksSingleDayPageArgs>(name);
+}
+
+class TasksSingleDayPageArgs {
+  const TasksSingleDayPageArgs({
+    this.key,
+    this.user,
+  });
+
+  final _i16.Key? key;
+
+  final _i19.UserModel? user;
+
+  @override
+  String toString() {
+    return 'TasksSingleDayPageArgs{key: $key, user: $user}';
+  }
 }
 
 /// generated route for

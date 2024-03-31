@@ -3,18 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taski/domain/entities/user_model.dart';
+import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_icons.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 
 class UserCard extends StatelessWidget {
   final UserModel user;
-  const UserCard({Key? key, required this.user}) : super(key: key);
+  final bool isFriend;
+  final void Function() onTap;
+  const UserCard({
+    Key? key,
+    required this.user,
+    required this.onTap,
+    required this.isFriend,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomButton(
-      onPressed: () {},
+      onPressed: onTap,
       color: Colors.white,
       width: double.maxFinite,
       height: 50.h,
@@ -33,6 +41,14 @@ class UserCard extends StatelessWidget {
             user.username,
             style: AppTextStyles.regular18,
             overflow: TextOverflow.ellipsis,
+          ),
+          const Spacer(),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              isFriend ? Icons.remove : Icons.send,
+              color: AppColors.headblue,
+            ),
           ),
         ],
       ),

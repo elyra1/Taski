@@ -19,4 +19,9 @@ class UserSearchPageCubit extends Cubit<UserSearchPageState> {
         .getUsersStream()
         .map((event) => event.where((element) => element.id != current.id));
   }
+
+  Future<void> addCurrentUser() async {
+    final user = await _authRepository.getUser();
+    emit(UserSearchPageState.initial(currentUser: user));
+  }
 }

@@ -16,19 +16,20 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UserSearchPageState {
+  UserModel? get currentUser => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function(UserModel? currentUser) initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function(UserModel? currentUser)? initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function(UserModel? currentUser)? initial,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -48,6 +49,10 @@ mixin _$UserSearchPageState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $UserSearchPageStateCopyWith<UserSearchPageState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -55,6 +60,10 @@ abstract class $UserSearchPageStateCopyWith<$Res> {
   factory $UserSearchPageStateCopyWith(
           UserSearchPageState value, $Res Function(UserSearchPageState) then) =
       _$UserSearchPageStateCopyWithImpl<$Res, UserSearchPageState>;
+  @useResult
+  $Res call({UserModel? currentUser});
+
+  $UserModelCopyWith<$Res>? get currentUser;
 }
 
 /// @nodoc
@@ -66,13 +75,45 @@ class _$UserSearchPageStateCopyWithImpl<$Res, $Val extends UserSearchPageState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? currentUser = freezed,
+  }) {
+    return _then(_value.copyWith(
+      currentUser: freezed == currentUser
+          ? _value.currentUser
+          : currentUser // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res>? get currentUser {
+    if (_value.currentUser == null) {
+      return null;
+    }
+
+    return $UserModelCopyWith<$Res>(_value.currentUser!, (value) {
+      return _then(_value.copyWith(currentUser: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
+abstract class _$$InitialImplCopyWith<$Res>
+    implements $UserSearchPageStateCopyWith<$Res> {
   factory _$$InitialImplCopyWith(
           _$InitialImpl value, $Res Function(_$InitialImpl) then) =
       __$$InitialImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({UserModel? currentUser});
+
+  @override
+  $UserModelCopyWith<$Res>? get currentUser;
 }
 
 /// @nodoc
@@ -82,51 +123,76 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? currentUser = freezed,
+  }) {
+    return _then(_$InitialImpl(
+      currentUser: freezed == currentUser
+          ? _value.currentUser
+          : currentUser // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+  const _$InitialImpl({this.currentUser});
+
+  @override
+  final UserModel? currentUser;
 
   @override
   String toString() {
-    return 'UserSearchPageState.initial()';
+    return 'UserSearchPageState.initial(currentUser: $currentUser)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$InitialImpl &&
+            (identical(other.currentUser, currentUser) ||
+                other.currentUser == currentUser));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, currentUser);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+      __$$InitialImplCopyWithImpl<_$InitialImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function(UserModel? currentUser) initial,
   }) {
-    return initial();
+    return initial(currentUser);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function(UserModel? currentUser)? initial,
   }) {
-    return initial?.call();
+    return initial?.call(currentUser);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function(UserModel? currentUser)? initial,
     required TResult orElse(),
   }) {
     if (initial != null) {
-      return initial();
+      return initial(currentUser);
     }
     return orElse();
   }
@@ -161,5 +227,12 @@ class _$InitialImpl implements _Initial {
 }
 
 abstract class _Initial implements UserSearchPageState {
-  const factory _Initial() = _$InitialImpl;
+  const factory _Initial({final UserModel? currentUser}) = _$InitialImpl;
+
+  @override
+  UserModel? get currentUser;
+  @override
+  @JsonKey(ignore: true)
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

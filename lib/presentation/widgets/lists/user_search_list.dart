@@ -7,8 +7,15 @@ import 'package:taski/presentation/widgets/items/user_card.dart';
 class UserSearchList extends StatelessWidget {
   final Stream<Iterable<UserModel>> stream;
   final String value;
-  const UserSearchList({Key? key, required this.stream, required this.value})
-      : super(key: key);
+  final void Function(UserModel user) onTap;
+  final bool Function(UserModel user) isFriend;
+  const UserSearchList({
+    Key? key,
+    required this.stream,
+    required this.value,
+    required this.onTap,
+    required this.isFriend,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +32,11 @@ class UserSearchList extends StatelessWidget {
                 decelerationRate: ScrollDecelerationRate.fast),
             itemCount: list.length,
             itemBuilder: (context, index) {
-              return UserCard(user: list[index])
-                  .paddingSymmetric(vertical: 7.h);
+              return UserCard(
+                user: list[index],
+                onTap: () => onTap(list[index]),
+                isFriend: isFriend(list[index]),
+              ).paddingSymmetric(vertical: 7.h);
             },
           );
         } else {

@@ -14,6 +14,7 @@ class SingleDayTaskGrid extends StatefulWidget {
   final List<Task> tasks;
   final void Function(DateTime date) onDateChanged;
   final DateTime selectedDate;
+  final bool isDragAvaliable;
   final void Function(Task task) onTaskShifted;
 
   const SingleDayTaskGrid({
@@ -22,6 +23,7 @@ class SingleDayTaskGrid extends StatefulWidget {
     required this.onTaskShifted,
     required this.onDateChanged,
     required this.selectedDate,
+    this.isDragAvaliable = false,
   }) : super(key: key);
 
   @override
@@ -97,43 +99,51 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                 top: positions[i],
                 right: 13.w,
                 child: GestureDetector(
-                  onLongPress: () =>
-                      setState(() => startMove[i] = !startMove[i]),
-                  onVerticalDragUpdate: startMove[i]
-                      ? (details) {
-                          if (SingleDayTaskGridHelper.shouldMove(
-                            positions[i],
-                            details.delta.dy,
-                            widget.tasks[i],
-                          )) {
-                            setState(() {
-                              currentDelta += details.delta.dy;
-                              if (currentDelta.abs() > 100.h / 4) {
-                                // шаг 15 минут
-                                positions[i] +=
-                                    currentDelta > 0 ? 100.h / 4 : -100.h / 4;
-                                currentDelta = 0;
-                              }
-                            });
-                          }
-                        }
+                  onLongPress: widget.isDragAvaliable
+                      ? () => setState(() => startMove[i] = !startMove[i])
                       : null,
-                  onVerticalDragEnd: startMove[i]
-                      ? (details) {
-                          setState(
-                            () {
-                              final newTask = widget.tasks[i].copyWith(
-                                startTime: SingleDayTaskGridHelper.countPeriod(
-                                        widget.tasks[i], positions[i])
-                                    .$1,
-                                endTime: SingleDayTaskGridHelper.countPeriod(
-                                        widget.tasks[i], positions[i])
-                                    .$2,
+                  onVerticalDragUpdate: widget.isDragAvaliable
+                      ? startMove[i]
+                          ? (details) {
+                              if (SingleDayTaskGridHelper.shouldMove(
+                                positions[i],
+                                details.delta.dy,
+                                widget.tasks[i],
+                              )) {
+                                setState(() {
+                                  currentDelta += details.delta.dy;
+                                  if (currentDelta.abs() > 100.h / 4) {
+                                    // шаг 15 минут
+                                    positions[i] += currentDelta > 0
+                                        ? 100.h / 4
+                                        : -100.h / 4;
+                                    currentDelta = 0;
+                                  }
+                                });
+                              }
+                            }
+                          : null
+                      : null,
+                  onVerticalDragEnd: widget.isDragAvaliable
+                      ? startMove[i]
+                          ? (details) {
+                              setState(
+                                () {
+                                  final newTask = widget.tasks[i].copyWith(
+                                    startTime:
+                                        SingleDayTaskGridHelper.countPeriod(
+                                                widget.tasks[i], positions[i])
+                                            .$1,
+                                    endTime:
+                                        SingleDayTaskGridHelper.countPeriod(
+                                                widget.tasks[i], positions[i])
+                                            .$2,
+                                  );
+                                  widget.onTaskShifted(newTask);
+                                },
                               );
-                              widget.onTaskShifted(newTask);
-                            },
-                          );
-                        }
+                            }
+                          : null
                       : null,
                   child: TaskCard(
                     isShifting: startMove[i],

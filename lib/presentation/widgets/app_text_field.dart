@@ -13,6 +13,8 @@ class AppTextField extends StatefulWidget {
   final String? hintText;
   final TextInputAction? textInputAction;
   final void Function(String)? onChanged;
+  final InputBorder? enabledBorder;
+  final InputBorder? focusedBorder;
   const AppTextField({
     super.key,
     this.width,
@@ -23,6 +25,8 @@ class AppTextField extends StatefulWidget {
     this.hintText,
     this.textInputAction,
     this.onChanged,
+    this.enabledBorder,
+    this.focusedBorder,
   });
 
   @override
@@ -71,14 +75,18 @@ class _AppTextFieldState extends State<AppTextField> {
                 hintText: widget.hintText,
                 hintStyle:
                     AppTextStyles.semibold12.copyWith(color: AppColors.grey),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                  borderSide: BorderSide(width: 1.r, color: AppColors.headblue),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                  borderSide: BorderSide(width: 2.r, color: AppColors.headblue),
-                ),
+                enabledBorder: widget.enabledBorder ??
+                    OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                      borderSide:
+                          BorderSide(width: 1.r, color: AppColors.headblue),
+                    ),
+                focusedBorder: widget.focusedBorder ??
+                    OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                      borderSide:
+                          BorderSide(width: 2.r, color: AppColors.headblue),
+                    ),
               ),
             ),
           ),

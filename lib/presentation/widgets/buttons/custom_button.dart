@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final void Function() onPressed;
   final String text;
   final Widget? child;
+  final TextStyle? textStyle;
 
   const CustomButton({
     Key? key,
@@ -19,6 +20,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.text = "",
     this.child,
+    this.textStyle,
   }) : super(key: key);
 
   @override
@@ -37,7 +39,7 @@ class CustomButton extends StatelessWidget {
         child: child ??
             Text(
               text,
-              style: AppTextStyles.medium12,
+              style: textStyle ?? AppTextStyles.medium12,
             ),
       ),
     );

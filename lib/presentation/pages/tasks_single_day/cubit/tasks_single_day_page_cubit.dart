@@ -14,7 +14,7 @@ class TasksSingleDayPageCubit extends Cubit<TasksSingleDayPageState> {
   final TaskRepository _taskRepository;
   final AuthRepository _authRepository;
   TasksSingleDayPageCubit(this._taskRepository, this._authRepository)
-      : super(TasksSingleDayPageState.initial());
+      : super(const TasksSingleDayPageState.initial());
 
   Stream<List<Task>> getTasks({String? userId, DateTime? dayOfTasks}) async* {
     String uid;
