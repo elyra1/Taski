@@ -12,7 +12,7 @@ import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/app_bars/app_bottom_navigation_bar.dart';
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
 import 'package:taski/presentation/widgets/buttons/circle_add_button.dart';
-import 'package:taski/presentation/widgets/buttons/custom_button.dart';
+
 
 @RoutePage()
 class HomePage extends StatelessWidget implements AutoRouteWrapper {
@@ -21,7 +21,6 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<HomePageCubit>();
     return AutoTabsRouter(
       routes: [
         TasksSingleDayPage(user: user),
@@ -38,24 +37,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
           resizeToAvoidBottomInset: false,
           appBar: MainAppBar(
             isNonCurrent: user != null,
-            onTap: () => showDialog(
-              context: context,
-              builder: (context) {
-                return CustomButton(
-                  height: 50.h,
-                  width: 220.w,
-                  text: "Выйти из аккаунта",
-                  onPressed: () async {
-                    cubit.signOut().then(
-                      (value) {
-                        context.router.popUntilRoot();
-                        context.router.replace(const SignInPage());
-                      },
-                    );
-                  },
-                ).toCenter();
-              },
-            ),
+            onTap: () => context.router.push(const ProfilePage()),
           ),
           body: Column(
             children: [
