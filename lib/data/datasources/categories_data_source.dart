@@ -21,8 +21,13 @@ class CategoriesDataSource implements CategoryRepository {
 
   @override
   Future<void> createCategory({required Category category}) async {
-    await _firebaseFirestore.collection(FirebaseCollections.categories).add(
-        category.copyWith(authorId: _firebaseAuth.currentUser!.uid).toJson());
+    final json =
+        category.copyWith(authorId: _firebaseAuth.currentUser!.uid).toJson();
+    final newDocRef =
+        _firebaseFirestore.collection(FirebaseCollections.categories).doc();
+    json['id'] = newDocRef.id;
+    await _firebaseFirestore.runTransaction(
+        (transaction) async => transaction.set(newDocRef, json));
   }
 
   @override
@@ -47,5 +52,13 @@ class CategoriesDataSource implements CategoryRepository {
         .map((e) => Category.fromJson(e.data()))
         .where((element) => element.authorId == _firebaseAuth.currentUser!.uid)
         .toList();
+  }
+
+  @override
+  Future<void> editCategory({required Category category}) async {
+    await _firebaseFirestore
+        .collection(FirebaseCollections.categories)
+        .doc(category.id)
+        .set(category.toJson());
   }
 }
