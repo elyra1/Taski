@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,7 @@ import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/pages/sign_up/cubit/sign_up_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
+import 'package:taski/presentation/utils/validation.dart';
 import 'package:taski/presentation/widgets/app_text_field.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 
@@ -46,7 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         leading: BackButton(
           color: AppColors.headblue,
-          onPressed: () {},
+          onPressed: context.router.pop,
         ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1.h),
@@ -86,15 +85,50 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             25.h.heightBox,
             CustomButton(
-              width: 175.w,
+              width: 200.w,
               height: 40.h,
-              onPressed: () {
-                log("NAME:" +
-                    _usernameController.text +
-                    "EMAIL" +
-                    _emailController.text +
-                    "Password" +
-                    _passwordController.text);
+              onPressed: () async {
+                FocusScope.of(context).unfocus();
+                List<String> errors = [];
+
+                if (Validation.validateUsername(_usernameController.text) !=
+                    null) {
+                  errors.add(
+                      Validation.validateUsername(_usernameController.text)!);
+                }
+                if (Validation.validateEmail(_emailController.text) != null) {
+                  errors.add(Validation.validateEmail(_emailController.text)!);
+                }
+                if (Validation.validatePassword(_passwordController.text) !=
+                    null) {
+                  errors.add(
+                      Validation.validatePassword(_passwordController.text)!);
+                }
+                if (_passwordController.text !=
+                    _confrimPasswordController.text) {
+                  errors.add("Пароли не совпадают");
+                }
+                if (errors.isEmpty) {
+                  final textError =
+                      await context.read<SignUpPageCubit>().signUp(
+                            username: _usernameController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                  if (textError != null) {
+                    errors.add(textError);
+                  } else {
+                    if (context.mounted) {
+                      context.router.pop();
+                    }
+                  }
+                }
+                if (errors.isNotEmpty && context.mounted) {
+                  Validation.showAppSnackBar(
+                    context: context,
+                    text: errors.first,
+                  );
+                }
               },
               text: "Зарегистрироваться",
             ),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -19,7 +17,7 @@ class ExamplePageCubit extends Cubit<ExamplePage> {
 
   ///test
   Stream<List<Task>> getTasks() async* {
-    final snapStream = _taskRepository.getUserTasks();
+    final snapStream = _taskRepository.getUserTasks(userId: "4234234");
     final taskStream = snapStream.map((event) => event.docs
         .map((e) => Task.fromJson(e.data()! as Map<String, dynamic>))
         .toList());
@@ -32,5 +30,9 @@ class ExamplePageCubit extends Cubit<ExamplePage> {
 
   Future<void> deleteTask(Task task) async {
     await _taskRepository.deleteTask(taskId: task.id);
+  }
+
+  Future<void> signOut() async {
+    await _authRepository.signOut();
   }
 }
