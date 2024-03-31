@@ -1,12 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/user_model.dart';
 import 'package:taski/presentation/pages/week_tasks/cubit/week_tasks_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
+import 'package:taski/presentation/utils/app_date_utils.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/task_grids/week_markup.dart/week_task_grid.dart';
 import 'package:taski/presentation/widgets/task_grids/week_markup.dart/week_task_grid_helper.dart';
@@ -49,6 +51,16 @@ class _WeekTasksPageState extends State<WeekTasksPage> {
           children: [
             Row(
               children: [
+                SizedBox(
+                  width: 76.w,
+                  child: Text(
+                    AppDateUtils.getMonthString(selectedWeek),
+                    style: AppTextStyles.medium12.copyWith(
+                      color: AppColors.headblue,
+                      fontSize: 10.sp,
+                    ),
+                  ).paddingOnly(left: 11.w),
+                ),
                 for (int i = 0; i < 7; i++)
                   Column(
                     children: [
@@ -65,9 +77,9 @@ class _WeekTasksPageState extends State<WeekTasksPage> {
                             .copyWith(color: AppColors.headblue),
                       ),
                     ],
-                  ).paddingOnly(left: 28.w),
+                  ).paddingOnly(left: i == 0 ? 0 : 28.w),
               ],
-            ).paddingOnly(left: 48.w),
+            ),
             Expanded(
               child: StreamBuilder(
                 stream: cubit.getTasks(userId: widget.user?.id),
