@@ -21,6 +21,8 @@ class UserSearchList extends StatelessWidget {
               .toList();
           if (list.isEmpty) return nil;
           return ListView.builder(
+            physics: const BouncingScrollPhysics(
+                decelerationRate: ScrollDecelerationRate.fast),
             itemCount: list.length,
             itemBuilder: (context, index) {
               return UserCard(user: list[index])
