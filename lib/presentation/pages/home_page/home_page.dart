@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       routes: const [
         TasksSingleDayPage(),
         ExamplePage(),
-        ExamplePage(),
+        TasksMonthPage(),
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,
