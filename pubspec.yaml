@@ -53,6 +53,7 @@ dependencies:
   json_serializable: ^6.7.1
   intl: ^0.18.1
   table_calendar: ^3.0.9
+  bloc: ^8.1.4
 
 dev_dependencies:
   flutter_test:

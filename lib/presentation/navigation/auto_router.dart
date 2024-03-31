@@ -18,7 +18,7 @@ class AppRouter extends $AppRouter {
               page: TasksMonthPage.page,
             ),
             AutoRoute(
-              page: ExamplePage.page,
+              page: WeekTasksPage.page,
             ),
           ],
         ),

@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
     return AutoTabsRouter(
       routes: [
         TasksSingleDayPage(user: user),
-        const ExamplePage(),
+        WeekTasksPage(user: user),
         TasksMonthPage(user: user),
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(

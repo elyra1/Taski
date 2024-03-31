@@ -35,19 +35,7 @@ class TasksSingleDayPageCubit extends Cubit<TasksSingleDayPageState> {
     yield* taskStream;
   }
 
-  Future<void> addTask(Task task) async {
-    await _taskRepository.addTask(task: task);
-  }
-
   Future<void> editTask(Task task) async {
     await _taskRepository.editTask(task: task);
-  }
-
-  Future<void> deleteTask(Task task) async {
-    await _taskRepository.deleteTask(taskId: task.id);
-  }
-
-  Future<void> signOut() async {
-    await _authRepository.signOut();
   }
 }
