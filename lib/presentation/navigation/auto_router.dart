@@ -49,5 +49,8 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: UserSearchPage.page,
         ),
+        AutoRoute(
+          page: ProfilePage.page,
+        ),
       ];
 }
