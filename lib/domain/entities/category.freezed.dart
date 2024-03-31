@@ -24,7 +24,7 @@ mixin _$Category {
   String get id => throw _privateConstructorUsedError;
   String get authorId => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
-  List<Task> get tasks => throw _privateConstructorUsedError;
+  List<String> get tasks => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,7 +38,11 @@ abstract class $CategoryCopyWith<$Res> {
       _$CategoryCopyWithImpl<$Res, Category>;
   @useResult
   $Res call(
-      {String title, String id, String authorId, int color, List<Task> tasks});
+      {String title,
+      String id,
+      String authorId,
+      int color,
+      List<String> tasks});
 }
 
 /// @nodoc
@@ -80,7 +84,7 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
       tasks: null == tasks
           ? _value.tasks
           : tasks // ignore: cast_nullable_to_non_nullable
-              as List<Task>,
+              as List<String>,
     ) as $Val);
   }
 }
@@ -94,7 +98,11 @@ abstract class _$$CategoryEntityImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String title, String id, String authorId, int color, List<Task> tasks});
+      {String title,
+      String id,
+      String authorId,
+      int color,
+      List<String> tasks});
 }
 
 /// @nodoc
@@ -134,7 +142,7 @@ class __$$CategoryEntityImplCopyWithImpl<$Res>
       tasks: null == tasks
           ? _value._tasks
           : tasks // ignore: cast_nullable_to_non_nullable
-              as List<Task>,
+              as List<String>,
     ));
   }
 }
@@ -147,7 +155,7 @@ class _$CategoryEntityImpl implements _CategoryEntity {
       required this.id,
       required this.authorId,
       required this.color,
-      final List<Task> tasks = const []})
+      final List<String> tasks = const []})
       : _tasks = tasks;
 
   factory _$CategoryEntityImpl.fromJson(Map<String, dynamic> json) =>
@@ -161,10 +169,10 @@ class _$CategoryEntityImpl implements _CategoryEntity {
   final String authorId;
   @override
   final int color;
-  final List<Task> _tasks;
+  final List<String> _tasks;
   @override
   @JsonKey()
-  List<Task> get tasks {
+  List<String> get tasks {
     if (_tasks is EqualUnmodifiableListView) return _tasks;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_tasks);
@@ -214,7 +222,7 @@ abstract class _CategoryEntity implements Category {
       required final String id,
       required final String authorId,
       required final int color,
-      final List<Task> tasks}) = _$CategoryEntityImpl;
+      final List<String> tasks}) = _$CategoryEntityImpl;
 
   factory _CategoryEntity.fromJson(Map<String, dynamic> json) =
       _$CategoryEntityImpl.fromJson;
@@ -228,7 +236,7 @@ abstract class _CategoryEntity implements Category {
   @override
   int get color;
   @override
-  List<Task> get tasks;
+  List<String> get tasks;
   @override
   @JsonKey(ignore: true)
   _$$CategoryEntityImplCopyWith<_$CategoryEntityImpl> get copyWith =>

@@ -16,7 +16,7 @@ abstract class TaskRepository {
     required DateTime startFrom,
   });
 
-  Future<void> getTask({required String taskId});
+  Future<Task> getTask({required String taskId});
   Future<void> addTask({required Task task});
   Future<void> editTask({required Task task});
   Future<void> deleteTask({required String taskId});

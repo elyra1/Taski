@@ -12,10 +12,9 @@ _$CategoryEntityImpl _$$CategoryEntityImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       authorId: json['authorId'] as String,
       color: json['color'] as int,
-      tasks: (json['tasks'] as List<dynamic>?)
-              ?.map((e) => Task.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+      tasks:
+          (json['tasks'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              const [],
     );
 
 Map<String, dynamic> _$$CategoryEntityImplToJson(
