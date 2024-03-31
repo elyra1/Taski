@@ -45,9 +45,12 @@ class TaskDataSource implements TaskRepository {
   }
 
   @override
-  Future<void> getTask({required String taskId}) {
-    // TODO: implement getTask
-    throw UnimplementedError();
+  Future<Task> getTask({required String taskId}) async {
+    final doc = await _firebaseFirestore
+        .collection(FirebaseCollections.tasks)
+        .doc(taskId)
+        .get();
+    return Task.fromJson(doc.data()!);
   }
 
   @override

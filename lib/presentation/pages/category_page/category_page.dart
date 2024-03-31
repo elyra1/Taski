@@ -4,28 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
-import 'package:taski/presentation/pages/categories_page/cubit/categories_page_cubit.dart';
+import 'package:taski/domain/entities/category.dart';
+import 'package:taski/presentation/pages/category_page/cubit/category_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
-import 'package:taski/presentation/widgets/cards/category_card.dart';
+import 'package:taski/presentation/widgets/cards/abbreviated_task_card.dart';
 
 @RoutePage()
-class CategoriesPage extends StatefulWidget implements AutoRouteWrapper {
-  const CategoriesPage({Key? key}) : super(key: key);
+class CategoryPage extends StatelessWidget implements AutoRouteWrapper {
+  final Category category;
+  const CategoryPage({Key? key, required this.category}) : super(key: key);
 
-  @override
-  State<CategoriesPage> createState() => _CategoriesPageState();
-
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<CategoriesPageCubit>(
-      create: (context) => getIt<CategoriesPageCubit>()..init(),
-      child: this,
-    );
-  }
-}
-
-class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,39 +32,43 @@ class _CategoriesPageState extends State<CategoriesPage> {
         leading: const BackButton(
           color: AppColors.headblue,
         ),
-        title: Text('Категории', style: AppTextStyles.bold20),
+        title: Text(category.title, style: AppTextStyles.bold20),
       ),
-      body: BlocBuilder<CategoriesPageCubit, CategoriesPageState>(
+      body: BlocBuilder<CategoryPageCubit, CategoryPageState>(
         builder: (context, state) {
           return state.map(
             loading: (_) => const CircularProgressIndicator(
               color: AppColors.headblue,
             ).toCenter(),
             loaded: (loaded) {
-              return loaded.categories.isEmpty
+              return loaded.tasks.isEmpty
                   ? Text(
-                      'Вы ещё не добавили ни одной категории!',
+                      "В этой категории нет ни одной задачи",
                       style: AppTextStyles.regular12.copyWith(fontSize: 14.sp),
                     ).toCenter()
-                  : GridView.builder(
+                  : ListView.builder(
                       physics: const BouncingScrollPhysics(
                         decelerationRate: ScrollDecelerationRate.fast,
                       ),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      itemCount: loaded.categories.length,
+                      itemCount: loaded.tasks.length,
                       itemBuilder: (context, index) {
-                        return CategoryCard(
-                          category: loaded.categories[index],
-                        ).paddingAll(5.r);
+                        return AbbreviatedTaskCard(task: loaded.tasks[index])
+                            .paddingSymmetric(vertical: 7.h);
                       },
-                    ).paddingSymmetric(horizontal: 10.w, vertical: 10.h);
+                    );
             },
           );
         },
-      ),
+      ).paddingAll(10.r),
+    );
+  }
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider<CategoryPageCubit>(
+      create: (context) =>
+          getIt<CategoryPageCubit>()..init(ids: category.tasks),
+      child: this,
     );
   }
 }
