@@ -12,4 +12,5 @@ abstract class AuthRepository {
   bool get isUserAuthorizedWithEmail;
   Future<void> signOut();
   Future<List<UserModel>> getUserFriends();
+  Stream<Iterable<UserModel>> getUsersStream();
 }

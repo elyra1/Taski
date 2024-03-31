@@ -76,4 +76,14 @@ class AuthDataSource implements AuthRepository {
     }
     return friends;
   }
+
+  @override
+  Stream<Iterable<UserModel>> getUsersStream() {
+    final a = _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .orderBy('username')
+        .snapshots();
+    return a
+        .map((event) => event.docs.map((e) => UserModel.fromJson(e.data())));
+  }
 }
