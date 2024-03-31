@@ -15,12 +15,12 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:taski/data/datasources/auth_data_source.dart' as _i8;
 import 'package:taski/data/datasources/categories_data_source.dart' as _i11;
 import 'package:taski/data/datasources/tasks_data_sourse.dart' as _i6;
-import 'package:taski/di/app_module.dart' as _i21;
+import 'package:taski/di/app_module.dart' as _i22;
 import 'package:taski/domain/repositories/auth_repository.dart' as _i7;
 import 'package:taski/domain/repositories/category_repository.dart' as _i10;
 import 'package:taski/domain/repositories/task_repository.dart' as _i5;
 import 'package:taski/presentation/pages/categories_page/cubit/categories_page_cubit.dart'
-    as _i20;
+    as _i21;
 import 'package:taski/presentation/pages/category_page/cubit/category_page_cubit.dart'
     as _i9;
 import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart'
@@ -39,6 +39,8 @@ import 'package:taski/presentation/pages/sign_up/cubit/sign_up_page_cubit.dart'
     as _i18;
 import 'package:taski/presentation/pages/tasks_single_day/cubit/tasks_single_day_page_cubit.dart'
     as _i19;
+import 'package:taski/presentation/pages/user_search_page/cubit/user_search_page_cubit.dart'
+    as _i20;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -88,10 +90,12 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i5.TaskRepository>(),
           gh<_i7.AuthRepository>(),
         ));
-    gh.factory<_i20.CategoriesPageCubit>(
-        () => _i20.CategoriesPageCubit(gh<_i10.CategoryRepository>()));
+    gh.factory<_i20.UserSearchPageCubit>(
+        () => _i20.UserSearchPageCubit(gh<_i7.AuthRepository>()));
+    gh.factory<_i21.CategoriesPageCubit>(
+        () => _i21.CategoriesPageCubit(gh<_i10.CategoryRepository>()));
     return this;
   }
 }
 
-class _$AppModule extends _i21.AppModule {}
+class _$AppModule extends _i22.AppModule {}
