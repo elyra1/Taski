@@ -46,13 +46,12 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
                   width: 220.w,
                   text: "Выйти из аккаунта",
                   onPressed: () async {
-                    context.router.push(FriendsPage());
-                    // cubit.signOut().then(
-                    //   (value) {
-                    //     context.router.popUntilRoot();
-                    //     context.router.replace(const SignInPage());
-                    //   },
-                    // );
+                    cubit.signOut().then(
+                      (value) {
+                        context.router.popUntilRoot();
+                        context.router.replace(const SignInPage());
+                      },
+                    );
                   },
                 ).toCenter();
               },
