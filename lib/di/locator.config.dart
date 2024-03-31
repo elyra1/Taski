@@ -15,38 +15,40 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:taski/data/datasources/auth_data_source.dart' as _i8;
 import 'package:taski/data/datasources/categories_data_source.dart' as _i11;
 import 'package:taski/data/datasources/tasks_data_sourse.dart' as _i6;
-import 'package:taski/di/app_module.dart' as _i25;
+import 'package:taski/di/app_module.dart' as _i26;
 import 'package:taski/domain/repositories/auth_repository.dart' as _i7;
 import 'package:taski/domain/repositories/category_repository.dart' as _i10;
 import 'package:taski/domain/repositories/task_repository.dart' as _i5;
 import 'package:taski/presentation/pages/categories_page/cubit/categories_page_cubit.dart'
-    as _i24;
+    as _i25;
 import 'package:taski/presentation/pages/category_page/cubit/category_page_cubit.dart'
     as _i9;
-import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart'
+import 'package:taski/presentation/pages/create_category_page/cubit/create_category_page_cubit.dart'
     as _i12;
-import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart'
+import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart'
     as _i13;
-import 'package:taski/presentation/pages/friends_page/cubit/friends_page_cubit.dart'
+import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart'
     as _i14;
-import 'package:taski/presentation/pages/home_page/cubit/home_page_cubit.dart'
+import 'package:taski/presentation/pages/friends_page/cubit/friends_page_cubit.dart'
     as _i15;
-import 'package:taski/presentation/pages/profile_page/cubit/profile_page_cubit.dart'
+import 'package:taski/presentation/pages/home_page/cubit/home_page_cubit.dart'
     as _i16;
-import 'package:taski/presentation/pages/send_reset_link/cubit/send_reset_link_page_cubit.dart'
+import 'package:taski/presentation/pages/profile_page/cubit/profile_page_cubit.dart'
     as _i17;
-import 'package:taski/presentation/pages/sign_in/cubit/sign_in_page_cubit.dart'
+import 'package:taski/presentation/pages/send_reset_link/cubit/send_reset_link_page_cubit.dart'
     as _i18;
-import 'package:taski/presentation/pages/sign_up/cubit/sign_up_page_cubit.dart'
+import 'package:taski/presentation/pages/sign_in/cubit/sign_in_page_cubit.dart'
     as _i19;
-import 'package:taski/presentation/pages/tasks_month/cubit/tasks_month_page_cubit.dart'
+import 'package:taski/presentation/pages/sign_up/cubit/sign_up_page_cubit.dart'
     as _i20;
-import 'package:taski/presentation/pages/tasks_single_day/cubit/tasks_single_day_page_cubit.dart'
+import 'package:taski/presentation/pages/tasks_month/cubit/tasks_month_page_cubit.dart'
     as _i21;
-import 'package:taski/presentation/pages/user_search_page/cubit/user_search_page_cubit.dart'
+import 'package:taski/presentation/pages/tasks_single_day/cubit/tasks_single_day_page_cubit.dart'
     as _i22;
-import 'package:taski/presentation/pages/week_tasks/cubit/week_tasks_page_cubit.dart'
+import 'package:taski/presentation/pages/user_search_page/cubit/user_search_page_cubit.dart'
     as _i23;
+import 'package:taski/presentation/pages/week_tasks/cubit/week_tasks_page_cubit.dart'
+    as _i24;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -74,44 +76,48 @@ extension GetItInjectableX on _i1.GetIt {
       gh<_i4.FirebaseFirestore>(),
       gh<_i3.FirebaseAuth>(),
     ));
-    gh.factory<_i12.CreateTaskCubit>(() => _i12.CreateTaskCubit(
+    gh.factory<_i12.CreateCategoryPageCubit>(() => _i12.CreateCategoryPageCubit(
+          gh<_i10.CategoryRepository>(),
+          gh<_i7.AuthRepository>(),
+        ));
+    gh.factory<_i13.CreateTaskCubit>(() => _i13.CreateTaskCubit(
           gh<_i5.TaskRepository>(),
           gh<_i7.AuthRepository>(),
         ));
-    gh.factory<_i13.ExamplePageCubit>(() => _i13.ExamplePageCubit(
+    gh.factory<_i14.ExamplePageCubit>(() => _i14.ExamplePageCubit(
           gh<_i5.TaskRepository>(),
           gh<_i7.AuthRepository>(),
         ));
-    gh.factory<_i14.FriendsPageCubit>(
-        () => _i14.FriendsPageCubit(gh<_i7.AuthRepository>()));
-    gh.factory<_i15.HomePageCubit>(
-        () => _i15.HomePageCubit(gh<_i7.AuthRepository>()));
-    gh.factory<_i16.ProfilePageCubit>(
-        () => _i16.ProfilePageCubit(gh<_i7.AuthRepository>()));
-    gh.factory<_i17.SendResetLinkPageCubit>(
-        () => _i17.SendResetLinkPageCubit(gh<_i7.AuthRepository>()));
-    gh.factory<_i18.SignInPageCubit>(
-        () => _i18.SignInPageCubit(gh<_i7.AuthRepository>()));
-    gh.factory<_i19.SignUpPageCubit>(
-        () => _i19.SignUpPageCubit(gh<_i7.AuthRepository>()));
-    gh.factory<_i20.TasksMonthPageCubit>(() => _i20.TasksMonthPageCubit(
+    gh.factory<_i15.FriendsPageCubit>(
+        () => _i15.FriendsPageCubit(gh<_i7.AuthRepository>()));
+    gh.factory<_i16.HomePageCubit>(
+        () => _i16.HomePageCubit(gh<_i7.AuthRepository>()));
+    gh.factory<_i17.ProfilePageCubit>(
+        () => _i17.ProfilePageCubit(gh<_i7.AuthRepository>()));
+    gh.factory<_i18.SendResetLinkPageCubit>(
+        () => _i18.SendResetLinkPageCubit(gh<_i7.AuthRepository>()));
+    gh.factory<_i19.SignInPageCubit>(
+        () => _i19.SignInPageCubit(gh<_i7.AuthRepository>()));
+    gh.factory<_i20.SignUpPageCubit>(
+        () => _i20.SignUpPageCubit(gh<_i7.AuthRepository>()));
+    gh.factory<_i21.TasksMonthPageCubit>(() => _i21.TasksMonthPageCubit(
           gh<_i5.TaskRepository>(),
           gh<_i7.AuthRepository>(),
         ));
-    gh.factory<_i21.TasksSingleDayPageCubit>(() => _i21.TasksSingleDayPageCubit(
+    gh.factory<_i22.TasksSingleDayPageCubit>(() => _i22.TasksSingleDayPageCubit(
           gh<_i5.TaskRepository>(),
           gh<_i7.AuthRepository>(),
         ));
-    gh.factory<_i22.UserSearchPageCubit>(
-        () => _i22.UserSearchPageCubit(gh<_i7.AuthRepository>()));
-    gh.factory<_i23.WeekTasksPageCubit>(() => _i23.WeekTasksPageCubit(
+    gh.factory<_i23.UserSearchPageCubit>(
+        () => _i23.UserSearchPageCubit(gh<_i7.AuthRepository>()));
+    gh.factory<_i24.WeekTasksPageCubit>(() => _i24.WeekTasksPageCubit(
           gh<_i5.TaskRepository>(),
           gh<_i7.AuthRepository>(),
         ));
-    gh.factory<_i24.CategoriesPageCubit>(
-        () => _i24.CategoriesPageCubit(gh<_i10.CategoryRepository>()));
+    gh.factory<_i25.CategoriesPageCubit>(
+        () => _i25.CategoriesPageCubit(gh<_i10.CategoryRepository>()));
     return this;
   }
 }
 
-class _$AppModule extends _i25.AppModule {}
+class _$AppModule extends _i26.AppModule {}
