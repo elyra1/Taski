@@ -18,7 +18,7 @@ class AuthDataSource implements AuthRepository {
       email: email,
       password: password,
     );
-    final user = getCurrentUser();
+    final user = await getUser();
     return user;
   }
 
@@ -42,8 +42,8 @@ class AuthDataSource implements AuthRepository {
   }
 
   @override
-  Future<UserModel> getCurrentUser() async {
-    final uid = _firebaseAuth.currentUser!.uid;
+  Future<UserModel> getUser({String? userId}) async {
+    final uid = userId ?? _firebaseAuth.currentUser!.uid;
     final json = await _firebaseFirestore
         .collection(FirebaseCollections.users)
         .doc(uid)
@@ -64,5 +64,26 @@ class AuthDataSource implements AuthRepository {
   @override
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+  }
+
+  @override
+  Future<List<UserModel>> getUserFriends() async {
+    final user = await getUser();
+    List<UserModel> friends = [];
+    for (String userId in user.friendsIds) {
+      final friend = await getUser(userId: userId);
+      friends.add(friend);
+    }
+    return friends;
+  }
+
+  @override
+  Stream<Iterable<UserModel>> getUsersStream() {
+    final a = _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .orderBy('username')
+        .snapshots();
+    return a
+        .map((event) => event.docs.map((e) => UserModel.fromJson(e.data())));
   }
 }

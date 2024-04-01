@@ -14,12 +14,12 @@ class TasksSingleDayPageCubit extends Cubit<TasksSingleDayPageState> {
   final TaskRepository _taskRepository;
   final AuthRepository _authRepository;
   TasksSingleDayPageCubit(this._taskRepository, this._authRepository)
-      : super(TasksSingleDayPageState.initial());
+      : super(const TasksSingleDayPageState.initial());
 
   Stream<List<Task>> getTasks({String? userId, DateTime? dayOfTasks}) async* {
     String uid;
     if (userId == null) {
-      final user = await _authRepository.getCurrentUser();
+      final user = await _authRepository.getUser();
       uid = user.id;
     } else {
       uid = userId;
@@ -35,19 +35,7 @@ class TasksSingleDayPageCubit extends Cubit<TasksSingleDayPageState> {
     yield* taskStream;
   }
 
-  Future<void> addTask(Task task) async {
-    await _taskRepository.addTask(task: task);
-  }
-
   Future<void> editTask(Task task) async {
     await _taskRepository.editTask(task: task);
-  }
-
-  Future<void> deleteTask(Task task) async {
-    await _taskRepository.deleteTask(taskId: task.id);
-  }
-
-  Future<void> signOut() async {
-    await _authRepository.signOut();
   }
 }

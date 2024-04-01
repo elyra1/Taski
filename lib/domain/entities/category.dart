@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 part 'category.freezed.dart';
+part 'category.g.dart';
 
 @freezed
 class Category with _$Category {
@@ -10,8 +10,11 @@ class Category with _$Category {
     required String id,
     required String authorId,
     required int color,
-    @Default([]) List<Task> tasks,
+    @Default([]) List<String> tasks,
   }) = _CategoryEntity;
+
+  factory Category.fromJson(Map<String, dynamic> json) =>
+      _$CategoryFromJson(json);
 
   static Category getEmpty() => Category(
         title: 'Название категории',

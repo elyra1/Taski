@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/buttons/task_card.dart';
@@ -14,6 +16,7 @@ class SingleDayTaskGrid extends StatefulWidget {
   final List<Task> tasks;
   final void Function(DateTime date) onDateChanged;
   final DateTime selectedDate;
+  final bool isDragAvaliable;
   final void Function(Task task) onTaskShifted;
 
   const SingleDayTaskGrid({
@@ -22,6 +25,7 @@ class SingleDayTaskGrid extends StatefulWidget {
     required this.onTaskShifted,
     required this.onDateChanged,
     required this.selectedDate,
+    this.isDragAvaliable = false,
   }) : super(key: key);
 
   @override
@@ -72,16 +76,7 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
         if (selectedIndex != -1) {
           log("POSITION: ${positions[selectedIndex]} SCROLL: ${_scrollController.position.pixels}");
           setState(
-            () {
-              //currentDelta += (notification.scrollDelta ?? 0);
-              //if (currentDelta.abs() > 100.h / 4) {
-              // шаг 15 минут
-              // positions[selectedIndex] +=
-              //     currentDelta > 0 ? 100.h / 4 : -100.h / 4;
-              positions[selectedIndex] += notification.scrollDelta ?? 0;
-              //currentDelta = 0;
-              //}
-            },
+            () => positions[selectedIndex] += notification.scrollDelta ?? 0,
           );
         }
 
@@ -106,7 +101,8 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                         widget.tasks[startMove.indexOf(true)],
                       ).$2,
                       task: widget.tasks[startMove.indexOf(true)],
-                      onTap: () {},
+                      onTap: () => context.router.push(TaskPage(
+                          task: widget.tasks[startMove.indexOf(true)])),
                     ),
                     Container(
                       color: AppColors.grey.withOpacity(0.6),
@@ -143,7 +139,7 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                                           widget.tasks[i], positions[i])
                                       .$2,
                                 );
-                                //widget.onTaskShifted(newTask);
+                                widget.onTaskShifted(newTask);
                                 selectedIndex = -1;
                                 needScroll = null;
                                 startMove[i] = false;
@@ -204,7 +200,8 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                     child: TaskCard(
                       isShifting: startMove[i],
                       task: widget.tasks[i],
-                      onTap: () {},
+                      onTap: () =>
+                          context.router.push(TaskPage(task: widget.tasks[i])),
                       height:
                           SingleDayTaskGridHelper.findHeight(widget.tasks[i])
                               .$2,

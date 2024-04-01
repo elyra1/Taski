@@ -18,8 +18,17 @@ class CreateTaskCubit extends Cubit<CreateTask> {
 
   Future<String?> addTask(Task task) async {
     try {
-      final user = await _authRepository.getCurrentUser();
+      final user = await _authRepository.getUser();
       await _taskRepository.addTask(task: task.copyWith(authorId: user.id));
+      return null;
+    } on FirebaseException catch (e, _) {
+      return e.message;
+    }
+  }
+
+  Future<String?> editTask(Task task) async {
+    try {
+      await _taskRepository.editTask(task: task);
       return null;
     } on FirebaseException catch (e, _) {
       return e.message;
