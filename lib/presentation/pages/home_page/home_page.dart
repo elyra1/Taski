@@ -13,7 +13,6 @@ import 'package:taski/presentation/widgets/app_bars/app_bottom_navigation_bar.da
 import 'package:taski/presentation/widgets/app_bars/main_app_bar.dart';
 import 'package:taski/presentation/widgets/buttons/circle_add_button.dart';
 
-
 @RoutePage()
 class HomePage extends StatelessWidget implements AutoRouteWrapper {
   final UserModel? user;
@@ -45,7 +44,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
                 Container(
                   width: double.maxFinite,
                   decoration: BoxDecoration(
-                    color: AppColors.green,
+                    color: AppColors.lightblue,
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.circular(10.r),
                     ),

@@ -52,7 +52,7 @@ class _WeekTasksPageState extends State<WeekTasksPage> {
             Row(
               children: [
                 SizedBox(
-                  width: 76.w,
+                  width: 62.w,
                   child: Text(
                     AppDateUtils.getMonthString(selectedWeek),
                     style: AppTextStyles.medium12.copyWith(
@@ -62,22 +62,25 @@ class _WeekTasksPageState extends State<WeekTasksPage> {
                   ).paddingOnly(left: 11.w),
                 ),
                 for (int i = 0; i < 7; i++)
-                  Column(
-                    children: [
-                      Text(
-                        WeekTaskGridHelper.getDays()[i],
-                        style: AppTextStyles.medium12
-                            .copyWith(color: AppColors.headblue),
-                      ),
-                      Text(
-                        WeekTaskGridHelper.getWeekDates(selectedWeek)[i]
-                            .day
-                            .toString(),
-                        style: AppTextStyles.medium12
-                            .copyWith(color: AppColors.headblue),
-                      ),
-                    ],
-                  ).paddingOnly(left: i == 0 ? 0 : 28.w),
+                  SizedBox(
+                    width: 44.5.w,
+                    child: Column(
+                      children: [
+                        Text(
+                          WeekTaskGridHelper.getDays()[i],
+                          style: AppTextStyles.medium12
+                              .copyWith(color: AppColors.headblue),
+                        ),
+                        Text(
+                          WeekTaskGridHelper.getWeekDates(selectedWeek)[i]
+                              .day
+                              .toString(),
+                          style: AppTextStyles.medium12
+                              .copyWith(color: AppColors.headblue),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
             Expanded(
