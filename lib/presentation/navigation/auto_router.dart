@@ -55,5 +55,8 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: CreateCategoryPage.page,
         ),
+        AutoRoute(
+          page: CategoryPage.page,
+        ),
       ];
 }

@@ -81,7 +81,7 @@ class FriendsPage extends StatelessWidget implements AutoRouteWrapper {
                       isFriend: true,
                     ).paddingSymmetric(vertical: 7.h);
                   },
-                ).paddingOnly(left: 15.w, right: 15.w, top: 15.h);
+                ).paddingOnly(left: 5.w, right: 5.w, top: 15.h);
               }
             },
             loading: (loaded) => const CircularProgressIndicator(

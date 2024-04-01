@@ -141,9 +141,9 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                 } else {
                   if (context.mounted) {
                     if (widget.category != null) {
-                      context.router.pop().then((value) {
-                        context.router.replace(CategoriesPage());
-                      });
+                      context.router.popUntil(
+                          (route) => route.settings.name == ProfilePage.name);
+                      context.router.push(const CategoriesPage());
                     } else {
                       context.router.pop();
                     }
@@ -152,6 +152,22 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
               }
             },
           ).alignAtCenterRight(),
+          if (widget.category != null) ...[
+            TextButton(
+              onPressed: () async {
+                await context
+                    .read<CreateCategoryPageCubit>()
+                    .deleteCategory(widget.category!);
+                context.router.pop().then((value) => context.router.pop());
+              },
+              child: Text(
+                "Удалить категорию",
+                style: AppTextStyles.semibold12.copyWith(
+                  color: AppColors.red,
+                ),
+              ),
+            ).paddingOnly(top: 350.h).toCenter(),
+          ]
         ],
       ).paddingAll(15.r),
     );

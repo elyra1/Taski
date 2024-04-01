@@ -1,10 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
+import 'package:taski/domain/entities/category.dart';
 import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart';
@@ -46,6 +50,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     AppColors.orange,
   ];
   late Color selectedColor;
+  String? selectedCategory = "";
   @override
   void initState() {
     titleController = TextEditingController(text: widget.task?.title);
@@ -57,6 +62,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     selectedColor = widget.task?.color == null
         ? AppColors.green
         : Color(widget.task!.color);
+    selectedCategory = widget.task?.category;
     super.initState();
   }
 
@@ -96,7 +102,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               controller: titleController,
               textInputAction: TextInputAction.next,
             ),
-            20.h.heightBox,
             AppTextField(
               title: 'Описание',
               hintText: 'Введите описание задачи',
@@ -104,12 +109,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               height: 70.h,
               controller: descriptionController,
             ),
-            20.h.heightBox,
             Divider(
               thickness: 1.h,
               color: AppColors.grey,
             ),
-            20.h.heightBox,
+            10.h.heightBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -198,7 +202,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 ),
               ],
             ).paddingSymmetric(horizontal: 15.w),
-            20.h.heightBox,
+            10.h.heightBox,
             Divider(
               thickness: 1.h,
               color: AppColors.grey,
@@ -222,6 +226,42 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               ],
             ).paddingOnly(left: 15.w).alignAtCenterLeft(),
             20.h.heightBox,
+            Text(
+              'Выберите категорию',
+              style: AppTextStyles.semibold20.copyWith(fontSize: 18),
+            ).paddingOnly(left: 15.w).alignAtCenterLeft(),
+            FutureBuilder(
+              future: context.read<CreateTaskCubit>().getCategories(),
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return const LinearProgressIndicator(
+                    color: AppColors.headblue,
+                  )
+                      .alignAtCenter()
+                      .paddingSymmetric(horizontal: 15.w)
+                      .paddingOnly(top: 45.h);
+                }
+                return DropdownButtonFormField<String?>(
+                  value: selectedCategory,
+                  items: ([Category.getEmpty(), ...(snapshot.data!)])
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e.id,
+                          child: Text(
+                            e.id == "" ? "Без категории" : e.title,
+                            style: AppTextStyles.semibold12.copyWith(
+                                color: e.id == "" ? AppColors.grey : null),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) => setState(
+                    () => selectedCategory = value != "" ? value : null,
+                  ),
+                ).paddingSymmetric(horizontal: 15.w);
+              },
+            ).alignAtCenterLeft(),
+            20.h.heightBox,
             CustomButton(
               width: 129.w,
               height: 40.h,
@@ -236,6 +276,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   endTime: Timestamp.fromDate(endTime),
                   color: selectedColor.value,
                   description: descriptionController.text,
+                  category: selectedCategory,
                 );
                 if (titleIsEmpty) {
                   Validation.showAppSnackBar(
@@ -257,6 +298,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                               title: titleController.text,
                               description: descriptionController.text,
                               color: selectedColor.value,
+                              category: selectedCategory,
                             ),
                           )
                       : await context.read<CreateTaskCubit>().addTask(task);
@@ -277,6 +319,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                 title: titleController.text,
                                 description: descriptionController.text,
                                 color: selectedColor.value,
+                                category: selectedCategory,
                               ),
                             ),
                           );
@@ -290,6 +333,22 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               },
               text: 'Сохранить',
             ).paddingOnly(right: 15.w).alignAtCenterRight(),
+            if (widget.task != null) ...[
+              TextButton(
+                onPressed: () async {
+                  await context
+                      .read<CreateTaskCubit>()
+                      .deleteTask(widget.task!);
+                  context.router.pop().then((value) => context.router.pop());
+                },
+                child: Text(
+                  "Удалить задачу",
+                  style: AppTextStyles.semibold12.copyWith(
+                    color: AppColors.red,
+                  ),
+                ),
+              ).alignAtBottomCenter().paddingOnly(top: 40.h),
+            ]
           ],
         ).toCenter(),
       ),

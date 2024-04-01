@@ -17,9 +17,9 @@ class Category with _$Category {
       _$CategoryFromJson(json);
 
   static Category getEmpty() => Category(
-        title: 'Название категории',
-        id: '123',
+        title: 'Категория',
+        id: '',
         color: AppColors.blue.value,
-        authorId: '34534',
+        authorId: '',
       );
 }

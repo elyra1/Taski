@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:taski/domain/entities/category.dart';
 import 'package:taski/domain/repositories/auth_repository.dart';
 import 'package:taski/domain/repositories/category_repository.dart';
+import 'package:taski/domain/repositories/task_repository.dart';
 
 part 'create_category_page_state.dart';
 part 'create_category_page_cubit.freezed.dart';
@@ -13,7 +14,9 @@ part 'create_category_page_cubit.freezed.dart';
 class CreateCategoryPageCubit extends Cubit<CreateCategoryPageState> {
   final CategoryRepository _categoryRepository;
   final AuthRepository _authRepository;
-  CreateCategoryPageCubit(this._categoryRepository, this._authRepository)
+  final TaskRepository _taskRepository;
+  CreateCategoryPageCubit(
+      this._categoryRepository, this._authRepository, this._taskRepository)
       : super(const CreateCategoryPageState.initial());
 
   Future<String?> addCategory(Category category) async {
@@ -30,6 +33,24 @@ class CreateCategoryPageCubit extends Cubit<CreateCategoryPageState> {
   Future<String?> editCategory(Category category) async {
     try {
       await _categoryRepository.editCategory(category: category);
+      return null;
+    } on FirebaseException catch (e, _) {
+      return e.message;
+    }
+  }
+
+  Future<String?> deleteCategory(Category category) async {
+    try {
+      for (String taskId in category.tasks) {
+        await _categoryRepository.deleteFromCategory(
+          categoryId: category.id,
+          taskId: taskId,
+        );
+
+        final task = await _taskRepository.getTask(taskId: taskId);
+        await _taskRepository.editTask(task: task.copyWith(category: null));
+      }
+      await _categoryRepository.deleteCategory(categoryId: category.id);
       return null;
     } on FirebaseException catch (e, _) {
       return e.message;

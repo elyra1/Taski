@@ -10,13 +10,15 @@ class TaskDataSource implements TaskRepository {
 
   TaskDataSource(this._firebaseFirestore);
   @override
-  Future<void> addTask({required Task task}) async {
+  Future<String> addTask({required Task task}) async {
     final json = task.toJson();
     final newDocRef =
         _firebaseFirestore.collection(FirebaseCollections.tasks).doc();
     json['id'] = newDocRef.id;
     await _firebaseFirestore.runTransaction(
         (transaction) async => transaction.set(newDocRef, json));
+
+    return newDocRef.id;
   }
 
   @override
@@ -29,10 +31,10 @@ class TaskDataSource implements TaskRepository {
   }
 
   @override
-  Future<void> deleteTask({required String taskId}) async {
+  Future<void> deleteTask({required Task task}) async {
     await _firebaseFirestore
         .collection(FirebaseCollections.tasks)
-        .doc(taskId)
+        .doc(task.id)
         .delete();
   }
 
@@ -51,24 +53,5 @@ class TaskDataSource implements TaskRepository {
         .doc(taskId)
         .get();
     return Task.fromJson(doc.data()!);
-  }
-
-  @override
-  Future<List<Task>> getTasksByCategory({String? categoryId}) {
-    // TODO: implement getTasksByCategory
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Task>> getTasksForDay({String? userId, required DateTime day}) {
-    // TODO: implement getTasksForDay
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<List<Task>>> getTasksForWeek(
-      {String? userId, required DateTime startFrom}) {
-    // TODO: implement getTasksForWeek
-    throw UnimplementedError();
   }
 }

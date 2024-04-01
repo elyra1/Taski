@@ -197,7 +197,7 @@ class _$TaskEntityImpl implements _TaskEntity {
       @TimestampConverter() required this.startTime,
       @TimestampConverter() required this.endTime,
       required this.color,
-      this.category = ''});
+      this.category = null});
 
   factory _$TaskEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskEntityImplFromJson(json);

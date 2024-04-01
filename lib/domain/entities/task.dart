@@ -15,7 +15,7 @@ class Task with _$Task {
     @TimestampConverter() required Timestamp startTime,
     @TimestampConverter() required Timestamp endTime,
     required int color,
-    @Default('') String? category,
+    @Default(null) String? category,
   }) = _TaskEntity;
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);

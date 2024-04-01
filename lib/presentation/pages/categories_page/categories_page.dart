@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
+import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/categories_page/cubit/categories_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
@@ -43,6 +44,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
         leading: const BackButton(
           color: AppColors.headblue,
         ),
+        actions: [
+          IconButton(
+            onPressed: () => context.router.push(CreateCategoryPage()).then(
+                (value) async =>
+                    await context.read<CategoriesPageCubit>().init()),
+            icon: const Icon(
+              Icons.add,
+              color: AppColors.headblue,
+            ),
+          ),
+        ],
         title: Text('Категории', style: AppTextStyles.bold20),
       ),
       body: BlocBuilder<CategoriesPageCubit, CategoriesPageState>(
@@ -54,7 +66,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             loaded: (loaded) {
               return loaded.categories.isEmpty
                   ? Text(
-                      'Вы ещё не добавили ни одной категории!',
+                      'Вы ещё не добавили ни одной категории',
                       style: AppTextStyles.regular12.copyWith(fontSize: 14.sp),
                     ).toCenter()
                   : GridView.builder(

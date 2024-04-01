@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/category.dart';
+import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/category_page/cubit/category_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
@@ -28,6 +29,16 @@ class CategoryPage extends StatelessWidget implements AutoRouteWrapper {
             color: AppColors.headblue,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () =>
+                context.router.push(CreateCategoryPage(category: category)),
+            icon: const Icon(
+              Icons.edit,
+              color: AppColors.headblue,
+            ),
+          ),
+        ],
         backgroundColor: AppColors.basewhite,
         leading: const BackButton(
           color: AppColors.headblue,
