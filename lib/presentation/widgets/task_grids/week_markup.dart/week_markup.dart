@@ -27,7 +27,7 @@ class WeekMarkup extends StatelessWidget {
                     Container(
                       color: AppColors.grey,
                       width: 0.5,
-                      height: 100.5.h * 24 + 46.h,
+                      height: 100.5.h * 24,
                     ).paddingOnly(left: 44.5.w),
                   ],
                 ),
@@ -37,7 +37,7 @@ class WeekMarkup extends StatelessWidget {
         ),
         Column(
           children: [
-            for (int i = 0; i < 25; i++) ...[
+            for (int i = 0; i < 24; i++) ...[
               SizedBox(
                 height: 100.h,
                 child: Row(

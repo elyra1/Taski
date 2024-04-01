@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
@@ -74,12 +72,10 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
     return NotificationListener<ScrollUpdateNotification>(
       onNotification: (ScrollUpdateNotification notification) {
         if (selectedIndex != -1) {
-          log("POSITION: ${positions[selectedIndex]} SCROLL: ${_scrollController.position.pixels}");
           setState(
             () => positions[selectedIndex] += notification.scrollDelta ?? 0,
           );
         }
-
         return false;
       },
       child: SingleChildScrollView(
@@ -133,11 +129,13 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                                 final newTask = widget.tasks[i].copyWith(
                                   startTime:
                                       SingleDayTaskGridHelper.countPeriod(
-                                              widget.tasks[i], positions[i])
-                                          .$1,
+                                    widget.tasks[i],
+                                    positions[i],
+                                  ).$1,
                                   endTime: SingleDayTaskGridHelper.countPeriod(
-                                          widget.tasks[i], positions[i])
-                                      .$2,
+                                    widget.tasks[i],
+                                    positions[i],
+                                  ).$2,
                                 );
                                 widget.onTaskShifted(newTask);
                                 selectedIndex = -1;
@@ -178,7 +176,9 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                                 ? hours ~/ 4
                                 : (24 - hours) ~/ 4;
                             _scrollController.animateTo(
-                              needScroll == AxisDirection.up ? 0 : 100.h * 24,
+                              needScroll == AxisDirection.up
+                                  ? 20.h
+                                  : 100.h * 24 - 20.h,
                               duration: Duration(
                                   seconds: duration > 0 ? duration : 1),
                               curve: Curves.linear,
@@ -189,10 +189,15 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                           previousOffsetDy = details.globalPosition.dy;
 
                           if (currentDelta.abs() > 100.h / 4) {
-                            // шаг 15 минут
-                            positions[i] +=
-                                currentDelta > 0 ? 100.h / 4 : -100.h / 4;
-                            currentDelta = 0;
+                            if (SingleDayTaskGridHelper.shouldMove(
+                              positions[i],
+                              currentDelta,
+                              widget.tasks[i],
+                            )) {
+                              positions[i] +=
+                                  currentDelta > 0 ? 100.h / 4 : -100.h / 4;
+                              currentDelta = 0;
+                            }
                           }
                         },
                       );

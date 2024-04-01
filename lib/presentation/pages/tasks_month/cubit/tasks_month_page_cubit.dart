@@ -33,7 +33,8 @@ class TasksMonthPageCubit extends Cubit<TasksMonthPageState> {
           return element.startTime
               .toDate()
               .isSameDate(dayOfTasks ?? DateTime.now());
-        }).toList());
+        }).toList()
+          ..sort((a, b) => a.startTime.compareTo(b.startTime)));
     yield* taskStream;
   }
 }
