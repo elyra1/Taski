@@ -27,7 +27,7 @@ abstract class WeekTaskGridHelper {
     final height = (diff.inMinutes / 60) * 100.h;
     final top = task.startTime.toDate().hour * (100.h) +
         (task.startTime.toDate().minute / 60) * (100.h);
-    return (top + 50.h, height);
+    return (top, height);
   }
 
   ///Возвращает startTime и endTime по позиции на скролле
@@ -37,17 +37,16 @@ abstract class WeekTaskGridHelper {
     final startTime = Timestamp.fromDate(
       task.startTime.toDate().copyWith(
             hour: position ~/ 100.h,
-            minute: ((-50.h + position - (position ~/ 100.h) * 100.h) /
-                    (100.h / 60))
+            minute: ((position - (position ~/ 100.h) * 100.h) / (100.h / 60))
                 .round(),
           ),
     );
     final endTime = Timestamp.fromDate(
       task.startTime.toDate().copyWith(
             hour: endTimePos ~/ 100.h,
-            minute: ((endTimePos - 50.h - (endTimePos ~/ 100.h) * 100.h) /
-                    (100.h / 60))
-                .round(),
+            minute:
+                ((endTimePos - (endTimePos ~/ 100.h) * 100.h) / (100.h / 60))
+                    .round(),
           ),
     );
     return (startTime, endTime);
@@ -55,7 +54,7 @@ abstract class WeekTaskGridHelper {
 
   static bool shouldMove(double position, double dyDelta, Task task) {
     bool isTopLimit = position >= 53.5.h || dyDelta > 0;
-    bool isBottomLimit = position + findHeight(task).$2 < 100.h * 24 + 50.h;
+    bool isBottomLimit = position + findHeight(task).$2 < 100.h * 24;
     bool isDragNegativeDirection = dyDelta < 0;
     return (isTopLimit) && (isBottomLimit || isDragNegativeDirection);
   }
