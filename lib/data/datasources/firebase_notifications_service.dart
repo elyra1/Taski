@@ -70,7 +70,6 @@ class FirebaseNotificationService {
 
   Future<String?> getToken() async {
     String? token = await fcm.getToken();
-    log(token ?? "");
     return token;
   }
 }
