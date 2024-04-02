@@ -1,26 +1,45 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-import 'package:taski/domain/entities/task.dart';
-import 'package:taski/presentation/utils/app_date_utils.dart';
+import 'package:http/http.dart' as http;
 
 @injectable
 class FirebaseNotificationService {
   final FirebaseMessaging fcm;
-  FirebaseNotificationService(this.fcm);
-  final serverKey =
-      "AAAA5bT7Xm4:APA91bE9sMgLDbXI5rRa7PgaOxjfELLaa12pXc3dtR0FrANxFxrPUD1z6XHUjb-s-Oso6kt8DpbIuuufpIRJaXAE-7JomhBZm1LVgYD3sKRys78GNtSp2hNBaqROpkprca-z_kwBYr2n";
-  final postUrl = 'https://fcm.googleapis.com/fcm/send';
+  final FirebaseAuth firebaseAuth;
+  FirebaseNotificationService(this.fcm, this.firebaseAuth);
 
   Future initialize() async {
+    final token = await getToken();
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
     var initializationSettingsAndroid = const AndroidInitializationSettings(
       '@mipmap/ic_launcher',
     );
+
+    if (token != null) {
+      String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+      String serverUrl = 'http://10.0.2.2:8080//register-token';
+      try {
+        var response = await http.post(
+          Uri.parse(serverUrl),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({'userId': userId, 'token': token}),
+        );
+
+        if (response.statusCode == 200) {
+          log('FCM token registered successfully');
+        } else {
+          log('Failed to register FCM token');
+        }
+      } catch (e) {
+        log(e.toString());
+      }
+    }
 
     var initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
@@ -29,10 +48,8 @@ class FirebaseNotificationService {
     var android = const AndroidNotificationDetails(
       'my_app_channel',
       'my_app_channel',
-      channelDescription: 'channel description',
       importance: Importance.max,
       priority: Priority.high,
-      ticker: 'ticker',
     );
 
     FirebaseMessaging.onMessage.listen(
@@ -40,9 +57,9 @@ class FirebaseNotificationService {
         if (message.notification != null) {
           if (Platform.isAndroid) {
             flutterLocalNotificationsPlugin.show(
-              1,
-              message.notification?.title,
-              message.notification?.body,
+              2,
+              message.notification!.title,
+              message.notification!.body,
               NotificationDetails(android: android),
             );
           }
@@ -53,35 +70,7 @@ class FirebaseNotificationService {
 
   Future<String?> getToken() async {
     String? token = await fcm.getToken();
+    log(token ?? "");
     return token;
-  }
-
-  Future<void> send(Task task) async {
-    final data = {
-      "notification": {
-        "body":
-            "В ${AppDateUtils.toHHMM(task.startTime.toDate())} запланирована задача: ${task.title}",
-        "title": "Taski",
-      },
-      "priority": "high",
-      "data": {
-        "click_action": "FLUTTER_NOTIFICATION_CLICK",
-        "id": '1',
-        "status": "done"
-      },
-      "to": await fcm.getToken(),
-    };
-
-    final headers = {
-      'content-type': 'application/json',
-      'Authorization': 'key=$serverKey'
-    };
-
-    await http.post(
-      Uri.parse(postUrl),
-      body: json.encode(data),
-      encoding: Encoding.getByName('utf-8'),
-      headers: headers,
-    );
   }
 }
