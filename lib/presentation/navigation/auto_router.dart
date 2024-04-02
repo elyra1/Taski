@@ -15,7 +15,10 @@ class AppRouter extends $AppRouter {
               page: TasksSingleDayPage.page,
             ),
             AutoRoute(
-              page: ExamplePage.page,
+              page: TasksMonthPage.page,
+            ),
+            AutoRoute(
+              page: WeekTasksPage.page,
             ),
           ],
         ),
@@ -33,6 +36,27 @@ class AppRouter extends $AppRouter {
         ),
         AutoRoute(
           page: CreateTaskPage.page,
+        ),
+        AutoRoute(
+          page: TaskPage.page,
+        ),
+        AutoRoute(
+          page: FriendsPage.page,
+        ),
+        AutoRoute(
+          page: CategoriesPage.page,
+        ),
+        AutoRoute(
+          page: UserSearchPage.page,
+        ),
+        AutoRoute(
+          page: ProfilePage.page,
+        ),
+        AutoRoute(
+          page: CreateCategoryPage.page,
+        ),
+        AutoRoute(
+          page: CategoryPage.page,
         ),
       ];
 }

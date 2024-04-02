@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:taski/data/datasources/firebase_notifications_service.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/firebase_options.dart';
 import 'package:taski/presentation/navigation/auto_router.dart';
@@ -11,6 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initDependencies();
+  initializeDateFormatting();
 
   await Permission.notification.isDenied.then((value) {
     if (value) {

@@ -55,10 +55,10 @@ dependencies:
   firebase_messaging: ^14.7.20
   flutter_local_notifications: ^17.0.0
   http: ^1.2.1
-  flutter_background_service: ^5.0.5
-  workmanager: ^0.5.2
   permission_handler: ^11.3.0
   firebase_analytics: ^10.9.0
+  table_calendar: ^3.0.9
+  bloc: ^8.1.4
 
 dev_dependencies:
   flutter_test:

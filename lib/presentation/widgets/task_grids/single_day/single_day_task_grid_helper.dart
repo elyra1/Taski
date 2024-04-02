@@ -16,7 +16,7 @@ abstract class SingleDayTaskGridHelper {
   static (Timestamp, Timestamp) countPeriod(Task task, double position) {
     final cardHeight = findHeight(task).$2;
     final endTimePos = position + cardHeight;
-    final startTime = Timestamp.fromDate(
+    Timestamp startTime = Timestamp.fromDate(
       task.startTime.toDate().copyWith(
             hour: position ~/ 100.h,
             minute: ((-50.h + position - (position ~/ 100.h) * 100.h) /
@@ -24,7 +24,7 @@ abstract class SingleDayTaskGridHelper {
                 .round(),
           ),
     );
-    final endTime = Timestamp.fromDate(
+    Timestamp endTime = Timestamp.fromDate(
       task.startTime.toDate().copyWith(
             hour: endTimePos ~/ 100.h,
             minute: ((endTimePos - 50.h - (endTimePos ~/ 100.h) * 100.h) /
@@ -32,12 +32,28 @@ abstract class SingleDayTaskGridHelper {
                 .round(),
           ),
     );
+    if (position < 53.5.h && startTime.toDate().hour > 1) {
+      startTime = Timestamp.fromDate(
+          task.startTime.toDate().copyWith(hour: 0, minute: 0));
+      endTime = Timestamp.fromDate(startTime
+          .toDate()
+          .add(task.endTime.toDate().difference(task.startTime.toDate())));
+    }
+
+    if (position > 100.h * 24 && endTime.toDate().hour < 1) {
+      endTime = Timestamp.fromDate(
+          task.endTime.toDate().copyWith(hour: 23, minute: 59));
+      startTime = Timestamp.fromDate(endTime
+          .toDate()
+          .subtract(task.endTime.toDate().difference(task.startTime.toDate())));
+    }
+
     return (startTime, endTime);
   }
 
   static bool shouldMove(double position, double dyDelta, Task task) {
-    bool isTopLimit = position >= 53.5.h || dyDelta > 0;
-    bool isBottomLimit = position + findHeight(task).$2 < 100.h * 24 + 50.h;
+    bool isTopLimit = position >= 55.h || dyDelta > 0;
+    bool isBottomLimit = position + findHeight(task).$2 < 100.h * 24 + 25.h;
     bool isDragNegativeDirection = dyDelta < 0;
     return (isTopLimit) && (isBottomLimit || isDragNegativeDirection);
   }

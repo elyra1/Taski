@@ -1,4 +1,3 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taski/data/firebase_collections.dart';
@@ -11,13 +10,15 @@ class TaskDataSource implements TaskRepository {
 
   TaskDataSource(this._firebaseFirestore);
   @override
-  Future<void> addTask({required Task task}) async {
+  Future<String> addTask({required Task task}) async {
     final json = task.toJson();
     final newDocRef =
         _firebaseFirestore.collection(FirebaseCollections.tasks).doc();
     json['id'] = newDocRef.id;
     await _firebaseFirestore.runTransaction(
         (transaction) async => transaction.set(newDocRef, json));
+
+    return newDocRef.id;
   }
 
   @override
@@ -30,10 +31,10 @@ class TaskDataSource implements TaskRepository {
   }
 
   @override
-  Future<void> deleteTask({required String taskId}) async {
+  Future<void> deleteTask({required Task task}) async {
     await _firebaseFirestore
         .collection(FirebaseCollections.tasks)
-        .doc(taskId)
+        .doc(task.id)
         .delete();
   }
 
@@ -46,43 +47,15 @@ class TaskDataSource implements TaskRepository {
   }
 
   @override
-  Future<void> getTask({required String taskId}) {
-    // TODO: implement getTask
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Task>> getTasksByCategory({String? categoryId}) {
-    // TODO: implement getTasksByCategory
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Task>> getTasksForDay({String? userId, required DateTime day}) {
-    // TODO: implement getTasksForDay
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<List<Task>>> getTasksForWeek(
-      {String? userId, required DateTime startFrom}) {
-    // TODO: implement getTasksForWeek
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Task>> getAllTodayUserTasks({String? userId}) async {
-    final snap = await _firebaseFirestore
+  Future<Task> getTask({required String taskId}) async {
+    final doc = await _firebaseFirestore
         .collection(FirebaseCollections.tasks)
-        .where('authorId', isEqualTo: userId)
+        .doc(taskId)
         .get();
-    return snap.docs
-        .map((e) => Task.fromJson(e.data()))
-        .where((element) => element.startTime.toDate().isToday)
-        .toList();
+    return Task.fromJson(doc.data()!);
   }
 
   @override
   Future<void> changeIsNotificationSended({required Task task}) async =>
-      await editTask(task: task.copyWith(isNotificationSended: true));
+      await editTask(task: task.copyWith(notificationSended: false));
 }

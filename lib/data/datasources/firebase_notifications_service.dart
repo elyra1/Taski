@@ -23,7 +23,7 @@ class FirebaseNotificationService {
 
     if (token != null) {
       String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-      String serverUrl = 'http://10.0.2.2:8080//register-token';
+      String serverUrl = 'http://79.174.80.218:8080/register-token';
       try {
         var response = await http.post(
           Uri.parse(serverUrl),

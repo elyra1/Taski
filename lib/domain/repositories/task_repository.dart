@@ -3,28 +3,9 @@ import 'package:taski/domain/entities/task.dart';
 
 abstract class TaskRepository {
   Stream<QuerySnapshot<Object?>> getUserTasks({required String userId});
-
-  ///Если endWith - null, возвращает список задач на день в startFrom, иначе просчитывает
-  Future<List<Task>> getTasksForDay({
-    String? userId,
-    required DateTime day,
-  });
-
-  ///Возвращает задачи по дням на неделю(список списков задач), продумать алгоритм выбора промежутка недели
-  Future<List<List<Task>>> getTasksForWeek({
-    String? userId,
-    required DateTime startFrom,
-  });
-
-  Future<void> getTask({required String taskId});
-  Future<void> addTask({required Task task});
+  Future<Task> getTask({required String taskId});
+  Future<String> addTask({required Task task});
   Future<void> editTask({required Task task});
-  Future<void> deleteTask({required String taskId});
-
-  ///Возвращает список задач из категории
-  Future<List<Task>> getTasksByCategory({String? categoryId});
-
-  Future<List<Task>> getAllTodayUserTasks({String? userId});
-
+  Future<void> deleteTask({required Task task});
   Future<void> changeIsNotificationSended({required Task task});
 }

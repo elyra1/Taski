@@ -29,7 +29,7 @@ class ExamplePageCubit extends Cubit<ExamplePage> {
   }
 
   Future<void> deleteTask(Task task) async {
-    await _taskRepository.deleteTask(taskId: task.id);
+    await _taskRepository.deleteTask(task: task);
   }
 
   Future<void> signOut() async {

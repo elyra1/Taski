@@ -30,7 +30,8 @@ mixin _$Task {
   Timestamp get endTime => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
   String? get category => throw _privateConstructorUsedError;
-  bool get isNotificationSended => throw _privateConstructorUsedError;
+  bool get notificationSended => throw _privateConstructorUsedError;
+  int get remindTimeInSeconds => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +52,8 @@ abstract class $TaskCopyWith<$Res> {
       @TimestampConverter() Timestamp endTime,
       int color,
       String? category,
-      bool isNotificationSended});
+      bool notificationSended,
+      int remindTimeInSeconds});
 }
 
 /// @nodoc
@@ -75,7 +77,8 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? endTime = null,
     Object? color = null,
     Object? category = freezed,
-    Object? isNotificationSended = null,
+    Object? notificationSended = null,
+    Object? remindTimeInSeconds = null,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -110,10 +113,14 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as String?,
-      isNotificationSended: null == isNotificationSended
-          ? _value.isNotificationSended
-          : isNotificationSended // ignore: cast_nullable_to_non_nullable
+      notificationSended: null == notificationSended
+          ? _value.notificationSended
+          : notificationSended // ignore: cast_nullable_to_non_nullable
               as bool,
+      remindTimeInSeconds: null == remindTimeInSeconds
+          ? _value.remindTimeInSeconds
+          : remindTimeInSeconds // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -134,7 +141,8 @@ abstract class _$$TaskEntityImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       @TimestampConverter() Timestamp endTime,
       int color,
       String? category,
-      bool isNotificationSended});
+      bool notificationSended,
+      int remindTimeInSeconds});
 }
 
 /// @nodoc
@@ -156,7 +164,8 @@ class __$$TaskEntityImplCopyWithImpl<$Res>
     Object? endTime = null,
     Object? color = null,
     Object? category = freezed,
-    Object? isNotificationSended = null,
+    Object? notificationSended = null,
+    Object? remindTimeInSeconds = null,
   }) {
     return _then(_$TaskEntityImpl(
       title: null == title
@@ -191,10 +200,14 @@ class __$$TaskEntityImplCopyWithImpl<$Res>
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as String?,
-      isNotificationSended: null == isNotificationSended
-          ? _value.isNotificationSended
-          : isNotificationSended // ignore: cast_nullable_to_non_nullable
+      notificationSended: null == notificationSended
+          ? _value.notificationSended
+          : notificationSended // ignore: cast_nullable_to_non_nullable
               as bool,
+      remindTimeInSeconds: null == remindTimeInSeconds
+          ? _value.remindTimeInSeconds
+          : remindTimeInSeconds // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -210,8 +223,9 @@ class _$TaskEntityImpl implements _TaskEntity {
       @TimestampConverter() required this.startTime,
       @TimestampConverter() required this.endTime,
       required this.color,
-      this.category = '',
-      this.isNotificationSended = false});
+      this.category = null,
+      this.notificationSended = false,
+      this.remindTimeInSeconds = 900});
 
   factory _$TaskEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskEntityImplFromJson(json);
@@ -238,11 +252,14 @@ class _$TaskEntityImpl implements _TaskEntity {
   final String? category;
   @override
   @JsonKey()
-  final bool isNotificationSended;
+  final bool notificationSended;
+  @override
+  @JsonKey()
+  final int remindTimeInSeconds;
 
   @override
   String toString() {
-    return 'Task(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color, category: $category, isNotificationSended: $isNotificationSended)';
+    return 'Task(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color, category: $category, notificationSended: $notificationSended, remindTimeInSeconds: $remindTimeInSeconds)';
   }
 
   @override
@@ -262,14 +279,26 @@ class _$TaskEntityImpl implements _TaskEntity {
             (identical(other.color, color) || other.color == color) &&
             (identical(other.category, category) ||
                 other.category == category) &&
-            (identical(other.isNotificationSended, isNotificationSended) ||
-                other.isNotificationSended == isNotificationSended));
+            (identical(other.notificationSended, notificationSended) ||
+                other.notificationSended == notificationSended) &&
+            (identical(other.remindTimeInSeconds, remindTimeInSeconds) ||
+                other.remindTimeInSeconds == remindTimeInSeconds));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title, description, id, authorId,
-      startTime, endTime, color, category, isNotificationSended);
+  int get hashCode => Object.hash(
+      runtimeType,
+      title,
+      description,
+      id,
+      authorId,
+      startTime,
+      endTime,
+      color,
+      category,
+      notificationSended,
+      remindTimeInSeconds);
 
   @JsonKey(ignore: true)
   @override
@@ -295,7 +324,8 @@ abstract class _TaskEntity implements Task {
       @TimestampConverter() required final Timestamp endTime,
       required final int color,
       final String? category,
-      final bool isNotificationSended}) = _$TaskEntityImpl;
+      final bool notificationSended,
+      final int remindTimeInSeconds}) = _$TaskEntityImpl;
 
   factory _TaskEntity.fromJson(Map<String, dynamic> json) =
       _$TaskEntityImpl.fromJson;
@@ -319,7 +349,9 @@ abstract class _TaskEntity implements Task {
   @override
   String? get category;
   @override
-  bool get isNotificationSended;
+  bool get notificationSended;
+  @override
+  int get remindTimeInSeconds;
   @override
   @JsonKey(ignore: true)
   _$$TaskEntityImplCopyWith<_$TaskEntityImpl> get copyWith =>

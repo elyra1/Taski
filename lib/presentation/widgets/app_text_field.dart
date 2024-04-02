@@ -12,6 +12,9 @@ class AppTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String? hintText;
   final TextInputAction? textInputAction;
+  final void Function(String)? onChanged;
+  final InputBorder? enabledBorder;
+  final InputBorder? focusedBorder;
   const AppTextField({
     super.key,
     this.width,
@@ -21,6 +24,9 @@ class AppTextField extends StatefulWidget {
     this.controller,
     this.hintText,
     this.textInputAction,
+    this.onChanged,
+    this.enabledBorder,
+    this.focusedBorder,
   });
 
   @override
@@ -44,13 +50,16 @@ class _AppTextFieldState extends State<AppTextField> {
           ],
           SizedBox(
             width: widget.width ?? 345.w,
+            height: widget.height,
             child: TextFormField(
               controller: widget.controller,
               textInputAction: widget.textInputAction ?? TextInputAction.done,
               maxLines: widget.obscure ? 1 : null,
               style: AppTextStyles.semibold12,
               obscureText: widget.obscure ? _obscureText : false,
+              onChanged: widget.onChanged,
               decoration: InputDecoration(
+                isDense: true,
                 suffixIcon: widget.obscure
                     ? IconButton(
                         icon: Icon(
@@ -66,14 +75,18 @@ class _AppTextFieldState extends State<AppTextField> {
                 hintText: widget.hintText,
                 hintStyle:
                     AppTextStyles.semibold12.copyWith(color: AppColors.grey),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                  borderSide: BorderSide(width: 1.r, color: AppColors.headblue),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                  borderSide: BorderSide(width: 2.r, color: AppColors.headblue),
-                ),
+                enabledBorder: widget.enabledBorder ??
+                    OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                      borderSide:
+                          BorderSide(width: 1.r, color: AppColors.headblue),
+                    ),
+                focusedBorder: widget.focusedBorder ??
+                    OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                      borderSide:
+                          BorderSide(width: 2.r, color: AppColors.headblue),
+                    ),
               ),
             ),
           ),

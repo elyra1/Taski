@@ -14,14 +14,19 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Category _$CategoryFromJson(Map<String, dynamic> json) {
+  return _CategoryEntity.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Category {
   String get title => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get authorId => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
-  List<Task> get tasks => throw _privateConstructorUsedError;
+  List<String> get tasks => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CategoryCopyWith<Category> get copyWith =>
       throw _privateConstructorUsedError;
@@ -33,7 +38,11 @@ abstract class $CategoryCopyWith<$Res> {
       _$CategoryCopyWithImpl<$Res, Category>;
   @useResult
   $Res call(
-      {String title, String id, String authorId, int color, List<Task> tasks});
+      {String title,
+      String id,
+      String authorId,
+      int color,
+      List<String> tasks});
 }
 
 /// @nodoc
@@ -75,7 +84,7 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
       tasks: null == tasks
           ? _value.tasks
           : tasks // ignore: cast_nullable_to_non_nullable
-              as List<Task>,
+              as List<String>,
     ) as $Val);
   }
 }
@@ -89,7 +98,11 @@ abstract class _$$CategoryEntityImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String title, String id, String authorId, int color, List<Task> tasks});
+      {String title,
+      String id,
+      String authorId,
+      int color,
+      List<String> tasks});
 }
 
 /// @nodoc
@@ -129,21 +142,24 @@ class __$$CategoryEntityImplCopyWithImpl<$Res>
       tasks: null == tasks
           ? _value._tasks
           : tasks // ignore: cast_nullable_to_non_nullable
-              as List<Task>,
+              as List<String>,
     ));
   }
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$CategoryEntityImpl implements _CategoryEntity {
   const _$CategoryEntityImpl(
       {required this.title,
       required this.id,
       required this.authorId,
       required this.color,
-      final List<Task> tasks = const []})
+      final List<String> tasks = const []})
       : _tasks = tasks;
+
+  factory _$CategoryEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CategoryEntityImplFromJson(json);
 
   @override
   final String title;
@@ -153,10 +169,10 @@ class _$CategoryEntityImpl implements _CategoryEntity {
   final String authorId;
   @override
   final int color;
-  final List<Task> _tasks;
+  final List<String> _tasks;
   @override
   @JsonKey()
-  List<Task> get tasks {
+  List<String> get tasks {
     if (_tasks is EqualUnmodifiableListView) return _tasks;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_tasks);
@@ -180,6 +196,7 @@ class _$CategoryEntityImpl implements _CategoryEntity {
             const DeepCollectionEquality().equals(other._tasks, _tasks));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, title, id, authorId, color,
       const DeepCollectionEquality().hash(_tasks));
@@ -190,6 +207,13 @@ class _$CategoryEntityImpl implements _CategoryEntity {
   _$$CategoryEntityImplCopyWith<_$CategoryEntityImpl> get copyWith =>
       __$$CategoryEntityImplCopyWithImpl<_$CategoryEntityImpl>(
           this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CategoryEntityImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _CategoryEntity implements Category {
@@ -198,7 +222,10 @@ abstract class _CategoryEntity implements Category {
       required final String id,
       required final String authorId,
       required final int color,
-      final List<Task> tasks}) = _$CategoryEntityImpl;
+      final List<String> tasks}) = _$CategoryEntityImpl;
+
+  factory _CategoryEntity.fromJson(Map<String, dynamic> json) =
+      _$CategoryEntityImpl.fromJson;
 
   @override
   String get title;
@@ -209,7 +236,7 @@ abstract class _CategoryEntity implements Category {
   @override
   int get color;
   @override
-  List<Task> get tasks;
+  List<String> get tasks;
   @override
   @JsonKey(ignore: true)
   _$$CategoryEntityImplCopyWith<_$CategoryEntityImpl> get copyWith =>

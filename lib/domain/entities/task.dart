@@ -15,8 +15,9 @@ class Task with _$Task {
     @TimestampConverter() required Timestamp startTime,
     @TimestampConverter() required Timestamp endTime,
     required int color,
-    @Default('') String? category,
-    @Default(false) bool isNotificationSended,
+    @Default(null) String? category,
+    @Default(false) bool notificationSended,
+    @Default(900) int remindTimeInSeconds,
   }) = _TaskEntity;
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
