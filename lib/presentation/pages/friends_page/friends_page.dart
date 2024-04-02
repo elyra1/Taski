@@ -8,8 +8,8 @@ import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/friends_page/cubit/friends_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
-import 'package:taski/presentation/widgets/buttons/custom_button.dart';
-import 'package:taski/presentation/widgets/items/user_card.dart';
+import 'package:taski/presentation/widgets/dialogs/add_user_to_friends_dialog.dart';
+import 'package:taski/presentation/widgets/lists/user_search_list.dart';
 
 @RoutePage()
 class FriendsPage extends StatelessWidget implements AutoRouteWrapper {
@@ -17,6 +17,7 @@ class FriendsPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<FriendsPageCubit>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -45,50 +46,43 @@ class FriendsPage extends StatelessWidget implements AutoRouteWrapper {
       ),
       body: BlocBuilder<FriendsPageCubit, FriendsPageState>(
         builder: (context, state) {
-          return state.map(
-            loaded: (loaded) {
-              if (loaded.friendsList.isEmpty) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Вы не добавили в друзья ни одного пользователя! Попробуйте найти пользователя по его никнейму и отправить ему запрос на добавление в друзья',
-                      style: AppTextStyles.regular12
-                          .copyWith(fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center,
-                    ),
-                    15.h.heightBox,
-                    CustomButton(
-                      width: 300.w,
-                      height: 40.h,
-                      text: 'Найти пользователей',
-                      onPressed: () =>
-                          context.router.push(const UserSearchPage()),
-                    ),
-                  ],
-                );
+          return UserSearchList(
+            stream: cubit.getriendsStream(),
+            onTap: (user) async {
+              final isFriend = (state.currentUser != null)
+                  ? state.currentUser!.friendsIds.contains(user.id)
+                  : false;
+              if (isFriend) {
+                context.router.push(HomePage(user: user));
               } else {
-                return ListView.builder(
-                  itemCount: loaded.friendsList.length,
-                  itemBuilder: (context, index) {
-                    return UserCard(
-                      user: loaded.friendsList[index],
-                      onTap: () => context.router.push(
-                        HomePage(
-                          user: loaded.friendsList[index],
-                        ),
-                      ),
-                      isFriend: true,
-                      onRemoveTap: () {},
-                      onSendTap: () {},
-                    ).paddingSymmetric(vertical: 7.h);
+                showDialog(
+                  context: context,
+                  builder: (dialogContext) {
+                    return AddUserToFriendsDialog(
+                      user: user,
+                      onSendPressed: () =>
+                          cubit.sendFriendRequest(userId: user.id),
+                    ).paddingSymmetric(horizontal: 50.w, vertical: 220.h);
                   },
-                ).paddingOnly(left: 5.w, right: 5.w, top: 15.h);
+                );
               }
             },
-            loading: (loaded) => const CircularProgressIndicator(
-              color: AppColors.headblue,
-            ).toCenter(),
+            isFriend: (user) {
+              return (state.currentUser != null)
+                  ? state.currentUser!.friendsIds.contains(user.id)
+                  : false;
+            },
+            isSendedRequest: (user) {
+              return (user.requests.contains(state.currentUser?.id));
+            },
+            isRequestingFriend: (user) {
+              return (state.currentUser?.requests.contains(user.id) ?? false);
+            },
+            onSendTap: (user) => cubit.sendFriendRequest(userId: user.id),
+            onRemoveTap: (user) => cubit.deleteFromFriends(userId: user.id),
+            onUndoRequestTap: (user) => cubit.undoRequest(userId: user.id),
+            onAcceptTap: (user) => cubit.acceptFriendRequest(userId: user.id),
+            onDeclineTap: (user) => cubit.declineFriendRequest(userId: user.id),
           );
         },
       ),
@@ -98,7 +92,7 @@ class FriendsPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider<FriendsPageCubit>(
-      create: (context) => getIt<FriendsPageCubit>()..loadFriends(),
+      create: (context) => getIt<FriendsPageCubit>(),
       child: this,
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taski/data/datasources/firebase_notifications_service.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/sign_in/cubit/sign_in_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
@@ -90,6 +91,8 @@ class _SignInPageState extends State<SignInPage> {
                     password: passwordController.text,
                   );
                   if (isLogined == null && context.mounted) {
+                    final fns = getIt<FirebaseNotificationService>();
+                    fns.checkPermissionsAndInit();
                     context.router.push(HomePage());
                   }
                   if (isLogined != null) {

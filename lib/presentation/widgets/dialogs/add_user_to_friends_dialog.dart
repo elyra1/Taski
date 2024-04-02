@@ -60,12 +60,6 @@ class AddUserToFriendsDialog extends StatelessWidget {
               onPressed: () => context.pop(),
               text: 'Отмена',
             ),
-            10.h.heightBox,
-            Text(
-              'Этот раздел находится в разработке, пока что можно получить доступ к любому профилю при нажатии на кнопку отправить',
-              style: AppTextStyles.regular12,
-              textAlign: TextAlign.center,
-            ),
           ],
         ).paddingSymmetric(horizontal: 15.w),
       ),

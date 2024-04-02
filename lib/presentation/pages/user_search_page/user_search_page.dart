@@ -77,9 +77,8 @@ class _UserSearchPageState extends State<UserSearchPage> {
                   builder: (dialogContext) {
                     return AddUserToFriendsDialog(
                       user: user,
-                      onSendPressed: () => cubit
-                          .sendFriendRequest(userId: user.id)
-                          .then((value) => context.router.pop()),
+                      onSendPressed: () =>
+                          cubit.sendFriendRequest(userId: user.id),
                     ).paddingSymmetric(horizontal: 50.w, vertical: 220.h);
                   },
                 );
@@ -90,11 +89,17 @@ class _UserSearchPageState extends State<UserSearchPage> {
                   ? state.currentUser!.friendsIds.contains(user.id)
                   : false;
             },
-            onSendTap: () {},
-            onRemoveTap: () {},
-            onUndoRequestTap: () {},
-            onAcceptTap: () {},
-            onDeclineTap: () {},
+            isSendedRequest: (user) {
+              return (user.requests.contains(state.currentUser?.id));
+            },
+            isRequestingFriend: (user) {
+              return (state.currentUser?.requests.contains(user.id) ?? false);
+            },
+            onSendTap: (user) => cubit.sendFriendRequest(userId: user.id),
+            onRemoveTap: (user) => cubit.deleteFromFriends(userId: user.id),
+            onUndoRequestTap: (user) => cubit.undoRequest(userId: user.id),
+            onAcceptTap: (user) => cubit.acceptFriendRequest(userId: user.id),
+            onDeclineTap: (user) => cubit.declineFriendRequest(userId: user.id),
           );
         },
       ).paddingSymmetric(vertical: 10.h, horizontal: 5.w),

@@ -132,7 +132,6 @@ class AuthDataSource implements AuthRepository {
     final friend = await getUser(userId: userId);
     final updatedUser = currentUser.copyWith(
       friendsIds: List.from(currentUser.friendsIds)..remove(userId),
-      requests: List.from(currentUser.requests)..add(userId),
     );
     final updatedFriend = friend.copyWith(
       friendsIds: List.from(friend.friendsIds)..remove(currentUser.id),
@@ -151,8 +150,9 @@ class AuthDataSource implements AuthRepository {
   @override
   Future<void> sendFriendRequest({required String userId}) async {
     final requestUser = await getUser(userId: userId);
+    final currentUser = await getUser();
     final updatedRequestUser = requestUser.copyWith(
-      requests: List.from(requestUser.requests)..add(userId),
+      requests: List.from(requestUser.requests)..add(currentUser.id),
     );
     await _firebaseFirestore
         .collection(FirebaseCollections.users)
@@ -163,9 +163,9 @@ class AuthDataSource implements AuthRepository {
   @override
   Future<void> undoFriendRequest({required String userId}) async {
     final requestUser = await getUser(userId: userId);
+    final currentUser = await getUser();
     final updatedRequestUser = requestUser.copyWith(
-      requests: List.from(requestUser.requests)
-        ..remove(_firebaseAuth.currentUser!.uid),
+      requests: List.from(requestUser.requests)..remove(currentUser.id),
     );
     await _firebaseFirestore
         .collection(FirebaseCollections.users)

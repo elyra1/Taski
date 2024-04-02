@@ -11,11 +11,41 @@ part 'friends_page_cubit.freezed.dart';
 class FriendsPageCubit extends Cubit<FriendsPageState> {
   final AuthRepository _authRepository;
   FriendsPageCubit(this._authRepository)
-      : super(const FriendsPageState.loading());
+      : super(const FriendsPageState.initial());
 
-  Future<void> loadFriends() async {
-    final friends = await _authRepository.getUserFriends();
-    await Future.delayed(const Duration(milliseconds: 500));
-    emit(FriendsPageState.loaded(friendsList: friends));
+  Stream<Iterable<UserModel>> getriendsStream() async* {
+    final current = await _authRepository.getUser();
+    yield* _authRepository.getUsersStream().map((event) =>
+        event.where((element) => current.friendsIds.contains(element.id)));
+  }
+
+  Future<void> addCurrentUser() async {
+    final user = await _authRepository.getUser();
+    emit(FriendsPageState.initial(currentUser: user));
+  }
+
+  Future<void> sendFriendRequest({required String userId}) async {
+    await _authRepository.sendFriendRequest(userId: userId);
+    await addCurrentUser();
+  }
+
+  Future<void> deleteFromFriends({required String userId}) async {
+    await _authRepository.deleteFromFriends(userId: userId);
+    await addCurrentUser();
+  }
+
+  Future<void> acceptFriendRequest({required String userId}) async {
+    await _authRepository.acceptFriendRequest(userId: userId);
+    await addCurrentUser();
+  }
+
+  Future<void> declineFriendRequest({required String userId}) async {
+    await _authRepository.declineFriendRequest(userId: userId);
+    await addCurrentUser();
+  }
+
+  Future<void> undoRequest({required String userId}) async {
+    await _authRepository.undoFriendRequest(userId: userId);
+    await addCurrentUser();
   }
 }

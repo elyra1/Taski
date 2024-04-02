@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 
 @injectable
 class FirebaseNotificationService {
@@ -13,7 +14,19 @@ class FirebaseNotificationService {
   final FirebaseAuth firebaseAuth;
   FirebaseNotificationService(this.fcm, this.firebaseAuth);
 
-  Future initialize() async {
+  Future<void> checkPermissionsAndInit() async {
+    Permission.notification.isDenied.then((value) async {
+      if (value) {
+        Permission.notification.request().then((value) async {
+          if (value.isGranted) await initialize();
+        });
+      } else {
+        await initialize();
+      }
+    });
+  }
+
+  Future<void> initialize() async {
     final token = await getToken();
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();

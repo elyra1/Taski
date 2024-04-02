@@ -10,7 +10,8 @@ part 'sign_up_page_cubit.freezed.dart';
 @injectable
 class SignUpPageCubit extends Cubit<SignUpPageState> {
   final AuthRepository _authRepository;
-  SignUpPageCubit(this._authRepository) : super(SignUpPageState.initial());
+  SignUpPageCubit(this._authRepository)
+      : super(const SignUpPageState.initial());
 
   Future<String?> signUp(
       {required String username,
