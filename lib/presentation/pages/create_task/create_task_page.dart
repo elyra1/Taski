@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
@@ -17,7 +16,6 @@ import 'package:taski/presentation/utils/app_date_utils.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/utils/validation.dart';
 import 'package:taski/presentation/widgets/app_text_field.dart';
-import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 import 'package:taski/presentation/widgets/items/color_pick_item.dart';
 
 @RoutePage()
@@ -51,6 +49,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   ];
   late Color selectedColor;
   String? selectedCategory = "";
+  int selectedRemindTime = 900;
   @override
   void initState() {
     titleController = TextEditingController(text: widget.task?.title);
@@ -63,6 +62,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         ? AppColors.green
         : Color(widget.task!.color);
     selectedCategory = widget.task?.category;
+    selectedRemindTime = widget.task?.remindTimeInSeconds ?? selectedRemindTime;
     super.initState();
   }
 
@@ -83,6 +83,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         leading: const BackButton(
           color: AppColors.headblue,
         ),
+        actions: [
+          IconButton(
+              onPressed: save,
+              icon: const Icon(
+                Icons.check,
+                color: AppColors.headblue,
+              ))
+        ],
         title: Text(
           widget.task != null ? "Редактирование задачи" : 'Создание задачи',
           style: AppTextStyles.bold20,
@@ -262,77 +270,40 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               },
             ).alignAtCenterLeft(),
             20.h.heightBox,
-            CustomButton(
-              width: 129.w,
-              height: 40.h,
-              onPressed: () async {
-                bool titleIsEmpty = titleController.text == '';
-                bool startIsAfterEnd = startTime.isAfter(endTime);
-                final task = Task(
-                  title: titleController.text,
-                  id: '',
-                  authorId: '',
-                  startTime: Timestamp.fromDate(startTime),
-                  endTime: Timestamp.fromDate(endTime),
-                  color: selectedColor.value,
-                  description: descriptionController.text,
-                  category: selectedCategory,
-                );
-                if (titleIsEmpty) {
-                  Validation.showAppSnackBar(
-                    text: 'Название не может быть пустым.',
-                    context: context,
-                  );
-                } else if (startIsAfterEnd) {
-                  Validation.showAppSnackBar(
-                    text:
-                        'Время старта не может быть позже времени окончания задачи.',
-                    context: context,
-                  );
-                } else {
-                  final textError = widget.task != null
-                      ? await context.read<CreateTaskCubit>().editTask(
-                            widget.task!.copyWith(
-                              startTime: Timestamp.fromDate(startTime),
-                              endTime: Timestamp.fromDate(endTime),
-                              title: titleController.text,
-                              description: descriptionController.text,
-                              color: selectedColor.value,
-                              category: selectedCategory,
-                            ),
-                          )
-                      : await context.read<CreateTaskCubit>().addTask(task);
-                  if (textError != null && context.mounted) {
-                    Validation.showAppSnackBar(
-                      text: textError,
-                      context: context,
-                    );
-                  } else {
-                    if (context.mounted) {
-                      if (widget.task != null) {
-                        context.router.pop().then((value) {
-                          context.router.replace(
-                            TaskPage(
-                              task: widget.task!.copyWith(
-                                startTime: Timestamp.fromDate(startTime),
-                                endTime: Timestamp.fromDate(endTime),
-                                title: titleController.text,
-                                description: descriptionController.text,
-                                color: selectedColor.value,
-                                category: selectedCategory,
-                              ),
-                            ),
-                          );
-                        });
-                      } else {
-                        context.router.pop();
-                      }
-                    }
-                  }
-                }
-              },
-              text: 'Сохранить',
-            ).paddingOnly(right: 15.w).alignAtCenterRight(),
+            Row(
+              children: [
+                Text(
+                  'Напомнить за:',
+                  style: AppTextStyles.semibold20.copyWith(fontSize: 18),
+                ).paddingOnly(left: 15.w).alignAtCenterLeft(),
+                SizedBox(
+                  width: 150.w,
+                  child: DropdownButtonFormField<int>(
+                    value: selectedRemindTime,
+                    items: [
+                      ("5 мин", 300),
+                      ("10 мин", 600),
+                      ("15 мин", 900),
+                      ("30 мин", 1800),
+                      ("1 час", 3600)
+                    ].map(
+                      (e) {
+                        return DropdownMenuItem(
+                          value: e.$2,
+                          child: Text(
+                            e.$1,
+                            style: AppTextStyles.semibold12,
+                          ),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (value) => setState(
+                      () => selectedRemindTime = value ?? selectedRemindTime,
+                    ),
+                  ),
+                ).paddingSymmetric(horizontal: 15.w),
+              ],
+            ),
             if (widget.task != null) ...[
               TextButton(
                 onPressed: () async {
@@ -353,5 +324,74 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         ).toCenter(),
       ),
     );
+  }
+
+  Future<void> save() async {
+    bool titleIsEmpty = titleController.text == '';
+    bool startIsAfterEnd = startTime.isAfter(endTime);
+    final task = Task(
+      title: titleController.text,
+      id: '',
+      authorId: '',
+      startTime: Timestamp.fromDate(startTime),
+      endTime: Timestamp.fromDate(endTime),
+      color: selectedColor.value,
+      description: descriptionController.text,
+      category: selectedCategory,
+      remindTimeInSeconds: selectedRemindTime,
+    );
+    if (titleIsEmpty) {
+      Validation.showAppSnackBar(
+        text: 'Название не может быть пустым.',
+        context: context,
+      );
+    } else if (startIsAfterEnd) {
+      Validation.showAppSnackBar(
+        text: 'Время старта не может быть позже времени окончания задачи.',
+        context: context,
+      );
+    } else {
+      final textError = widget.task != null
+          ? await context.read<CreateTaskCubit>().editTask(
+                widget.task!.copyWith(
+                  startTime: Timestamp.fromDate(startTime),
+                  endTime: Timestamp.fromDate(endTime),
+                  title: titleController.text,
+                  description: descriptionController.text,
+                  color: selectedColor.value,
+                  category: selectedCategory,
+                  remindTimeInSeconds: selectedRemindTime,
+                ),
+              )
+          : await context.read<CreateTaskCubit>().addTask(task);
+      if (textError != null && context.mounted) {
+        Validation.showAppSnackBar(
+          text: textError,
+          context: context,
+        );
+      } else {
+        if (context.mounted) {
+          if (widget.task != null) {
+            context.router.pop().then((value) {
+              context.router.replace(
+                TaskPage(
+                  task: widget.task!.copyWith(
+                    startTime: Timestamp.fromDate(startTime),
+                    endTime: Timestamp.fromDate(endTime),
+                    title: titleController.text,
+                    description: descriptionController.text,
+                    color: selectedColor.value,
+                    category: selectedCategory,
+                    remindTimeInSeconds: selectedRemindTime,
+                  ),
+                ),
+              );
+            });
+          } else {
+            context.router.pop();
+          }
+        }
+      }
+    }
   }
 }

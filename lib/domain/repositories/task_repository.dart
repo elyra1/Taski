@@ -7,4 +7,5 @@ abstract class TaskRepository {
   Future<String> addTask({required Task task});
   Future<void> editTask({required Task task});
   Future<void> deleteTask({required Task task});
+  Future<void> changeIsNotificationSended({required Task task});
 }

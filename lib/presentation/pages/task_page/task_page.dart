@@ -1,13 +1,9 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
-import 'package:taski/domain/entities/category.dart';
 import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/task_page/cubit/task_page_cubit.dart';
@@ -17,9 +13,48 @@ import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/cards/category_animation_card.dart';
 
 @RoutePage()
-class TaskPage extends StatelessWidget implements AutoRouteWrapper {
+class TaskPage extends StatefulWidget implements AutoRouteWrapper {
   final Task task;
   const TaskPage({Key? key, required this.task}) : super(key: key);
+
+  @override
+  State<TaskPage> createState() => _TaskPageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider<TaskPageCubit>(
+      create: (context) => getIt<TaskPageCubit>(),
+      child: this,
+    );
+  }
+}
+
+class _TaskPageState extends State<TaskPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _shapeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _shapeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.linear,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +74,8 @@ class TaskPage extends StatelessWidget implements AutoRouteWrapper {
         ),
         actions: [
           IconButton(
-            onPressed: () => context.router.push(CreateTaskPage(task: task)),
+            onPressed: () =>
+                context.router.push(CreateTaskPage(task: widget.task)),
             icon: const Icon(
               Icons.edit,
               color: AppColors.headblue,
@@ -55,18 +91,45 @@ class TaskPage extends StatelessWidget implements AutoRouteWrapper {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              task.title,
-              style: AppTextStyles.semibold24,
+            Row(
+              children: [
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) => Container(
+                    width: 30.r,
+                    height: 30.r,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(_shapeAnimation.value * 30.r),
+                      color: Color(widget.task.color),
+                    ),
+                  ),
+                ),
+                10.w.widthBox,
+                Text(
+                  widget.task.title,
+                  style: AppTextStyles.semibold24,
+                ),
+              ],
             ),
-            15.h.heightBox,
-            if (task.description != null)
-              Text(
-                task.description!,
-                style: AppTextStyles.semibold14,
+            if (widget.task.description != null) ...[
+              20.h.heightBox,
+              Row(
+                children: [
+                  const Icon(
+                    Icons.description,
+                    color: AppColors.headblue,
+                  ),
+                  20.w.widthBox,
+                  Text(
+                    widget.task.description!,
+                    style: AppTextStyles.semibold14.copyWith(fontSize: 16.sp),
+                  ),
+                ],
               ),
-            20.h.heightBox,
-            if (task.category != null)
+              15.h.heightBox,
+            ],
+            if (widget.task.category != null)
               SizedBox(
                 height: 30.h,
                 child: Row(
@@ -76,11 +139,11 @@ class TaskPage extends StatelessWidget implements AutoRouteWrapper {
                       "Категория",
                       style: AppTextStyles.semibold18,
                     ),
-                    if (task.category != null)
+                    if (widget.task.category != null)
                       FutureBuilder(
                         future: context
                             .read<TaskPageCubit>()
-                            .getCategory(task.category!),
+                            .getCategory(widget.task.category!),
                         builder: (context, snapshot) {
                           if (snapshot.data == null) {
                             return SizedBox(
@@ -105,25 +168,27 @@ class TaskPage extends StatelessWidget implements AutoRouteWrapper {
             ),
             20.h.heightBox,
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppDateUtils.formatDate(task.startTime.toDate()),
+                  AppDateUtils.formatDate(widget.task.startTime.toDate()),
                   style: AppTextStyles.semibold14,
                 ),
-                Column(
-                  children: [
-                    Text(
-                      AppDateUtils.toHHMM(task.startTime.toDate()),
-                      style: AppTextStyles.semibold14,
-                    ),
-                    15.h.heightBox,
-                    Text(
-                      AppDateUtils.toHHMM(task.endTime.toDate()),
-                      style: AppTextStyles.semibold14,
-                    ),
-                  ],
-                )
+                Spacer(),
+                Text(
+                  AppDateUtils.toHHMM(widget.task.startTime.toDate()),
+                  style: AppTextStyles.semibold14,
+                ),
+                5.w.widthBox,
+                Text(
+                  "-",
+                  style: AppTextStyles.semibold14,
+                ),
+                5.w.widthBox,
+                Text(
+                  AppDateUtils.toHHMM(widget.task.endTime.toDate()),
+                  style: AppTextStyles.semibold14,
+                ),
+                15.w.widthBox,
               ],
             ),
             20.h.heightBox,
@@ -131,17 +196,24 @@ class TaskPage extends StatelessWidget implements AutoRouteWrapper {
               color: AppColors.grey,
               thickness: 1.h,
             ),
+            20.h.heightBox,
+            Row(
+              children: [
+                const Icon(
+                  Icons.notifications,
+                  color: AppColors.headblue,
+                ),
+                15.w.widthBox,
+                Text(
+                  widget.task.remindTimeInSeconds != 3600
+                      ? "За ${widget.task.remindTimeInSeconds ~/ 60} минут"
+                      : "За 1 час",
+                ),
+              ],
+            )
           ],
         ),
       ),
-    );
-  }
-
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<TaskPageCubit>(
-      create: (context) => getIt<TaskPageCubit>(),
-      child: this,
     );
   }
 }

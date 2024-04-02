@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:taski/data/datasources/firebase_notifications_service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/firebase_options.dart';
@@ -12,7 +14,22 @@ void main() async {
   await initDependencies();
   initializeDateFormatting();
 
+  await Permission.notification.isDenied.then((value) {
+    if (value) {
+      Permission.notification.request().then((value) {
+        if (value.isGranted) initializeService();
+      });
+    } else {
+      initializeService();
+    }
+  });
+
   runApp(const TaskiApp());
+}
+
+void initializeService() async {
+  final fns = getIt<FirebaseNotificationService>();
+  await fns.initialize();
 }
 
 class TaskiApp extends StatefulWidget {

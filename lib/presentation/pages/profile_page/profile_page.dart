@@ -89,13 +89,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         context.router.push(const CategoriesPage()),
                     text: "Категории задач",
                   ),
-                  20.h.heightBox,
-                  CustomButton(
-                    width: double.maxFinite,
-                    height: 40.h,
-                    onPressed: () {},
-                    text: "Настройки",
-                  ),
                   const Spacer(),
                   TextButton(
                     onPressed: () async =>

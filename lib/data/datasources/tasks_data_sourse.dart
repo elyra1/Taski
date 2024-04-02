@@ -54,4 +54,8 @@ class TaskDataSource implements TaskRepository {
         .get();
     return Task.fromJson(doc.data()!);
   }
+
+  @override
+  Future<void> changeIsNotificationSended({required Task task}) async =>
+      await editTask(task: task.copyWith(notificationSended: false));
 }
