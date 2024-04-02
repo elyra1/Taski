@@ -12,11 +12,15 @@ class UserCard extends StatelessWidget {
   final UserModel user;
   final bool isFriend;
   final void Function() onTap;
+  final void Function() onSendTap;
+  final void Function() onRemoveTap;
   const UserCard({
     Key? key,
     required this.user,
     required this.onTap,
     required this.isFriend,
+    required this.onSendTap,
+    required this.onRemoveTap,
   }) : super(key: key);
 
   @override
@@ -44,7 +48,7 @@ class UserCard extends StatelessWidget {
           ),
           const Spacer(),
           IconButton(
-            onPressed: () {},
+            onPressed: isFriend ? onRemoveTap : onSendTap,
             icon: Icon(
               isFriend ? Icons.remove : Icons.send,
               color: AppColors.headblue,

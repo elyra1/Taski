@@ -36,7 +36,7 @@ class TasksSingleDayPageCubit extends Cubit<TasksSingleDayPageState> {
   }
 
   Future<void> editTask(Task task) async {
-    await _taskRepository.changeIsNotificationSended(task: task);
-    await _taskRepository.editTask(task: task);
+    await _taskRepository.editTask(
+        task: task.copyWith(notificationSended: false));
   }
 }

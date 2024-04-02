@@ -25,6 +25,7 @@ mixin _$UserModel {
   String get id => throw _privateConstructorUsedError;
   String? get photoUrl => throw _privateConstructorUsedError;
   List<String> get friendsIds => throw _privateConstructorUsedError;
+  List<String> get requests => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +43,8 @@ abstract class $UserModelCopyWith<$Res> {
       String email,
       String id,
       String? photoUrl,
-      List<String> friendsIds});
+      List<String> friendsIds,
+      List<String> requests});
 }
 
 /// @nodoc
@@ -63,6 +65,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? id = null,
     Object? photoUrl = freezed,
     Object? friendsIds = null,
+    Object? requests = null,
   }) {
     return _then(_value.copyWith(
       username: null == username
@@ -85,6 +88,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.friendsIds
           : friendsIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      requests: null == requests
+          ? _value.requests
+          : requests // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -102,7 +109,8 @@ abstract class _$$UserEntityImplCopyWith<$Res>
       String email,
       String id,
       String? photoUrl,
-      List<String> friendsIds});
+      List<String> friendsIds,
+      List<String> requests});
 }
 
 /// @nodoc
@@ -121,6 +129,7 @@ class __$$UserEntityImplCopyWithImpl<$Res>
     Object? id = null,
     Object? photoUrl = freezed,
     Object? friendsIds = null,
+    Object? requests = null,
   }) {
     return _then(_$UserEntityImpl(
       username: null == username
@@ -143,6 +152,10 @@ class __$$UserEntityImplCopyWithImpl<$Res>
           ? _value._friendsIds
           : friendsIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      requests: null == requests
+          ? _value._requests
+          : requests // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -155,8 +168,10 @@ class _$UserEntityImpl implements _UserEntity {
       required this.email,
       required this.id,
       this.photoUrl = null,
-      final List<String> friendsIds = const []})
-      : _friendsIds = friendsIds;
+      final List<String> friendsIds = const [],
+      final List<String> requests = const []})
+      : _friendsIds = friendsIds,
+        _requests = requests;
 
   factory _$UserEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserEntityImplFromJson(json);
@@ -179,9 +194,18 @@ class _$UserEntityImpl implements _UserEntity {
     return EqualUnmodifiableListView(_friendsIds);
   }
 
+  final List<String> _requests;
+  @override
+  @JsonKey()
+  List<String> get requests {
+    if (_requests is EqualUnmodifiableListView) return _requests;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_requests);
+  }
+
   @override
   String toString() {
-    return 'UserModel(username: $username, email: $email, id: $id, photoUrl: $photoUrl, friendsIds: $friendsIds)';
+    return 'UserModel(username: $username, email: $email, id: $id, photoUrl: $photoUrl, friendsIds: $friendsIds, requests: $requests)';
   }
 
   @override
@@ -196,13 +220,20 @@ class _$UserEntityImpl implements _UserEntity {
             (identical(other.photoUrl, photoUrl) ||
                 other.photoUrl == photoUrl) &&
             const DeepCollectionEquality()
-                .equals(other._friendsIds, _friendsIds));
+                .equals(other._friendsIds, _friendsIds) &&
+            const DeepCollectionEquality().equals(other._requests, _requests));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, username, email, id, photoUrl,
-      const DeepCollectionEquality().hash(_friendsIds));
+  int get hashCode => Object.hash(
+      runtimeType,
+      username,
+      email,
+      id,
+      photoUrl,
+      const DeepCollectionEquality().hash(_friendsIds),
+      const DeepCollectionEquality().hash(_requests));
 
   @JsonKey(ignore: true)
   @override
@@ -224,7 +255,8 @@ abstract class _UserEntity implements UserModel {
       required final String email,
       required final String id,
       final String? photoUrl,
-      final List<String> friendsIds}) = _$UserEntityImpl;
+      final List<String> friendsIds,
+      final List<String> requests}) = _$UserEntityImpl;
 
   factory _UserEntity.fromJson(Map<String, dynamic> json) =
       _$UserEntityImpl.fromJson;
@@ -239,6 +271,8 @@ abstract class _UserEntity implements UserModel {
   String? get photoUrl;
   @override
   List<String> get friendsIds;
+  @override
+  List<String> get requests;
   @override
   @JsonKey(ignore: true)
   _$$UserEntityImplCopyWith<_$UserEntityImpl> get copyWith =>

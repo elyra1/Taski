@@ -11,6 +11,7 @@ class UserModel with _$UserModel {
     required String id,
     @Default(null) String? photoUrl,
     @Default([]) List<String> friendsIds,
+    @Default([]) List<String> requests,
   }) = _UserEntity;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

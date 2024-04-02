@@ -16,6 +16,10 @@ _$UserEntityImpl _$$UserEntityImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      requests: (json['requests'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$UserEntityImplToJson(_$UserEntityImpl instance) =>
@@ -25,4 +29,5 @@ Map<String, dynamic> _$$UserEntityImplToJson(_$UserEntityImpl instance) =>
       'id': instance.id,
       'photoUrl': instance.photoUrl,
       'friendsIds': instance.friendsIds,
+      'requests': instance.requests,
     };

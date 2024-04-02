@@ -32,8 +32,9 @@ class WeekTasksPageCubit extends Cubit<WeekTasksPageState> {
   }
 
   Future<void> editTask(Task task) async {
-    await _taskRepository.changeIsNotificationSended(task: task);
-    await _taskRepository.editTask(task: task);
+    await _taskRepository.editTask(
+      task: task.copyWith(notificationSended: false),
+    );
   }
 
   List<Task> getTasksThisWeek(List<Task> tasks, DateTime currentDate) {

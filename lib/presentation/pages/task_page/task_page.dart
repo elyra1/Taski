@@ -113,7 +113,7 @@ class _TaskPageState extends State<TaskPage>
               ],
             ),
             if (widget.task.description != null) ...[
-              20.h.heightBox,
+              30.h.heightBox,
               Row(
                 children: [
                   const Icon(
@@ -127,7 +127,7 @@ class _TaskPageState extends State<TaskPage>
                   ),
                 ],
               ),
-              15.h.heightBox,
+              30.h.heightBox,
             ],
             if (widget.task.category != null)
               SizedBox(
@@ -173,7 +173,7 @@ class _TaskPageState extends State<TaskPage>
                   AppDateUtils.formatDate(widget.task.startTime.toDate()),
                   style: AppTextStyles.semibold14,
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
                   AppDateUtils.toHHMM(widget.task.startTime.toDate()),
                   style: AppTextStyles.semibold14,

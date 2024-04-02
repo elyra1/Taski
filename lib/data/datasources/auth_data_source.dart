@@ -63,6 +63,10 @@ class AuthDataSource implements AuthRepository {
 
   @override
   Future<void> signOut() async {
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(_firebaseAuth.currentUser!.uid)
+        .update({"fcmToken": null});
     await _firebaseAuth.signOut();
   }
 
@@ -79,11 +83,93 @@ class AuthDataSource implements AuthRepository {
 
   @override
   Stream<Iterable<UserModel>> getUsersStream() {
-    final a = _firebaseFirestore
+    final stream = _firebaseFirestore
         .collection(FirebaseCollections.users)
         .orderBy('username')
         .snapshots();
-    return a
+    return stream
         .map((event) => event.docs.map((e) => UserModel.fromJson(e.data())));
+  }
+
+  @override
+  Future<void> acceptFriendRequest({required String userId}) async {
+    final currentUser = await getUser();
+    final updatedUser = currentUser.copyWith(
+      requests: List.from(currentUser.requests)..remove(userId),
+      friendsIds: List.from(currentUser.friendsIds)..add(userId),
+    );
+    final newFriend = await getUser(userId: userId);
+    final updatedNewFriend = newFriend.copyWith(
+      friendsIds: List.from(newFriend.friendsIds)..add(currentUser.id),
+    );
+
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(_firebaseAuth.currentUser!.uid)
+        .set(updatedUser.toJson());
+
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(userId)
+        .set(updatedNewFriend.toJson());
+  }
+
+  @override
+  Future<void> declineFriendRequest({required String userId}) async {
+    final currentUser = await getUser();
+    final updatedUser = currentUser.copyWith(
+      requests: List.from(currentUser.requests)..remove(userId),
+    );
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(_firebaseAuth.currentUser!.uid)
+        .set(updatedUser.toJson());
+  }
+
+  @override
+  Future<void> deleteFromFriends({required String userId}) async {
+    final currentUser = await getUser();
+    final friend = await getUser(userId: userId);
+    final updatedUser = currentUser.copyWith(
+      friendsIds: List.from(currentUser.friendsIds)..remove(userId),
+      requests: List.from(currentUser.requests)..add(userId),
+    );
+    final updatedFriend = friend.copyWith(
+      friendsIds: List.from(friend.friendsIds)..remove(currentUser.id),
+    );
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(_firebaseAuth.currentUser!.uid)
+        .set(updatedUser.toJson());
+
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(userId)
+        .set(updatedFriend.toJson());
+  }
+
+  @override
+  Future<void> sendFriendRequest({required String userId}) async {
+    final requestUser = await getUser(userId: userId);
+    final updatedRequestUser = requestUser.copyWith(
+      requests: List.from(requestUser.requests)..add(userId),
+    );
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(userId)
+        .set(updatedRequestUser.toJson());
+  }
+
+  @override
+  Future<void> undoFriendRequest({required String userId}) async {
+    final requestUser = await getUser(userId: userId);
+    final updatedRequestUser = requestUser.copyWith(
+      requests: List.from(requestUser.requests)
+        ..remove(_firebaseAuth.currentUser!.uid),
+    );
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(userId)
+        .set(updatedRequestUser.toJson());
   }
 }

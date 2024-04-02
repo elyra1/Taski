@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -131,13 +130,21 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       context: context,
                       initialDate: startTime,
                       firstDate: DateTime.now(),
-                      lastDate: endTime,
+                      lastDate: DateTime.now()
+                          .copyWith(year: DateTime.now().year + 1),
                     ).then(
-                      (value) => setState(() => startTime = value?.copyWith(
-                            hour: startTime.hour,
-                            minute: startTime.minute,
-                          ) ??
-                          startTime),
+                      (value) => setState(() {
+                        startTime = value?.copyWith(
+                              hour: startTime.hour,
+                              minute: startTime.minute,
+                            ) ??
+                            startTime;
+                        endTime = value?.copyWith(
+                              hour: endTime.hour,
+                              minute: endTime.minute,
+                            ) ??
+                            endTime;
+                      }),
                     );
                   },
                   child: Text(
@@ -145,68 +152,66 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     style: AppTextStyles.semibold14,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.fromDateTime(startTime),
-                    ).then(
-                      (value) => setState(
-                        () => startTime = startTime.copyWith(
-                          hour: value?.hour ?? startTime.hour,
-                          minute: value?.minute ?? startTime.minute,
-                        ),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.fromDateTime(startTime),
+                        ).then(
+                          (value) => setState(
+                            () {
+                              final editedvalue = startTime.copyWith(
+                                hour: value?.hour ?? startTime.hour,
+                                minute: value?.minute ?? startTime.minute,
+                              );
+                              if (editedvalue.isAfter(endTime) ||
+                                  editedvalue.isSameDate(endTime)) {
+                                endTime = endTime.add(
+                                    endTime.difference(startTime) +
+                                        editedvalue.difference(endTime));
+                              }
+                              startTime = editedvalue;
+                            },
+                          ),
+                        );
+                      },
+                      child: Text(
+                        AppDateUtils.toHHMM(startTime),
+                        style: AppTextStyles.semibold14,
                       ),
-                    );
-                  },
-                  child: Text(
-                    AppDateUtils.toHHMM(startTime),
-                    style: AppTextStyles.semibold14,
-                  ),
-                ),
-              ],
-            ).paddingSymmetric(horizontal: 15.w),
-            25.h.heightBox,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    showDatePicker(
-                      context: context,
-                      initialDate: endTime,
-                      firstDate: startTime,
-                      lastDate: DateTime.now()
-                          .copyWith(year: DateTime.now().year + 1),
-                    ).then(
-                      (value) => setState(() => endTime = value?.copyWith(
-                              hour: endTime.hour, minute: endTime.minute) ??
-                          endTime),
-                    );
-                  },
-                  child: Text(
-                    AppDateUtils.formatDate(endTime),
-                    style: AppTextStyles.semibold14,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(endTime))
-                        .then(
-                      (value) => setState(
-                        () => endTime = endTime.copyWith(
-                          hour: value?.hour ?? endTime.hour,
-                          minute: value?.minute ?? endTime.minute,
-                        ),
+                    ),
+                    10.h.heightBox,
+                    GestureDetector(
+                      onTap: () {
+                        showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(endTime))
+                            .then(
+                          (value) => setState(
+                            () {
+                              final editedValue = endTime.copyWith(
+                                hour: value?.hour ?? endTime.hour,
+                                minute: value?.minute ?? endTime.minute,
+                              );
+                              if (startTime.isAfter(editedValue) ||
+                                  startTime.isSameDate(editedValue)) {
+                                startTime = startTime.subtract(
+                                    startTime.difference(editedValue) +
+                                        endTime.difference(startTime));
+                              }
+                              endTime = editedValue;
+                            },
+                          ),
+                        );
+                      },
+                      child: Text(
+                        AppDateUtils.toHHMM(endTime),
+                        style: AppTextStyles.semibold14,
                       ),
-                    );
-                  },
-                  child: Text(
-                    AppDateUtils.toHHMM(endTime),
-                    style: AppTextStyles.semibold14,
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ).paddingSymmetric(horizontal: 15.w),
@@ -328,7 +333,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   Future<void> save() async {
     bool titleIsEmpty = titleController.text == '';
-    bool startIsAfterEnd = startTime.isAfter(endTime);
     final task = Task(
       title: titleController.text,
       id: '',
@@ -343,11 +347,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     if (titleIsEmpty) {
       Validation.showAppSnackBar(
         text: 'Название не может быть пустым.',
-        context: context,
-      );
-    } else if (startIsAfterEnd) {
-      Validation.showAppSnackBar(
-        text: 'Время старта не может быть позже времени окончания задачи.',
         context: context,
       );
     } else {

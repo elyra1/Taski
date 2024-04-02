@@ -79,6 +79,8 @@ class FriendsPage extends StatelessWidget implements AutoRouteWrapper {
                         ),
                       ),
                       isFriend: true,
+                      onRemoveTap: () {},
+                      onSendTap: () {},
                     ).paddingSymmetric(vertical: 7.h);
                   },
                 ).paddingOnly(left: 5.w, right: 5.w, top: 15.h);

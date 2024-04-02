@@ -77,8 +77,9 @@ class _UserSearchPageState extends State<UserSearchPage> {
                   builder: (dialogContext) {
                     return AddUserToFriendsDialog(
                       user: user,
-                      onSendPressed: () => context.router.push(HomePage(
-                          user: user)), //TODO сделать добавление друзей
+                      onSendPressed: () => cubit
+                          .sendFriendRequest(userId: user.id)
+                          .then((value) => context.router.pop()),
                     ).paddingSymmetric(horizontal: 50.w, vertical: 220.h);
                   },
                 );
@@ -89,6 +90,11 @@ class _UserSearchPageState extends State<UserSearchPage> {
                   ? state.currentUser!.friendsIds.contains(user.id)
                   : false;
             },
+            onSendTap: () {},
+            onRemoveTap: () {},
+            onUndoRequestTap: () {},
+            onAcceptTap: () {},
+            onDeclineTap: () {},
           );
         },
       ).paddingSymmetric(vertical: 10.h, horizontal: 5.w),

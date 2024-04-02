@@ -13,4 +13,9 @@ abstract class AuthRepository {
   Future<void> signOut();
   Future<List<UserModel>> getUserFriends();
   Stream<Iterable<UserModel>> getUsersStream();
+  Future<void> sendFriendRequest({required String userId});
+  Future<void> deleteFromFriends({required String userId});
+  Future<void> acceptFriendRequest({required String userId});
+  Future<void> declineFriendRequest({required String userId});
+  Future<void> undoFriendRequest({required String userId});
 }

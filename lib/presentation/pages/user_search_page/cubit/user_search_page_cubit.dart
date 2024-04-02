@@ -24,4 +24,20 @@ class UserSearchPageCubit extends Cubit<UserSearchPageState> {
     final user = await _authRepository.getUser();
     emit(UserSearchPageState.initial(currentUser: user));
   }
+
+  Future<void> sendFriendRequest({required String userId}) async {
+    await _authRepository.sendFriendRequest(userId: userId);
+  }
+
+  Future<void> deleteFromFriends({required String userId}) async {
+    await _authRepository.deleteFromFriends(userId: userId);
+  }
+
+  Future<void> acceptFriendRequest({required String userId}) async {
+    await _authRepository.acceptFriendRequest(userId: userId);
+  }
+
+  Future<void> declineFriendRequest({required String userId}) async {
+    await _authRepository.declineFriendRequest(userId: userId);
+  }
 }

@@ -9,7 +9,7 @@ part 'home_page_cubit.freezed.dart';
 @injectable
 class HomePageCubit extends Cubit<HomePageState> {
   final AuthRepository _authRepository;
-  HomePageCubit(this._authRepository) : super(HomePageState.initial());
+  HomePageCubit(this._authRepository) : super(const HomePageState.initial());
   Future<void> signOut() async {
     await _authRepository.signOut();
   }
