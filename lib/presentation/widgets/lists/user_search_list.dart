@@ -9,7 +9,7 @@ import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 import 'package:taski/presentation/widgets/items/user_card.dart';
 
 class UserSearchList extends StatelessWidget {
-  final Stream<Iterable<UserModel>> stream;
+  final Iterable<UserModel> users;
   final String? value;
   final void Function(UserModel user) onTap;
   final bool Function(UserModel user) isFriend;
@@ -22,7 +22,7 @@ class UserSearchList extends StatelessWidget {
   final void Function(UserModel user) onDeclineTap;
   const UserSearchList({
     Key? key,
-    required this.stream,
+    required this.users,
     this.value,
     required this.onTap,
     required this.isFriend,
@@ -37,56 +37,47 @@ class UserSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final list = snapshot.data!
-              .where((element) =>
-                  value != null ? element.username.contains(value!) : true)
-              .toList();
-          if (list.isEmpty && value == null) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Вы не добавили в друзья ни одного пользователя! Попробуйте найти пользователя по его никнейму и отправить ему запрос на добавление в друзья',
-                  style: AppTextStyles.regular12
-                      .copyWith(fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.center,
-                ),
-                15.h.heightBox,
-                CustomButton(
-                  width: 300.w,
-                  height: 40.h,
-                  text: 'Найти пользователей',
-                  onPressed: () => context.router.push(const UserSearchPage()),
-                ),
-              ],
-            );
-          }
-          return ListView.builder(
-            physics: const BouncingScrollPhysics(
-                decelerationRate: ScrollDecelerationRate.fast),
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              return UserCard(
-                user: list[index],
-                onTap: () => onTap(list[index]),
-                isFriend: isFriend(list[index]),
-                sendedRequest: isSendedRequest(list[index]),
-                requestingFriend: isRequestingFriend(list[index]),
-                onSendTap: () => onSendTap(list[index]),
-                onRemoveTap: () => onRemoveTap(list[index]),
-                onUndoRequestTap: () => onUndoRequestTap(list[index]),
-                onAcceptTap: () => onAcceptTap(list[index]),
-                onDeclineTap: () => onDeclineTap(list[index]),
-              ).paddingSymmetric(vertical: 7.h);
-            },
-          );
-        } else {
-          return nil;
-        }
+    final list = users
+        .where((element) =>
+            value != null ? element.username.contains(value!) : true)
+        .toList();
+    if (list.isEmpty && value == null) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Вы не добавили в друзья ни одного пользователя! Попробуйте найти пользователя по его никнейму и отправить ему запрос на добавление в друзья',
+            style:
+                AppTextStyles.regular12.copyWith(fontWeight: FontWeight.w500),
+            textAlign: TextAlign.center,
+          ),
+          15.h.heightBox,
+          CustomButton(
+            width: 300.w,
+            height: 40.h,
+            text: 'Найти пользователей',
+            onPressed: () => context.router.push(const UserSearchPage()),
+          ),
+        ],
+      );
+    }
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(
+          decelerationRate: ScrollDecelerationRate.fast),
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        return UserCard(
+          user: list[index],
+          onTap: () => onTap(list[index]),
+          isFriend: isFriend(list[index]),
+          sendedRequest: isSendedRequest(list[index]),
+          requestingFriend: isRequestingFriend(list[index]),
+          onSendTap: () => onSendTap(list[index]),
+          onRemoveTap: () => onRemoveTap(list[index]),
+          onUndoRequestTap: () => onUndoRequestTap(list[index]),
+          onAcceptTap: () => onAcceptTap(list[index]),
+          onDeclineTap: () => onDeclineTap(list[index]),
+        ).paddingSymmetric(vertical: 7.h);
       },
     );
   }

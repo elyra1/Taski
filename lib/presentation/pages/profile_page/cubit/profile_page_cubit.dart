@@ -2,14 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:taski/domain/entities/user_model.dart';
-import 'package:taski/domain/repositories/auth_repository.dart';
+import 'package:taski/domain/repositories/user_repository.dart';
 
 part 'profile_page_state.dart';
 part 'profile_page_cubit.freezed.dart';
 
 @injectable
 class ProfilePageCubit extends Cubit<ProfilePageState> {
-  final AuthRepository _authRepository;
+  final UserRepository _authRepository;
   ProfilePageCubit(this._authRepository)
       : super(const ProfilePageState.loading());
 

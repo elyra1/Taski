@@ -19,32 +19,38 @@ mixin _$CreateCategoryPageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
+    required TResult Function() saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
+    TResult? Function()? saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
+    TResult Function()? saving,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
+    required TResult Function(_Saving value) saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
+    TResult? Function(_Saving value)? saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
+    TResult Function(_Saving value)? saving,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -108,6 +114,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
+    required TResult Function() saving,
   }) {
     return initial();
   }
@@ -116,6 +123,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
+    TResult? Function()? saving,
   }) {
     return initial?.call();
   }
@@ -124,6 +132,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
+    TResult Function()? saving,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -136,6 +145,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
+    required TResult Function(_Saving value) saving,
   }) {
     return initial(this);
   }
@@ -144,6 +154,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
+    TResult? Function(_Saving value)? saving,
   }) {
     return initial?.call(this);
   }
@@ -152,6 +163,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
+    TResult Function(_Saving value)? saving,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -163,4 +175,106 @@ class _$InitialImpl implements _Initial {
 
 abstract class _Initial implements CreateCategoryPageState {
   const factory _Initial() = _$InitialImpl;
+}
+
+/// @nodoc
+abstract class _$$SavingImplCopyWith<$Res> {
+  factory _$$SavingImplCopyWith(
+          _$SavingImpl value, $Res Function(_$SavingImpl) then) =
+      __$$SavingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SavingImplCopyWithImpl<$Res>
+    extends _$CreateCategoryPageStateCopyWithImpl<$Res, _$SavingImpl>
+    implements _$$SavingImplCopyWith<$Res> {
+  __$$SavingImplCopyWithImpl(
+      _$SavingImpl _value, $Res Function(_$SavingImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$SavingImpl implements _Saving {
+  const _$SavingImpl();
+
+  @override
+  String toString() {
+    return 'CreateCategoryPageState.saving()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SavingImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() saving,
+  }) {
+    return saving();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? saving,
+  }) {
+    return saving?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? saving,
+    required TResult orElse(),
+  }) {
+    if (saving != null) {
+      return saving();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Saving value) saving,
+  }) {
+    return saving(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Saving value)? saving,
+  }) {
+    return saving?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Saving value)? saving,
+    required TResult orElse(),
+  }) {
+    if (saving != null) {
+      return saving(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Saving implements CreateCategoryPageState {
+  const factory _Saving() = _$SavingImpl;
 }

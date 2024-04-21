@@ -12,6 +12,7 @@ import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/utils/validation.dart';
 import 'package:taski/presentation/widgets/app_text_field.dart';
 import 'package:taski/presentation/widgets/buttons/custom_button.dart';
+import 'package:taski/presentation/widgets/dialogs/saving_dialog.dart';
 import 'package:taski/presentation/widgets/items/color_pick_item.dart';
 
 @RoutePage()
@@ -72,103 +73,116 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
           style: AppTextStyles.bold20,
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          15.h.heightBox,
-          AppTextField(
-            title: 'Название',
-            hintText: 'Введите название категории',
-            width: 345.w,
-            height: 70.h,
-            controller: titleController,
-            textInputAction: TextInputAction.next,
-          ),
-          15.h.heightBox,
-          Text(
-            'Выберите цвет',
-            style: AppTextStyles.semibold20.copyWith(fontSize: 18),
-          ).paddingOnly(left: 15.w).alignAtCenterLeft(),
-          5.h.heightBox,
-          Row(
-            children: [
-              for (Color color in colors) ...[
-                ColorPickItem(
-                  color: color,
-                  onTap: () => setState(() => selectedColor = color),
-                  isSelected: color == selectedColor,
-                ),
-                10.w.widthBox,
-              ]
-            ],
-          ).paddingOnly(left: 15.w).alignAtCenterLeft(),
-          15.h.heightBox,
-          CustomButton(
-            width: 129.w,
-            height: 40.h,
-            text: "Сохранить",
-            onPressed: () async {
-              bool titleIsEmpty = titleController.text == '';
-              final category = Category(
-                title: titleController.text,
-                id: '',
-                authorId: '',
-                color: selectedColor.value,
-              );
-              if (titleIsEmpty) {
-                Validation.showAppSnackBar(
-                  text: 'Название не может быть пустым.',
-                  context: context,
+      body: BlocListener<CreateCategoryPageCubit, CreateCategoryPageState>(
+        listener: (context, state) {
+          if (state == const CreateCategoryPageState.saving()) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return const SavingDialog();
+              },
+            );
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            15.h.heightBox,
+            AppTextField(
+              title: 'Название',
+              hintText: 'Введите название категории',
+              width: 345.w,
+              height: 70.h,
+              controller: titleController,
+              textInputAction: TextInputAction.next,
+            ),
+            15.h.heightBox,
+            Text(
+              'Выберите цвет',
+              style: AppTextStyles.semibold20.copyWith(fontSize: 18),
+            ).paddingOnly(left: 15.w).alignAtCenterLeft(),
+            5.h.heightBox,
+            Row(
+              children: [
+                for (Color color in colors) ...[
+                  ColorPickItem(
+                    color: color,
+                    onTap: () => setState(() => selectedColor = color),
+                    isSelected: color == selectedColor,
+                  ),
+                  10.w.widthBox,
+                ]
+              ],
+            ).paddingOnly(left: 15.w).alignAtCenterLeft(),
+            15.h.heightBox,
+            CustomButton(
+              width: 129.w,
+              height: 40.h,
+              text: "Сохранить",
+              onPressed: () async {
+                bool titleIsEmpty = titleController.text == '';
+                final category = Category(
+                  title: titleController.text,
+                  id: '',
+                  authorId: '',
+                  color: selectedColor.value,
                 );
-              } else {
-                final textError = widget.category != null
-                    ? await context
-                        .read<CreateCategoryPageCubit>()
-                        .editCategory(
-                          widget.category!.copyWith(
-                            title: titleController.text,
-                            color: selectedColor.value,
-                          ),
-                        )
-                    : await context
-                        .read<CreateCategoryPageCubit>()
-                        .addCategory(category);
-                if (textError != null && context.mounted) {
+                if (titleIsEmpty) {
                   Validation.showAppSnackBar(
-                    text: textError,
+                    text: 'Название не может быть пустым.',
                     context: context,
                   );
                 } else {
-                  if (context.mounted) {
-                    if (widget.category != null) {
-                      context.router.popUntil(
-                          (route) => route.settings.name == ProfilePage.name);
-                      context.router.push(const CategoriesPage());
-                    } else {
-                      context.router.pop();
+                  final textError = widget.category != null
+                      ? await context
+                          .read<CreateCategoryPageCubit>()
+                          .editCategory(
+                            widget.category!.copyWith(
+                              title: titleController.text,
+                              color: selectedColor.value,
+                            ),
+                          )
+                      : await context
+                          .read<CreateCategoryPageCubit>()
+                          .addCategory(category);
+                  if (textError != null && context.mounted) {
+                    Validation.showAppSnackBar(
+                      text: textError,
+                      context: context,
+                    );
+                  } else {
+                    if (context.mounted) {
+                      if (widget.category != null) {
+                        context.router.popUntil(
+                            (route) => route.settings.name == ProfilePage.name);
+                        context.router.push(const CategoriesPage());
+                      } else {
+                        context.router.pop();
+                      }
                     }
                   }
                 }
-              }
-            },
-          ).alignAtCenterRight(),
-          if (widget.category != null) ...[
-            TextButton(
-              onPressed: () async {
-                await context
-                    .read<CreateCategoryPageCubit>()
-                    .deleteCategory(widget.category!);
-                context.router.pop().then((value) => context.router.pop());
               },
-              child: Text(
-                "Удалить категорию",
-                style: AppTextStyles.semibold12.copyWith(
-                  color: AppColors.red,
+            ).alignAtCenterRight(),
+            if (widget.category != null) ...[
+              TextButton(
+                onPressed: () async {
+                  await context
+                      .read<CreateCategoryPageCubit>()
+                      .deleteCategory(widget.category!);
+                  context.router.pop().then((value) => context.router.pop());
+                },
+                child: Text(
+                  "Удалить категорию",
+                  style: AppTextStyles.semibold12.copyWith(
+                    color: AppColors.red,
+                  ),
                 ),
-              ),
-            ).paddingOnly(top: 350.h).toCenter(),
-          ]
-        ],
+              ).paddingOnly(top: 350.h).toCenter(),
+            ]
+          ],
+        ),
       ).paddingAll(15.r),
     );
   }

@@ -7,12 +7,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:taski/data/notifications/notifications_constants.dart';
 
 @injectable
 class FirebaseNotificationService {
   final FirebaseMessaging fcm;
-  final FirebaseAuth firebaseAuth;
-  FirebaseNotificationService(this.fcm, this.firebaseAuth);
+  FirebaseNotificationService(this.fcm);
 
   Future<void> checkPermissionsAndInit() async {
     Permission.notification.isDenied.then((value) async {
@@ -30,16 +30,15 @@ class FirebaseNotificationService {
     final token = await getToken();
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid = const AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
-    );
+    var initializationSettingsAndroid =
+        const AndroidInitializationSettings(NotificationsConstants.defaultIcon);
 
     if (token != null) {
       String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-      String serverUrl = 'http://79.174.80.218:8080/register-token';
+
       try {
         var response = await http.post(
-          Uri.parse(serverUrl),
+          NotificationsConstants.uri,
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'userId': userId, 'token': token}),
         );

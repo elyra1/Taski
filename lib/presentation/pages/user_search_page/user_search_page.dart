@@ -23,7 +23,7 @@ class UserSearchPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider<UserSearchPageCubit>(
-      create: (context) => getIt<UserSearchPageCubit>()..addCurrentUser(),
+      create: (context) => getIt<UserSearchPageCubit>(),
       child: this,
     );
   }
@@ -60,49 +60,47 @@ class _UserSearchPageState extends State<UserSearchPage> {
               OutlineInputBorder(borderSide: BorderSide(width: 0.5.r)),
         ).paddingOnly(bottom: 5.h),
       ),
-      body: BlocBuilder<UserSearchPageCubit, UserSearchPageState>(
-        builder: (context, state) {
-          return UserSearchList(
-            stream: cubit.getSearchUsersStream(),
-            value: searchValue,
-            onTap: (user) async {
-              final isFriend = (state.currentUser != null)
-                  ? state.currentUser!.friendsIds.contains(user.id)
-                  : false;
-              if (isFriend) {
-                context.router.push(HomePage(user: user));
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (dialogContext) {
-                    return AddUserToFriendsDialog(
-                      user: user,
-                      onSendPressed: () =>
-                          cubit.sendFriendRequest(userId: user.id),
-                    ).paddingSymmetric(horizontal: 50.w, vertical: 220.h);
-                  },
-                );
-              }
-            },
-            isFriend: (user) {
-              return (state.currentUser != null)
-                  ? state.currentUser!.friendsIds.contains(user.id)
-                  : false;
-            },
-            isSendedRequest: (user) {
-              return (user.requests.contains(state.currentUser?.id));
-            },
-            isRequestingFriend: (user) {
-              return (state.currentUser?.requests.contains(user.id) ?? false);
-            },
-            onSendTap: (user) => cubit.sendFriendRequest(userId: user.id),
-            onRemoveTap: (user) => cubit.deleteFromFriends(userId: user.id),
-            onUndoRequestTap: (user) => cubit.undoRequest(userId: user.id),
-            onAcceptTap: (user) => cubit.acceptFriendRequest(userId: user.id),
-            onDeclineTap: (user) => cubit.declineFriendRequest(userId: user.id),
-          );
+      body: StreamBuilder(
+        stream: cubit.getDataStream(),
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
+            final currentUser = snapshot.data!.$1;
+            return UserSearchList(
+              users: snapshot.data!.$2,
+              value: searchValue,
+              onTap: (user) async {
+                final isFriend = currentUser.friendsIds.contains(user.id);
+                if (isFriend) {
+                  context.router.push(HomePage(user: user));
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (dialogContext) {
+                      return AddUserToFriendsDialog(
+                        user: user,
+                        onSendPressed: () =>
+                            cubit.sendFriendRequest(userId: user.id),
+                      ).paddingSymmetric(horizontal: 50.w, vertical: 220.h);
+                    },
+                  );
+                }
+              },
+              isFriend: (user) => currentUser.friendsIds.contains(user.id),
+              isSendedRequest: (user) => user.requests.contains(currentUser.id),
+              isRequestingFriend: (user) =>
+                  currentUser.requests.contains(user.id),
+              onSendTap: (user) => cubit.sendFriendRequest(userId: user.id),
+              onRemoveTap: (user) => cubit.deleteFromFriends(userId: user.id),
+              onUndoRequestTap: (user) => cubit.undoRequest(userId: user.id),
+              onAcceptTap: (user) => cubit.acceptFriendRequest(userId: user.id),
+              onDeclineTap: (user) =>
+                  cubit.declineFriendRequest(userId: user.id),
+            ).paddingSymmetric(vertical: 10.h, horizontal: 5.w);
+          } else {
+            return nil;
+          }
         },
-      ).paddingSymmetric(vertical: 10.h, horizontal: 5.w),
+      ),
     );
   }
 }

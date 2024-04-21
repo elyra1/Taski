@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taski/domain/entities/category.dart';
 import 'package:taski/domain/entities/task.dart';
-import 'package:taski/domain/repositories/auth_repository.dart';
+import 'package:taski/domain/repositories/user_repository.dart';
 import 'package:taski/domain/repositories/category_repository.dart';
 import 'package:taski/domain/repositories/task_repository.dart';
 part 'create_task_page_cubit.freezed.dart';
@@ -12,18 +12,19 @@ part 'create_task_page_cubit.freezed.dart';
 part 'create_task_page_state.dart';
 
 @injectable
-class CreateTaskCubit extends Cubit<CreateTask> {
+class CreateTaskCubit extends Cubit<CreateTaskState> {
   final TaskRepository _taskRepository;
-  final AuthRepository _authRepository;
+  final UserRepository _authRepository;
   final CategoryRepository _categoryRepository;
   CreateTaskCubit(
     this._taskRepository,
     this._authRepository,
     this._categoryRepository,
-  ) : super(const CreateTask.initial());
+  ) : super(const CreateTaskState.initial());
 
   Future<String?> addTask(Task task) async {
     try {
+      emit(const CreateTaskState.saving());
       final user = await _authRepository.getUser();
       final newTaskId =
           await _taskRepository.addTask(task: task.copyWith(authorId: user.id));
@@ -42,6 +43,7 @@ class CreateTaskCubit extends Cubit<CreateTask> {
 
   Future<String?> editTask(Task task) async {
     try {
+      emit(const CreateTaskState.saving());
       final oldTask = await _taskRepository.getTask(taskId: task.id);
       await _taskRepository.editTask(task: task);
 
@@ -67,6 +69,7 @@ class CreateTaskCubit extends Cubit<CreateTask> {
 
   Future<String?> deleteTask(Task task) async {
     try {
+      emit(const CreateTaskState.saving());
       await _taskRepository.deleteTask(task: task);
       if (task.category != null) {
         _categoryRepository.deleteFromCategory(

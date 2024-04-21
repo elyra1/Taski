@@ -7,11 +7,11 @@ import 'package:taski/domain/entities/task.dart';
 import 'package:taski/domain/repositories/category_repository.dart';
 
 @Singleton(as: CategoryRepository)
-class CategoriesDataSource implements CategoryRepository {
+class CategoriesRepoImpl extends CategoryRepository {
   final FirebaseFirestore _firebaseFirestore;
   final FirebaseAuth _firebaseAuth;
 
-  CategoriesDataSource(this._firebaseFirestore, this._firebaseAuth);
+  CategoriesRepoImpl(this._firebaseFirestore, this._firebaseAuth);
 
   @override
   Future<void> addToCategory(
@@ -38,8 +38,10 @@ class CategoriesDataSource implements CategoryRepository {
     final newDocRef =
         _firebaseFirestore.collection(FirebaseCollections.categories).doc();
     json['id'] = newDocRef.id;
-    await _firebaseFirestore.runTransaction(
-        (transaction) async => transaction.set(newDocRef, json));
+    await _firebaseFirestore
+        .collection(FirebaseCollections.categories)
+        .doc(newDocRef.id)
+        .set(json);
   }
 
   @override
@@ -74,10 +76,11 @@ class CategoriesDataSource implements CategoryRepository {
     final qs = await _firebaseFirestore
         .collection(FirebaseCollections.categories)
         .get();
-    return qs.docs
+    final categories = qs.docs
         .map((e) => Category.fromJson(e.data()))
         .where((element) => element.authorId == _firebaseAuth.currentUser!.uid)
         .toList();
+    return categories;
   }
 
   @override

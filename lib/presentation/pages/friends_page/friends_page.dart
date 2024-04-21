@@ -44,46 +44,46 @@ class FriendsPage extends StatelessWidget implements AutoRouteWrapper {
         ],
         title: Text('Друзья', style: AppTextStyles.bold20),
       ),
-      body: BlocBuilder<FriendsPageCubit, FriendsPageState>(
-        builder: (context, state) {
-          return UserSearchList(
-            stream: cubit.getriendsStream(),
-            onTap: (user) async {
-              final isFriend = (state.currentUser != null)
-                  ? state.currentUser!.friendsIds.contains(user.id)
-                  : false;
-              if (isFriend) {
-                context.router.push(HomePage(user: user));
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (dialogContext) {
-                    return AddUserToFriendsDialog(
-                      user: user,
-                      onSendPressed: () =>
-                          cubit.sendFriendRequest(userId: user.id),
-                    ).paddingSymmetric(horizontal: 50.w, vertical: 220.h);
-                  },
-                );
-              }
-            },
-            isFriend: (user) {
-              return (state.currentUser != null)
-                  ? state.currentUser!.friendsIds.contains(user.id)
-                  : false;
-            },
-            isSendedRequest: (user) {
-              return (user.requests.contains(state.currentUser?.id));
-            },
-            isRequestingFriend: (user) {
-              return (state.currentUser?.requests.contains(user.id) ?? false);
-            },
-            onSendTap: (user) => cubit.sendFriendRequest(userId: user.id),
-            onRemoveTap: (user) => cubit.deleteFromFriends(userId: user.id),
-            onUndoRequestTap: (user) => cubit.undoRequest(userId: user.id),
-            onAcceptTap: (user) => cubit.acceptFriendRequest(userId: user.id),
-            onDeclineTap: (user) => cubit.declineFriendRequest(userId: user.id),
-          );
+      body: StreamBuilder(
+        stream: cubit.getDataStream(),
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
+            final currentUser = snapshot.data!.$1;
+            final users = snapshot.data!.$2;
+            return UserSearchList(
+              users: users,
+              onTap: (user) async {
+                final isFriend = currentUser.friendsIds.contains(user.id);
+                if (isFriend) {
+                  context.router.push(HomePage(user: user));
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (dialogContext) {
+                      return AddUserToFriendsDialog(
+                        user: user,
+                        onSendPressed: () =>
+                            cubit.sendFriendRequest(userId: user.id),
+                      ).paddingSymmetric(horizontal: 50.w, vertical: 220.h);
+                    },
+                  );
+                }
+              },
+              isFriend: (user) => currentUser.friendsIds.contains(user.id),
+              isSendedRequest: (user) =>
+                  (user.requests.contains(currentUser.id)),
+              isRequestingFriend: (user) =>
+                  (currentUser.requests.contains(user.id)),
+              onSendTap: (user) => cubit.sendFriendRequest(userId: user.id),
+              onRemoveTap: (user) => cubit.deleteFromFriends(userId: user.id),
+              onUndoRequestTap: (user) => cubit.undoRequest(userId: user.id),
+              onAcceptTap: (user) => cubit.acceptFriendRequest(userId: user.id),
+              onDeclineTap: (user) =>
+                  cubit.declineFriendRequest(userId: user.id),
+            );
+          } else {
+            return nil;
+          }
         },
       ),
     );

@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taski/data/firebase_collections.dart';
-import 'package:taski/domain/repositories/auth_repository.dart';
+import 'package:taski/domain/repositories/user_repository.dart';
 import 'package:taski/domain/entities/user_model.dart';
 
-@Singleton(as: AuthRepository)
-class AuthDataSource implements AuthRepository {
+@Singleton(as: UserRepository)
+class UserRepoImpl implements UserRepository {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firebaseFirestore;
-  AuthDataSource(this._firebaseAuth, this._firebaseFirestore);
+  UserRepoImpl(this._firebaseAuth, this._firebaseFirestore);
 
+  // Методы авторизации
   @override
   Future<UserModel> signIn(
       {required String email, required String password}) async {
@@ -70,6 +71,7 @@ class AuthDataSource implements AuthRepository {
     await _firebaseAuth.signOut();
   }
 
+  //методы работы с пользователями
   @override
   Future<List<UserModel>> getUserFriends() async {
     final user = await getUser();
@@ -91,6 +93,16 @@ class AuthDataSource implements AuthRepository {
         .map((event) => event.docs.map((e) => UserModel.fromJson(e.data())));
   }
 
+  @override
+  Stream<UserModel> getCurrentUserStream() {
+    return _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(_firebaseAuth.currentUser!.uid)
+        .snapshots()
+        .map((snapshot) => UserModel.fromJson(snapshot.data()!));
+  }
+
+  //система друзей
   @override
   Future<void> acceptFriendRequest({required String userId}) async {
     final currentUser = await getUser();

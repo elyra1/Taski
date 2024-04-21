@@ -71,7 +71,7 @@ class _TasksSingleDayPageState extends State<TasksSingleDayPage> {
                     onDateChanged: (date) =>
                         setState(() => selectedDate = date),
                     onTaskShifted: (task) => cubit.editTask(task),
-                    tasks: snapshot.data != null ? tasks! : [],
+                    tasks: tasks ?? [],
                   ),
                 ),
               ],

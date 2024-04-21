@@ -112,7 +112,8 @@ class _TaskPageState extends State<TaskPage>
                 ),
               ],
             ),
-            if (widget.task.description != null) ...[
+            if (widget.task.description != null &&
+                widget.task.description != "") ...[
               30.h.heightBox,
               Row(
                 children: [
@@ -169,9 +170,12 @@ class _TaskPageState extends State<TaskPage>
             20.h.heightBox,
             Row(
               children: [
-                Text(
-                  AppDateUtils.formatDate(widget.task.startTime.toDate()),
-                  style: AppTextStyles.semibold14,
+                SizedBox(
+                  width: 220.w,
+                  child: Text(
+                    AppDateUtils.formatDate(widget.task.startTime.toDate()),
+                    style: AppTextStyles.semibold14,
+                  ),
                 ),
                 const Spacer(),
                 Text(

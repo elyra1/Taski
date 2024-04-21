@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taski/domain/entities/task.dart';
-import 'package:taski/domain/repositories/auth_repository.dart';
+import 'package:taski/domain/repositories/user_repository.dart';
 import 'package:taski/domain/repositories/task_repository.dart';
 
 part 'tasks_month_page_state.dart';
@@ -12,7 +12,7 @@ part 'tasks_month_page_cubit.freezed.dart';
 @injectable
 class TasksMonthPageCubit extends Cubit<TasksMonthPageState> {
   final TaskRepository _taskRepository;
-  final AuthRepository _authRepository;
+  final UserRepository _authRepository;
   TasksMonthPageCubit(
     this._taskRepository,
     this._authRepository,

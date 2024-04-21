@@ -1,6 +1,6 @@
 import 'package:taski/domain/entities/user_model.dart';
 
-abstract class AuthRepository {
+abstract class UserRepository {
   Future<UserModel> signIn({required String email, required String password});
   Future<void> signUp({
     required String username,
@@ -8,6 +8,7 @@ abstract class AuthRepository {
     required String password,
   });
   Future<UserModel> getUser({String? userId});
+  Stream<UserModel> getCurrentUserStream();
   Future<void> resetPassword({required String email});
   bool get isUserAuthorizedWithEmail;
   Future<void> signOut();

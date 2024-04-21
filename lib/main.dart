@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taski/data/datasources/firebase_notifications_service.dart';
+import 'package:taski/data/notifications/firebase_notifications_service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/firebase_options.dart';

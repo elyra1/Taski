@@ -5,10 +5,10 @@ import 'package:taski/domain/entities/task.dart';
 import 'package:taski/domain/repositories/task_repository.dart';
 
 @Singleton(as: TaskRepository)
-class TaskDataSource implements TaskRepository {
+class TaskRepoImpl implements TaskRepository {
   final FirebaseFirestore _firebaseFirestore;
 
-  TaskDataSource(this._firebaseFirestore);
+  TaskRepoImpl(this._firebaseFirestore);
   @override
   Future<String> addTask({required Task task}) async {
     final json = task.toJson();

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taski/domain/entities/task.dart';
-import 'package:taski/domain/repositories/auth_repository.dart';
+import 'package:taski/domain/repositories/user_repository.dart';
 import 'package:taski/domain/repositories/task_repository.dart';
 import 'package:taski/presentation/widgets/task_grids/week_markup.dart/week_task_grid_helper.dart';
 
@@ -12,7 +12,7 @@ part 'week_tasks_page_cubit.freezed.dart';
 @injectable
 class WeekTasksPageCubit extends Cubit<WeekTasksPageState> {
   final TaskRepository _taskRepository;
-  final AuthRepository _authRepository;
+  final UserRepository _authRepository;
   WeekTasksPageCubit(this._taskRepository, this._authRepository)
       : super(const WeekTasksPageState.initial());
 
