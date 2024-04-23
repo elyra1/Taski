@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
@@ -331,7 +330,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     await context
                         .read<CreateTaskCubit>()
                         .deleteTask(widget.task!);
-                    context.router.pop().then((value) => context.router.pop());
+                    context.router.popUntil(
+                        (route) => route.settings.name == TaskPage.name);
+                    context.router.pop();
                   },
                   child: Text(
                     "Удалить задачу",
@@ -386,26 +387,25 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           context: context,
         );
       } else {
-        if (context.mounted) {
-          if (widget.task != null) {
-            context.router.pop().then((value) {
-              context.router.replace(
-                TaskPage(
-                  task: widget.task!.copyWith(
-                    startTime: Timestamp.fromDate(startTime),
-                    endTime: Timestamp.fromDate(endTime),
-                    title: titleController.text,
-                    description: descriptionController.text,
-                    color: selectedColor.value,
-                    category: selectedCategory,
-                    remindTimeInSeconds: selectedRemindTime,
-                  ),
-                ),
-              );
-            });
-          } else {
-            context.router.pop();
-          }
+        if (widget.task != null) {
+          context.router
+              .popUntil((route) => route.settings.name == TaskPage.name);
+          context.router.replace(
+            TaskPage(
+              task: widget.task!.copyWith(
+                startTime: Timestamp.fromDate(startTime),
+                endTime: Timestamp.fromDate(endTime),
+                title: titleController.text,
+                description: descriptionController.text,
+                color: selectedColor.value,
+                category: selectedCategory,
+                remindTimeInSeconds: selectedRemindTime,
+              ),
+            ),
+          );
+        } else {
+          context.router
+              .popUntil((route) => route.settings.name == HomePage.name);
         }
       }
     }

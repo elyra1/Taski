@@ -29,6 +29,7 @@ class CategoriesPage extends StatefulWidget implements AutoRouteWrapper {
 class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CategoriesPageCubit>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -46,9 +47,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () => context.router.push(CreateCategoryPage()).then(
-                (value) async =>
-                    await context.read<CategoriesPageCubit>().init()),
+            onPressed: () => context.router
+                .push(CreateCategoryPage())
+                .then((value) async => await cubit.init()),
             icon: const Icon(
               Icons.add,
               color: AppColors.headblue,
@@ -80,6 +81,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       itemCount: loaded.categories.length,
                       itemBuilder: (context, index) {
                         return CategoryCard(
+                          onTap: () {
+                            context.router
+                                .push(
+                                  CategoryPage(
+                                      category: loaded.categories[index]),
+                                )
+                                .then((value) async => await cubit.init());
+                          },
                           category: loaded.categories[index],
                         ).paddingAll(5.r);
                       },

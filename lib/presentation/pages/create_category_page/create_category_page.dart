@@ -53,6 +53,7 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CreateCategoryPageCubit>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -135,17 +136,13 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                   );
                 } else {
                   final textError = widget.category != null
-                      ? await context
-                          .read<CreateCategoryPageCubit>()
-                          .editCategory(
-                            widget.category!.copyWith(
-                              title: titleController.text,
-                              color: selectedColor.value,
-                            ),
-                          )
-                      : await context
-                          .read<CreateCategoryPageCubit>()
-                          .addCategory(category);
+                      ? await cubit.editCategory(
+                          widget.category!.copyWith(
+                            title: titleController.text,
+                            color: selectedColor.value,
+                          ),
+                        )
+                      : await cubit.addCategory(category);
                   if (textError != null && context.mounted) {
                     Validation.showAppSnackBar(
                       text: textError,
@@ -153,13 +150,9 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                     );
                   } else {
                     if (context.mounted) {
-                      if (widget.category != null) {
-                        context.router.popUntil(
-                            (route) => route.settings.name == ProfilePage.name);
-                        context.router.push(const CategoriesPage());
-                      } else {
-                        context.router.pop();
-                      }
+                      context.router.popUntil(
+                        (route) => route.settings.name == CategoriesPage.name,
+                      );
                     }
                   }
                 }
@@ -168,10 +161,10 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
             if (widget.category != null) ...[
               TextButton(
                 onPressed: () async {
-                  await context
-                      .read<CreateCategoryPageCubit>()
-                      .deleteCategory(widget.category!);
-                  context.router.pop().then((value) => context.router.pop());
+                  await cubit.deleteCategory(widget.category!);
+                  context.router.popUntil(
+                    (route) => route.settings.name == CategoriesPage.name,
+                  );
                 },
                 child: Text(
                   "Удалить категорию",

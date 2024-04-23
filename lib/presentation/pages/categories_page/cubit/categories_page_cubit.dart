@@ -16,10 +16,12 @@ class CategoriesPageCubit extends Cubit<CategoriesPageState> {
     emit(const CategoriesPageState.loading());
     final categories = await _categoryRepository.getUserCategories();
     await Future.delayed(const Duration(milliseconds: 500));
-    emit(
-      CategoriesPageState.loaded(
-        categories: categories,
-      ),
-    );
+    if (!isClosed) {
+      emit(
+        CategoriesPageState.loaded(
+          categories: categories,
+        ),
+      );
+    }
   }
 }
