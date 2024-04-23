@@ -7,9 +7,11 @@ abstract class SingleDayTaskGridHelper {
   static (double, double) findHeight(Task task) {
     final diff = task.endTime.toDate().difference(task.startTime.toDate());
     final height = (diff.inMinutes / 60) * 100.h;
-    final top = task.startTime.toDate().hour * (100.h) +
-        (task.startTime.toDate().minute / 60) * (100.h);
-    return (top + 50.h, height);
+    return (findPaddingTop(task.startTime.toDate()) + 50.h, height);
+  }
+
+  static double findPaddingTop(DateTime dateTime) {
+    return (dateTime.hour * (100.h) + (dateTime.minute / 60) * (100.h));
   }
 
   ///Возвращает startTime и endTime по позиции на скролле
@@ -58,14 +60,19 @@ abstract class SingleDayTaskGridHelper {
     return (isTopLimit) && (isBottomLimit || isDragNegativeDirection);
   }
 
+  ///необходимо для нахождения строк времени во время перемещения задачи по сетке
   static (String, String) getTimeHHMM(Task task, double position) {
     final startTime =
         SingleDayTaskGridHelper.countPeriod(task, position).$1.toDate();
     final endTime =
         SingleDayTaskGridHelper.countPeriod(task, position).$2.toDate();
     return (
-      "${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')}",
-      "${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')}"
+      getHHMMfromDateTime(startTime),
+      getHHMMfromDateTime(endTime),
     );
+  }
+
+  static String getHHMMfromDateTime(DateTime date) {
+    return "${date.hour}:${date.minute.toString().padLeft(2, '0')}";
   }
 }

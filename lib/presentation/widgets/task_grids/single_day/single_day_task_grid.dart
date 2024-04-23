@@ -1,12 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/domain/entities/task.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/buttons/task_card.dart';
+import 'package:taski/presentation/widgets/task_grids/current_time_indicator.dart';
 import 'package:taski/presentation/widgets/task_grids/single_day/single_day_markup.dart';
 import 'package:taski/presentation/widgets/task_grids/single_day/single_day_task_grid_helper.dart';
 
@@ -52,6 +54,14 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
       },
     );
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(
+        SingleDayTaskGridHelper.findPaddingTop(DateTime.now()) - 50.h > 0
+            ? SingleDayTaskGridHelper.findPaddingTop(DateTime.now()) - 50.h
+            : 0,
+      );
+    });
+
     super.initState();
   }
 
@@ -83,6 +93,7 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
         child: Stack(
           children: [
             const SingleDayMarkup().paddingOnly(top: 42.5.h),
+            if (widget.selectedDate.isToday) const CurrentTimeIndicator(),
             if (startMove.contains(true))
               Positioned(
                 top: SingleDayTaskGridHelper.findHeight(
@@ -97,8 +108,9 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                         widget.tasks[startMove.indexOf(true)],
                       ).$2,
                       task: widget.tasks[startMove.indexOf(true)],
-                      onTap: () => context.router.push(TaskPage(
-                          task: widget.tasks[startMove.indexOf(true)])),
+                      onTap: () => context.router.push(
+                        TaskPage(task: widget.tasks[startMove.indexOf(true)]),
+                      ),
                     ),
                     Container(
                       color: AppColors.grey.withOpacity(0.6),
@@ -117,14 +129,11 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                   top: positions[i],
                   right: 13.w,
                   child: GestureDetector(
-                    onLongPressStart: (details) {
-                      setState(() {
-                        startMove[i] = true;
-                      });
-                    },
+                    onLongPressStart: (details) => setState(
+                      () => startMove[i] = true,
+                    ),
                     onLongPressEnd: startMove[i]
-                        ? (details) {
-                            setState(
+                        ? (details) => setState(
                               () {
                                 final newTask = widget.tasks[i].copyWith(
                                   startTime:
@@ -144,64 +153,61 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                                 _scrollController
                                     .jumpTo(_scrollController.position.pixels);
                               },
-                            );
-                          }
+                            )
                         : null,
-                    onLongPressMoveUpdate: (details) {
-                      setState(
-                        () {
-                          if (previousOffsetDy == -1) {
-                            previousOffsetDy = details.globalPosition.dy;
-                          }
-                          if (positions[i] - _scrollController.position.pixels <
-                              10) {
-                            needScroll = AxisDirection.up;
-                            selectedIndex = i;
-                          } else if (700 -
-                                  (details.globalPosition.dy +
-                                      SingleDayTaskGridHelper.findHeight(
-                                              widget.tasks[i])
-                                          .$2) <
-                              100) {
-                            needScroll = AxisDirection.down;
-                            selectedIndex = i;
-                          } else {
-                            needScroll = null;
-                            _scrollController
-                                .jumpTo(_scrollController.position.pixels);
-                          }
-                          if (needScroll != null) {
-                            final hours = positions[i] ~/ 100.h;
-                            final duration = needScroll == AxisDirection.up
-                                ? hours ~/ 4
-                                : (24 - hours) ~/ 4;
-                            _scrollController.animateTo(
-                              needScroll == AxisDirection.up
-                                  ? 20.h
-                                  : 100.h * 24 - 20.h,
-                              duration: Duration(
-                                  seconds: duration > 0 ? duration : 1),
-                              curve: Curves.linear,
-                            );
-                          }
-                          currentDelta +=
-                              details.globalPosition.dy - previousOffsetDy;
+                    onLongPressMoveUpdate: (details) => setState(
+                      () {
+                        if (previousOffsetDy == -1) {
                           previousOffsetDy = details.globalPosition.dy;
+                        }
+                        if (positions[i] - _scrollController.position.pixels <
+                            10) {
+                          needScroll = AxisDirection.up;
+                          selectedIndex = i;
+                        } else if (700 -
+                                (details.globalPosition.dy +
+                                    SingleDayTaskGridHelper.findHeight(
+                                            widget.tasks[i])
+                                        .$2) <
+                            100) {
+                          needScroll = AxisDirection.down;
+                          selectedIndex = i;
+                        } else {
+                          needScroll = null;
+                          _scrollController
+                              .jumpTo(_scrollController.position.pixels);
+                        }
+                        if (needScroll != null) {
+                          final hours = positions[i] ~/ 100.h;
+                          final duration = needScroll == AxisDirection.up
+                              ? hours ~/ 4
+                              : (24 - hours) ~/ 4;
+                          _scrollController.animateTo(
+                            needScroll == AxisDirection.up
+                                ? 20.h
+                                : 100.h * 24 - 20.h,
+                            duration:
+                                Duration(seconds: duration > 0 ? duration : 1),
+                            curve: Curves.linear,
+                          );
+                        }
+                        currentDelta +=
+                            details.globalPosition.dy - previousOffsetDy;
+                        previousOffsetDy = details.globalPosition.dy;
 
-                          if (currentDelta.abs() > 100.h / 4) {
-                            if (SingleDayTaskGridHelper.shouldMove(
-                              positions[i],
-                              currentDelta,
-                              widget.tasks[i],
-                            )) {
-                              positions[i] +=
-                                  currentDelta > 0 ? 100.h / 4 : -100.h / 4;
-                              currentDelta = 0;
-                            }
+                        if (currentDelta.abs() > 100.h / 4) {
+                          if (SingleDayTaskGridHelper.shouldMove(
+                            positions[i],
+                            currentDelta,
+                            widget.tasks[i],
+                          )) {
+                            positions[i] +=
+                                currentDelta > 0 ? 100.h / 4 : -100.h / 4;
+                            currentDelta = 0;
                           }
-                        },
-                      );
-                    },
+                        }
+                      },
+                    ),
                     child: TaskCard(
                       isShifting: startMove[i],
                       task: widget.tasks[i],
@@ -243,8 +249,8 @@ class _SingleDayTaskGridState extends State<SingleDayTaskGrid> {
                     positions[startMove.indexOf(true)],
                   ).$2,
                   style: AppTextStyles.medium12.copyWith(
-                      color:
-                          Color(widget.tasks[startMove.indexOf(true)].color)),
+                    color: Color(widget.tasks[startMove.indexOf(true)].color),
+                  ),
                 ),
               ),
             ],

@@ -6,6 +6,7 @@ import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/buttons/task_card.dart';
+import 'package:taski/presentation/widgets/task_grids/single_day/single_day_task_grid_helper.dart';
 import 'package:taski/presentation/widgets/task_grids/week_markup.dart/week_markup.dart';
 import 'package:taski/presentation/widgets/task_grids/week_markup.dart/week_task_grid_helper.dart';
 
@@ -50,6 +51,14 @@ class _WeekTaskGridState extends State<WeekTaskGrid> {
         keys = widget.tasks.map((e) => GlobalKey()).toList();
       },
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(
+        SingleDayTaskGridHelper.findPaddingTop(DateTime.now()) - 50.h > 0
+            ? SingleDayTaskGridHelper.findPaddingTop(DateTime.now()) - 50.h
+            : 0,
+      );
+    });
 
     super.initState();
   }
