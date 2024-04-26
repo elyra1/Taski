@@ -19,38 +19,40 @@ import 'package:taski/data/notifications/firebase_notifications_service.dart'
 import 'package:taski/data/repo_impl/categories_repo_impl.dart' as _i16;
 import 'package:taski/data/repo_impl/task_repo_impl.dart' as _i9;
 import 'package:taski/data/repo_impl/user_repo_impl.dart' as _i11;
-import 'package:taski/di/app_module.dart' as _i30;
+import 'package:taski/di/app_module.dart' as _i31;
 import 'package:taski/domain/repositories/category_repository.dart' as _i15;
 import 'package:taski/domain/repositories/task_repository.dart' as _i8;
 import 'package:taski/domain/repositories/user_repository.dart' as _i10;
 import 'package:taski/presentation/pages/categories_page/cubit/categories_page_cubit.dart'
-    as _i29;
+    as _i30;
 import 'package:taski/presentation/pages/category_page/cubit/category_page_cubit.dart'
     as _i14;
 import 'package:taski/presentation/pages/create_category_page/cubit/create_category_page_cubit.dart'
     as _i17;
 import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart'
     as _i18;
-import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart'
+import 'package:taski/presentation/pages/edit_profile_page/cubit/edit_profile_page_cubit.dart'
     as _i19;
-import 'package:taski/presentation/pages/friends_page/cubit/friends_page_cubit.dart'
+import 'package:taski/presentation/pages/example_page/cubit/example_page_cubit.dart'
     as _i20;
-import 'package:taski/presentation/pages/home_page/cubit/home_page_cubit.dart'
+import 'package:taski/presentation/pages/friends_page/cubit/friends_page_cubit.dart'
     as _i21;
-import 'package:taski/presentation/pages/profile_page/cubit/profile_page_cubit.dart'
+import 'package:taski/presentation/pages/home_page/cubit/home_page_cubit.dart'
     as _i22;
-import 'package:taski/presentation/pages/send_reset_link/cubit/send_reset_link_page_cubit.dart'
+import 'package:taski/presentation/pages/profile_page/cubit/profile_page_cubit.dart'
     as _i23;
-import 'package:taski/presentation/pages/sign_in/cubit/sign_in_page_cubit.dart'
+import 'package:taski/presentation/pages/send_reset_link/cubit/send_reset_link_page_cubit.dart'
     as _i24;
-import 'package:taski/presentation/pages/sign_up/cubit/sign_up_page_cubit.dart'
+import 'package:taski/presentation/pages/sign_in/cubit/sign_in_page_cubit.dart'
     as _i25;
-import 'package:taski/presentation/pages/task_page/cubit/task_page_cubit.dart'
+import 'package:taski/presentation/pages/sign_up/cubit/sign_up_page_cubit.dart'
     as _i26;
-import 'package:taski/presentation/pages/tasks_month/cubit/tasks_month_page_cubit.dart'
+import 'package:taski/presentation/pages/task_page/cubit/task_page_cubit.dart'
     as _i27;
-import 'package:taski/presentation/pages/tasks_single_day/cubit/tasks_single_day_page_cubit.dart'
+import 'package:taski/presentation/pages/tasks_month/cubit/tasks_month_page_cubit.dart'
     as _i28;
+import 'package:taski/presentation/pages/tasks_single_day/cubit/tasks_single_day_page_cubit.dart'
+    as _i29;
 import 'package:taski/presentation/pages/user_search_page/cubit/user_search_page_cubit.dart'
     as _i12;
 import 'package:taski/presentation/pages/week_tasks/cubit/week_tasks_page_cubit.dart'
@@ -102,36 +104,38 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i10.UserRepository>(),
           gh<_i15.CategoryRepository>(),
         ));
-    gh.factory<_i19.ExamplePageCubit>(() => _i19.ExamplePageCubit(
+    gh.factory<_i19.EditProfilePageCubit>(
+        () => _i19.EditProfilePageCubit(gh<_i10.UserRepository>()));
+    gh.factory<_i20.ExamplePageCubit>(() => _i20.ExamplePageCubit(
           gh<_i8.TaskRepository>(),
           gh<_i10.UserRepository>(),
         ));
-    gh.factory<_i20.FriendsPageCubit>(
-        () => _i20.FriendsPageCubit(gh<_i10.UserRepository>()));
-    gh.factory<_i21.HomePageCubit>(
-        () => _i21.HomePageCubit(gh<_i10.UserRepository>()));
-    gh.factory<_i22.ProfilePageCubit>(
-        () => _i22.ProfilePageCubit(gh<_i10.UserRepository>()));
-    gh.factory<_i23.SendResetLinkPageCubit>(
-        () => _i23.SendResetLinkPageCubit(gh<_i10.UserRepository>()));
-    gh.factory<_i24.SignInPageCubit>(
-        () => _i24.SignInPageCubit(gh<_i10.UserRepository>()));
-    gh.factory<_i25.SignUpPageCubit>(
-        () => _i25.SignUpPageCubit(gh<_i10.UserRepository>()));
-    gh.factory<_i26.TaskPageCubit>(
-        () => _i26.TaskPageCubit(gh<_i15.CategoryRepository>()));
-    gh.factory<_i27.TasksMonthPageCubit>(() => _i27.TasksMonthPageCubit(
+    gh.factory<_i21.FriendsPageCubit>(
+        () => _i21.FriendsPageCubit(gh<_i10.UserRepository>()));
+    gh.factory<_i22.HomePageCubit>(
+        () => _i22.HomePageCubit(gh<_i10.UserRepository>()));
+    gh.factory<_i23.ProfilePageCubit>(
+        () => _i23.ProfilePageCubit(gh<_i10.UserRepository>()));
+    gh.factory<_i24.SendResetLinkPageCubit>(
+        () => _i24.SendResetLinkPageCubit(gh<_i10.UserRepository>()));
+    gh.factory<_i25.SignInPageCubit>(
+        () => _i25.SignInPageCubit(gh<_i10.UserRepository>()));
+    gh.factory<_i26.SignUpPageCubit>(
+        () => _i26.SignUpPageCubit(gh<_i10.UserRepository>()));
+    gh.factory<_i27.TaskPageCubit>(
+        () => _i27.TaskPageCubit(gh<_i15.CategoryRepository>()));
+    gh.factory<_i28.TasksMonthPageCubit>(() => _i28.TasksMonthPageCubit(
           gh<_i8.TaskRepository>(),
           gh<_i10.UserRepository>(),
         ));
-    gh.factory<_i28.TasksSingleDayPageCubit>(() => _i28.TasksSingleDayPageCubit(
+    gh.factory<_i29.TasksSingleDayPageCubit>(() => _i29.TasksSingleDayPageCubit(
           gh<_i8.TaskRepository>(),
           gh<_i10.UserRepository>(),
         ));
-    gh.factory<_i29.CategoriesPageCubit>(
-        () => _i29.CategoriesPageCubit(gh<_i15.CategoryRepository>()));
+    gh.factory<_i30.CategoriesPageCubit>(
+        () => _i30.CategoriesPageCubit(gh<_i15.CategoryRepository>()));
     return this;
   }
 }
 
-class _$AppModule extends _i30.AppModule {}
+class _$AppModule extends _i31.AppModule {}

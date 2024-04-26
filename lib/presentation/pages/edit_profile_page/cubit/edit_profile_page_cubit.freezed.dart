@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'create_task_page_cubit.dart';
+part of 'edit_profile_page_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$CreateTaskState {
+mixin _$EditProfilePageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
@@ -38,35 +38,36 @@ mixin _$CreateTaskState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Saving value) saving,
+    required TResult Function(Saving value) saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Saving value)? saving,
+    TResult? Function(Saving value)? saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Saving value)? saving,
+    TResult Function(Saving value)? saving,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CreateTaskStateCopyWith<$Res> {
-  factory $CreateTaskStateCopyWith(
-          CreateTaskState value, $Res Function(CreateTaskState) then) =
-      _$CreateTaskStateCopyWithImpl<$Res, CreateTaskState>;
+abstract class $EditProfilePageStateCopyWith<$Res> {
+  factory $EditProfilePageStateCopyWith(EditProfilePageState value,
+          $Res Function(EditProfilePageState) then) =
+      _$EditProfilePageStateCopyWithImpl<$Res, EditProfilePageState>;
 }
 
 /// @nodoc
-class _$CreateTaskStateCopyWithImpl<$Res, $Val extends CreateTaskState>
-    implements $CreateTaskStateCopyWith<$Res> {
-  _$CreateTaskStateCopyWithImpl(this._value, this._then);
+class _$EditProfilePageStateCopyWithImpl<$Res,
+        $Val extends EditProfilePageState>
+    implements $EditProfilePageStateCopyWith<$Res> {
+  _$EditProfilePageStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -83,7 +84,7 @@ abstract class _$$InitialImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$InitialImplCopyWithImpl<$Res>
-    extends _$CreateTaskStateCopyWithImpl<$Res, _$InitialImpl>
+    extends _$EditProfilePageStateCopyWithImpl<$Res, _$InitialImpl>
     implements _$$InitialImplCopyWith<$Res> {
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
@@ -97,7 +98,7 @@ class _$InitialImpl implements _Initial {
 
   @override
   String toString() {
-    return 'CreateTaskState.initial()';
+    return 'EditProfilePageState.initial()';
   }
 
   @override
@@ -144,7 +145,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Saving value) saving,
+    required TResult Function(Saving value) saving,
   }) {
     return initial(this);
   }
@@ -153,7 +154,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Saving value)? saving,
+    TResult? Function(Saving value)? saving,
   }) {
     return initial?.call(this);
   }
@@ -162,7 +163,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Saving value)? saving,
+    TResult Function(Saving value)? saving,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -172,7 +173,7 @@ class _$InitialImpl implements _Initial {
   }
 }
 
-abstract class _Initial implements CreateTaskState {
+abstract class _Initial implements EditProfilePageState {
   const factory _Initial() = _$InitialImpl;
 }
 
@@ -185,7 +186,7 @@ abstract class _$$SavingImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$SavingImplCopyWithImpl<$Res>
-    extends _$CreateTaskStateCopyWithImpl<$Res, _$SavingImpl>
+    extends _$EditProfilePageStateCopyWithImpl<$Res, _$SavingImpl>
     implements _$$SavingImplCopyWith<$Res> {
   __$$SavingImplCopyWithImpl(
       _$SavingImpl _value, $Res Function(_$SavingImpl) _then)
@@ -194,12 +195,12 @@ class __$$SavingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SavingImpl implements _Saving {
+class _$SavingImpl implements Saving {
   const _$SavingImpl();
 
   @override
   String toString() {
-    return 'CreateTaskState.saving()';
+    return 'EditProfilePageState.saving()';
   }
 
   @override
@@ -246,7 +247,7 @@ class _$SavingImpl implements _Saving {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Saving value) saving,
+    required TResult Function(Saving value) saving,
   }) {
     return saving(this);
   }
@@ -255,7 +256,7 @@ class _$SavingImpl implements _Saving {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Saving value)? saving,
+    TResult? Function(Saving value)? saving,
   }) {
     return saving?.call(this);
   }
@@ -264,7 +265,7 @@ class _$SavingImpl implements _Saving {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Saving value)? saving,
+    TResult Function(Saving value)? saving,
     required TResult orElse(),
   }) {
     if (saving != null) {
@@ -274,6 +275,6 @@ class _$SavingImpl implements _Saving {
   }
 }
 
-abstract class _Saving implements CreateTaskState {
-  const factory _Saving() = _$SavingImpl;
+abstract class Saving implements EditProfilePageState {
+  const factory Saving() = _$SavingImpl;
 }

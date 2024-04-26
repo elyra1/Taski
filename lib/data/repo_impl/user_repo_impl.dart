@@ -184,4 +184,10 @@ class UserRepoImpl implements UserRepository {
         .doc(userId)
         .set(updatedRequestUser.toJson());
   }
+
+  @override
+  Future<void> editProfile({required UserModel user}) {
+    // TODO: implement editProfile
+    throw UnimplementedError();
+  }
 }

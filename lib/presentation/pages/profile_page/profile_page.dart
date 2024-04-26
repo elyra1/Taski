@@ -3,7 +3,6 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/profile_page/cubit/profile_page_cubit.dart';
@@ -57,17 +56,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   45.h.heightBox,
                   CircleAvatar(
-                    radius: 45.r,
+                    radius: 65.r,
                     backgroundColor: Colors.white,
-                    child: loaded.user.photoUrl != null
-                        ? Image.network(loaded.user.photoUrl!)
-                        : SvgPicture.asset(AppIcons.userIcon),
+                    backgroundImage: loaded.user.photoUrl != null
+                        ? NetworkImage(loaded.user.photoUrl!)
+                        : Image.asset(AppIcons.userIcon).image,
                   ),
+                  15.h.heightBox,
                   Text(
                     loaded.user.username,
                     style: AppTextStyles.bold18,
                   ),
-                  60.h.heightBox,
+                  45.h.heightBox,
                   CustomButton(
                     width: double.maxFinite,
                     height: 40.h,
@@ -78,7 +78,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   CustomButton(
                     width: double.maxFinite,
                     height: 40.h,
-                    onPressed: () {},
+                    onPressed: () =>
+                        context.router.push(EditProfilePage(user: loaded.user)),
                     text: "Редактировать профиль",
                   ),
                   20.h.heightBox,

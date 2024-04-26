@@ -19,4 +19,5 @@ abstract class UserRepository {
   Future<void> acceptFriendRequest({required String userId});
   Future<void> declineFriendRequest({required String userId});
   Future<void> undoFriendRequest({required String userId});
+  Future<void> editProfile({required UserModel user});
 }
