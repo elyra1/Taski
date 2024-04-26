@@ -118,8 +118,10 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i24.SignInPageCubit(gh<_i10.UserRepository>()));
     gh.factory<_i25.SignUpPageCubit>(
         () => _i25.SignUpPageCubit(gh<_i10.UserRepository>()));
-    gh.factory<_i26.TaskPageCubit>(
-        () => _i26.TaskPageCubit(gh<_i15.CategoryRepository>()));
+    gh.factory<_i26.TaskPageCubit>(() => _i26.TaskPageCubit(
+          gh<_i15.CategoryRepository>(),
+          gh<_i10.UserRepository>(),
+        ));
     gh.factory<_i27.TasksMonthPageCubit>(() => _i27.TasksMonthPageCubit(
           gh<_i8.TaskRepository>(),
           gh<_i10.UserRepository>(),

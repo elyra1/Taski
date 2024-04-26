@@ -18,55 +18,67 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CreateTaskState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)
+        loaded,
     required TResult Function() saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)?
+        loaded,
     TResult? Function()? saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)?
+        loaded,
     TResult Function()? saving,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Saving value) saving,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Loaded value) loaded,
+    required TResult Function(Saving value) saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Saving value)? saving,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Loaded value)? loaded,
+    TResult? Function(Saving value)? saving,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Saving value)? saving,
+    TResult Function(Loading value)? loading,
+    TResult Function(Loaded value)? loaded,
+    TResult Function(Saving value)? saving,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CreateTaskCopyWith<$Res> {
-  factory $CreateTaskCopyWith(
+abstract class $CreateTaskStateCopyWith<$Res> {
+  factory $CreateTaskStateCopyWith(
           CreateTaskState value, $Res Function(CreateTaskState) then) =
-      _$CreateTaskCopyWithImpl<$Res, CreateTaskState>;
+      _$CreateTaskStateCopyWithImpl<$Res, CreateTaskState>;
 }
 
 /// @nodoc
-class _$CreateTaskCopyWithImpl<$Res, $Val extends CreateTaskState>
-    implements $CreateTaskCopyWith<$Res> {
-  _$CreateTaskCopyWithImpl(this._value, this._then);
+class _$CreateTaskStateCopyWithImpl<$Res, $Val extends CreateTaskState>
+    implements $CreateTaskStateCopyWith<$Res> {
+  _$CreateTaskStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -75,35 +87,35 @@ class _$CreateTaskCopyWithImpl<$Res, $Val extends CreateTaskState>
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$CreateTaskCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$CreateTaskStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+class _$LoadingImpl implements Loading {
+  const _$LoadingImpl();
 
   @override
   String toString() {
-    return 'CreateTask.initial()';
+    return 'CreateTaskState.loading()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -112,30 +124,39 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)
+        loaded,
     required TResult Function() saving,
   }) {
-    return initial();
+    return loading();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)?
+        loaded,
     TResult? Function()? saving,
   }) {
-    return initial?.call();
+    return loading?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)?
+        loaded,
     TResult Function()? saving,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial();
+    if (loading != null) {
+      return loading();
     }
     return orElse();
   }
@@ -143,37 +164,241 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Saving value) saving,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Loaded value) loaded,
+    required TResult Function(Saving value) saving,
   }) {
-    return initial(this);
+    return loading(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Saving value)? saving,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Loaded value)? loaded,
+    TResult? Function(Saving value)? saving,
   }) {
-    return initial?.call(this);
+    return loading?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Saving value)? saving,
+    TResult Function(Loading value)? loading,
+    TResult Function(Loaded value)? loaded,
+    TResult Function(Saving value)? saving,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial(this);
+    if (loading != null) {
+      return loading(this);
     }
     return orElse();
   }
 }
 
-abstract class _Initial implements CreateTaskState {
-  const factory _Initial() = _$InitialImpl;
+abstract class Loading implements CreateTaskState {
+  const factory Loading() = _$LoadingImpl;
+}
+
+/// @nodoc
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {UserModel author,
+      List<UserModel> contributors,
+      List<Category> categories});
+
+  $UserModelCopyWith<$Res> get author;
+}
+
+/// @nodoc
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$CreateTaskStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? author = null,
+    Object? contributors = null,
+    Object? categories = null,
+  }) {
+    return _then(_$LoadedImpl(
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as UserModel,
+      contributors: null == contributors
+          ? _value._contributors
+          : contributors // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
+      categories: null == categories
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<Category>,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res> get author {
+    return $UserModelCopyWith<$Res>(_value.author, (value) {
+      return _then(_value.copyWith(author: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$LoadedImpl implements Loaded {
+  const _$LoadedImpl(
+      {required this.author,
+      required final List<UserModel> contributors,
+      required final List<Category> categories})
+      : _contributors = contributors,
+        _categories = categories;
+
+  @override
+  final UserModel author;
+  final List<UserModel> _contributors;
+  @override
+  List<UserModel> get contributors {
+    if (_contributors is EqualUnmodifiableListView) return _contributors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_contributors);
+  }
+
+  final List<Category> _categories;
+  @override
+  List<Category> get categories {
+    if (_categories is EqualUnmodifiableListView) return _categories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_categories);
+  }
+
+  @override
+  String toString() {
+    return 'CreateTaskState.loaded(author: $author, contributors: $contributors, categories: $categories)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LoadedImpl &&
+            (identical(other.author, author) || other.author == author) &&
+            const DeepCollectionEquality()
+                .equals(other._contributors, _contributors) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      author,
+      const DeepCollectionEquality().hash(_contributors),
+      const DeepCollectionEquality().hash(_categories));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)
+        loaded,
+    required TResult Function() saving,
+  }) {
+    return loaded(author, contributors, categories);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
+    TResult? Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)?
+        loaded,
+    TResult? Function()? saving,
+  }) {
+    return loaded?.call(author, contributors, categories);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)?
+        loaded,
+    TResult Function()? saving,
+    required TResult orElse(),
+  }) {
+    if (loaded != null) {
+      return loaded(author, contributors, categories);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Loading value) loading,
+    required TResult Function(Loaded value) loaded,
+    required TResult Function(Saving value) saving,
+  }) {
+    return loaded(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Loaded value)? loaded,
+    TResult? Function(Saving value)? saving,
+  }) {
+    return loaded?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Loading value)? loading,
+    TResult Function(Loaded value)? loaded,
+    TResult Function(Saving value)? saving,
+    required TResult orElse(),
+  }) {
+    if (loaded != null) {
+      return loaded(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Loaded implements CreateTaskState {
+  const factory Loaded(
+      {required final UserModel author,
+      required final List<UserModel> contributors,
+      required final List<Category> categories}) = _$LoadedImpl;
+
+  UserModel get author;
+  List<UserModel> get contributors;
+  List<Category> get categories;
+  @JsonKey(ignore: true)
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -185,7 +410,7 @@ abstract class _$$SavingImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$SavingImplCopyWithImpl<$Res>
-    extends _$CreateTaskCopyWithImpl<$Res, _$SavingImpl>
+    extends _$CreateTaskStateCopyWithImpl<$Res, _$SavingImpl>
     implements _$$SavingImplCopyWith<$Res> {
   __$$SavingImplCopyWithImpl(
       _$SavingImpl _value, $Res Function(_$SavingImpl) _then)
@@ -194,12 +419,12 @@ class __$$SavingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SavingImpl implements _Saving {
+class _$SavingImpl implements Saving {
   const _$SavingImpl();
 
   @override
   String toString() {
-    return 'CreateTask.saving()';
+    return 'CreateTaskState.saving()';
   }
 
   @override
@@ -214,7 +439,10 @@ class _$SavingImpl implements _Saving {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)
+        loaded,
     required TResult Function() saving,
   }) {
     return saving();
@@ -223,7 +451,10 @@ class _$SavingImpl implements _Saving {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)?
+        loaded,
     TResult? Function()? saving,
   }) {
     return saving?.call();
@@ -232,7 +463,10 @@ class _$SavingImpl implements _Saving {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(UserModel author, List<UserModel> contributors,
+            List<Category> categories)?
+        loaded,
     TResult Function()? saving,
     required TResult orElse(),
   }) {
@@ -245,8 +479,9 @@ class _$SavingImpl implements _Saving {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Saving value) saving,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Loaded value) loaded,
+    required TResult Function(Saving value) saving,
   }) {
     return saving(this);
   }
@@ -254,8 +489,9 @@ class _$SavingImpl implements _Saving {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Saving value)? saving,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Loaded value)? loaded,
+    TResult? Function(Saving value)? saving,
   }) {
     return saving?.call(this);
   }
@@ -263,8 +499,9 @@ class _$SavingImpl implements _Saving {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Saving value)? saving,
+    TResult Function(Loading value)? loading,
+    TResult Function(Loaded value)? loaded,
+    TResult Function(Saving value)? saving,
     required TResult orElse(),
   }) {
     if (saving != null) {
@@ -274,6 +511,6 @@ class _$SavingImpl implements _Saving {
   }
 }
 
-abstract class _Saving implements CreateTaskState {
-  const factory _Saving() = _$SavingImpl;
+abstract class Saving implements CreateTaskState {
+  const factory Saving() = _$SavingImpl;
 }

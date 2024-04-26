@@ -34,8 +34,10 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 44.w,
                 height: 44.h,
                 child: IconButton(
-                  icon: SvgPicture.asset(AppIcons.userIcon,
-                      color: AppColors.headblue),
+                  icon: SvgPicture.asset(
+                    AppIcons.userIcon,
+                    color: AppColors.headblue,
+                  ),
                   onPressed: onTap,
                 ),
               )

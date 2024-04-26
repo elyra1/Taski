@@ -32,6 +32,7 @@ mixin _$Task {
   String? get category => throw _privateConstructorUsedError;
   bool get notificationSended => throw _privateConstructorUsedError;
   int get remindTimeInSeconds => throw _privateConstructorUsedError;
+  List<String> get contributors => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -53,7 +54,8 @@ abstract class $TaskCopyWith<$Res> {
       int color,
       String? category,
       bool notificationSended,
-      int remindTimeInSeconds});
+      int remindTimeInSeconds,
+      List<String> contributors});
 }
 
 /// @nodoc
@@ -79,6 +81,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? category = freezed,
     Object? notificationSended = null,
     Object? remindTimeInSeconds = null,
+    Object? contributors = null,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -121,6 +124,10 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.remindTimeInSeconds
           : remindTimeInSeconds // ignore: cast_nullable_to_non_nullable
               as int,
+      contributors: null == contributors
+          ? _value.contributors
+          : contributors // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -142,7 +149,8 @@ abstract class _$$TaskEntityImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       int color,
       String? category,
       bool notificationSended,
-      int remindTimeInSeconds});
+      int remindTimeInSeconds,
+      List<String> contributors});
 }
 
 /// @nodoc
@@ -166,6 +174,7 @@ class __$$TaskEntityImplCopyWithImpl<$Res>
     Object? category = freezed,
     Object? notificationSended = null,
     Object? remindTimeInSeconds = null,
+    Object? contributors = null,
   }) {
     return _then(_$TaskEntityImpl(
       title: null == title
@@ -208,6 +217,10 @@ class __$$TaskEntityImplCopyWithImpl<$Res>
           ? _value.remindTimeInSeconds
           : remindTimeInSeconds // ignore: cast_nullable_to_non_nullable
               as int,
+      contributors: null == contributors
+          ? _value._contributors
+          : contributors // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -225,7 +238,9 @@ class _$TaskEntityImpl implements _TaskEntity {
       required this.color,
       this.category = null,
       this.notificationSended = false,
-      this.remindTimeInSeconds = 900});
+      this.remindTimeInSeconds = 900,
+      final List<String> contributors = const []})
+      : _contributors = contributors;
 
   factory _$TaskEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskEntityImplFromJson(json);
@@ -256,10 +271,18 @@ class _$TaskEntityImpl implements _TaskEntity {
   @override
   @JsonKey()
   final int remindTimeInSeconds;
+  final List<String> _contributors;
+  @override
+  @JsonKey()
+  List<String> get contributors {
+    if (_contributors is EqualUnmodifiableListView) return _contributors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_contributors);
+  }
 
   @override
   String toString() {
-    return 'Task(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color, category: $category, notificationSended: $notificationSended, remindTimeInSeconds: $remindTimeInSeconds)';
+    return 'Task(title: $title, description: $description, id: $id, authorId: $authorId, startTime: $startTime, endTime: $endTime, color: $color, category: $category, notificationSended: $notificationSended, remindTimeInSeconds: $remindTimeInSeconds, contributors: $contributors)';
   }
 
   @override
@@ -282,7 +305,9 @@ class _$TaskEntityImpl implements _TaskEntity {
             (identical(other.notificationSended, notificationSended) ||
                 other.notificationSended == notificationSended) &&
             (identical(other.remindTimeInSeconds, remindTimeInSeconds) ||
-                other.remindTimeInSeconds == remindTimeInSeconds));
+                other.remindTimeInSeconds == remindTimeInSeconds) &&
+            const DeepCollectionEquality()
+                .equals(other._contributors, _contributors));
   }
 
   @JsonKey(ignore: true)
@@ -298,7 +323,8 @@ class _$TaskEntityImpl implements _TaskEntity {
       color,
       category,
       notificationSended,
-      remindTimeInSeconds);
+      remindTimeInSeconds,
+      const DeepCollectionEquality().hash(_contributors));
 
   @JsonKey(ignore: true)
   @override
@@ -325,7 +351,8 @@ abstract class _TaskEntity implements Task {
       required final int color,
       final String? category,
       final bool notificationSended,
-      final int remindTimeInSeconds}) = _$TaskEntityImpl;
+      final int remindTimeInSeconds,
+      final List<String> contributors}) = _$TaskEntityImpl;
 
   factory _TaskEntity.fromJson(Map<String, dynamic> json) =
       _$TaskEntityImpl.fromJson;
@@ -352,6 +379,8 @@ abstract class _TaskEntity implements Task {
   bool get notificationSended;
   @override
   int get remindTimeInSeconds;
+  @override
+  List<String> get contributors;
   @override
   @JsonKey(ignore: true)
   _$$TaskEntityImplCopyWith<_$TaskEntityImpl> get copyWith =>

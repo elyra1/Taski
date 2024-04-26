@@ -9,47 +9,28 @@ import 'package:taski/presentation/pages/tasks_single_day/cubit/tasks_single_day
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_date_utils.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
+import 'package:taski/presentation/utils/custom_page_view_scroll_physics.dart';
 import 'package:taski/presentation/widgets/task_grids/single_day/single_day_task_grid.dart';
 
 @RoutePage()
-class TasksSingleDayPage extends StatefulWidget implements AutoRouteWrapper {
+class TasksSingleDayPage extends StatelessWidget implements AutoRouteWrapper {
   final UserModel? user;
   const TasksSingleDayPage({Key? key, this.user}) : super(key: key);
 
   @override
-  State<TasksSingleDayPage> createState() => _TasksSingleDayPageState();
-
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<TasksSingleDayPageCubit>(
-      create: (context) => getIt<TasksSingleDayPageCubit>(),
-      child: this,
-    );
-  }
-}
-
-class _TasksSingleDayPageState extends State<TasksSingleDayPage> {
-  DateTime selectedDate = DateTime.now();
-  int page = 0;
-  @override
   Widget build(BuildContext context) {
     final cubit = context.read<TasksSingleDayPageCubit>();
-    return PageView.builder(
-      allowImplicitScrolling: true,
-      onPageChanged: (value) {
-        setState(() {
-          selectedDate = value - page > 0
-              ? selectedDate.add(const Duration(days: 1))
-              : selectedDate.subtract(const Duration(days: 1));
-          page = value;
-        });
-      },
-      itemBuilder: (context, index) {
-        return StreamBuilder(
-          stream:
-              cubit.getTasks(dayOfTasks: selectedDate, userId: widget.user?.id),
-          builder: (context, snapshot) {
-            final tasks = snapshot.data;
+    return BlocBuilder<TasksSingleDayPageCubit, TasksSingleDayPageState>(
+      builder: (context, state) {
+        return PageView.builder(
+          physics: const CustomPageViewScrollPhysics(),
+          allowImplicitScrolling: true,
+          onPageChanged: (value) =>
+              context.read<TasksSingleDayPageCubit>().onPageChanged(
+                    value: value,
+                    userId: user?.id,
+                  ),
+          itemBuilder: (context, index) {
             return Column(
               children: [
                 Container(
@@ -60,18 +41,16 @@ class _TasksSingleDayPageState extends State<TasksSingleDayPage> {
                     ),
                   ),
                   child: Text(
-                    AppDateUtils.formatDate(selectedDate),
+                    AppDateUtils.formatDate(state.selectedDate),
                     style: AppTextStyles.semibold12,
                   ).toCenter().paddingSymmetric(vertical: 5.h),
                 ),
                 Expanded(
                   child: SingleDayTaskGrid(
-                    isDragAvaliable: widget.user == null,
-                    selectedDate: selectedDate,
-                    onDateChanged: (date) =>
-                        setState(() => selectedDate = date),
+                    selectedDate: state.selectedDate,
                     onTaskShifted: (task) => cubit.editTask(task),
-                    tasks: tasks ?? [],
+                    tasks: state.tasks,
+                    currentUser: state.currentUser,
                   ),
                 ),
               ],
@@ -79,6 +58,15 @@ class _TasksSingleDayPageState extends State<TasksSingleDayPage> {
           },
         );
       },
+    );
+  }
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider<TasksSingleDayPageCubit>(
+      create: (context) =>
+          getIt<TasksSingleDayPageCubit>()..init(userId: user?.id),
+      child: this,
     );
   }
 }

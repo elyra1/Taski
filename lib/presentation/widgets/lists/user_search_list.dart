@@ -66,7 +66,7 @@ class UserSearchList extends StatelessWidget {
           decelerationRate: ScrollDecelerationRate.fast),
       itemCount: list.length,
       itemBuilder: (context, index) {
-        return UserCard(
+        return UserCard.friendList(
           user: list[index],
           onTap: () => onTap(list[index]),
           isFriend: isFriend(list[index]),

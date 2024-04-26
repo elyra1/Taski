@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
-import 'package:taski/domain/entities/category.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/domain/entities/user_model.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
@@ -17,8 +17,11 @@ import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/utils/date_time_extension.dart';
 import 'package:taski/presentation/utils/validation.dart';
 import 'package:taski/presentation/widgets/app_text_field.dart';
+import 'package:taski/presentation/widgets/buttons/custom_button.dart';
 import 'package:taski/presentation/widgets/dialogs/saving_dialog.dart';
 import 'package:taski/presentation/widgets/items/color_pick_item.dart';
+import 'package:taski/presentation/widgets/items/user_card.dart';
+import 'package:taski/presentation/widgets/lists/add_to_contributors_list.dart';
 
 @RoutePage()
 class CreateTaskPage extends StatefulWidget implements AutoRouteWrapper {
@@ -31,7 +34,11 @@ class CreateTaskPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider<CreateTaskCubit>(
-      create: (context) => getIt<CreateTaskCubit>(),
+      create: (context) => getIt<CreateTaskCubit>()
+        ..init(
+          authorId: task?.authorId,
+          contributorsIds: task?.contributors ?? [],
+        ),
       child: this,
     );
   }
@@ -87,11 +94,12 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         ),
         actions: [
           IconButton(
-              onPressed: save,
-              icon: const Icon(
-                Icons.check,
-                color: AppColors.headblue,
-              ))
+            onPressed: save,
+            icon: const Icon(
+              Icons.check,
+              color: AppColors.headblue,
+            ),
+          )
         ],
         title: Text(
           widget.task != null ? "Редактирование задачи" : 'Создание задачи',
@@ -99,7 +107,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         ),
       ),
       resizeToAvoidBottomInset: false,
-      body: BlocListener<CreateTaskCubit, CreateTaskState>(
+      body: BlocConsumer<CreateTaskCubit, CreateTaskState>(
         listener: (context, state) {
           if (state == const CreateTaskState.saving()) {
             showDialog(
@@ -111,167 +119,182 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             );
           }
         },
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 5.h),
-          child: Column(
-            children: [
-              15.h.heightBox,
-              AppTextField(
-                title: 'Название',
-                hintText: 'Введите название задачи',
-                width: 345.w,
-                height: 70.h,
-                controller: titleController,
-                textInputAction: TextInputAction.next,
-              ),
-              AppTextField(
-                title: 'Описание',
-                hintText: 'Введите описание задачи',
-                width: 345.w,
-                height: 70.h,
-                controller: descriptionController,
-              ),
-              Divider(
-                thickness: 1.h,
-                color: AppColors.grey,
-              ),
-              10.h.heightBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        buildWhen: (previous, current) => current is! Saving,
+        builder: (context, state) {
+          if (state is Loading) {
+            return const CircularProgressIndicator(color: AppColors.headblue)
+                .toCenter();
+          }
+          if (state is Loaded) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.only(top: 5.h, bottom: 30.h),
+              child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: startTime,
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now()
-                            .copyWith(year: DateTime.now().year + 1),
-                      ).then(
-                        (value) => setState(() {
-                          startTime = value?.copyWith(
-                                hour: startTime.hour,
-                                minute: startTime.minute,
-                              ) ??
-                              startTime;
-                          endTime = value?.copyWith(
-                                hour: endTime.hour,
-                                minute: endTime.minute,
-                              ) ??
-                              endTime;
-                        }),
-                      );
-                    },
-                    child: Text(
-                      AppDateUtils.formatDate(startTime),
-                      style: AppTextStyles.semibold14,
-                    ),
+                  15.h.heightBox,
+                  AppTextField(
+                    title: 'Название',
+                    hintText: 'Введите название задачи',
+                    width: 345.w,
+                    height: 70.h,
+                    controller: titleController,
+                    textInputAction: TextInputAction.next,
                   ),
-                  Column(
+                  AppTextField(
+                    title: 'Описание',
+                    hintText: 'Введите описание задачи',
+                    width: 345.w,
+                    height: 70.h,
+                    controller: descriptionController,
+                  ),
+                  Divider(
+                    thickness: 1.h,
+                    color: AppColors.grey,
+                  ),
+                  10.h.heightBox,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
                         onTap: () {
-                          showTimePicker(
+                          showDatePicker(
                             context: context,
-                            initialTime: TimeOfDay.fromDateTime(startTime),
+                            initialDate: startTime,
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime.now()
+                                .copyWith(year: DateTime.now().year + 1),
                           ).then(
-                            (value) => setState(
-                              () {
-                                final editedvalue = startTime.copyWith(
-                                  hour: value?.hour ?? startTime.hour,
-                                  minute: value?.minute ?? startTime.minute,
-                                );
-                                if (editedvalue.isAfter(endTime) ||
-                                    editedvalue.isSame(endTime)) {
-                                  endTime = endTime.add(
-                                      endTime.difference(startTime) +
-                                          editedvalue.difference(endTime));
-                                }
-                                startTime = editedvalue;
-                              },
-                            ),
+                            (value) => setState(() {
+                              startTime = value?.copyWith(
+                                    hour: startTime.hour,
+                                    minute: startTime.minute,
+                                  ) ??
+                                  startTime;
+                              endTime = value?.copyWith(
+                                    hour: endTime.hour,
+                                    minute: endTime.minute,
+                                  ) ??
+                                  endTime;
+                            }),
                           );
                         },
                         child: Text(
-                          AppDateUtils.toHHMM(startTime),
+                          AppDateUtils.formatDate(startTime),
                           style: AppTextStyles.semibold14,
                         ),
                       ),
-                      10.h.heightBox,
-                      GestureDetector(
-                        onTap: () {
-                          showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay.fromDateTime(endTime))
-                              .then(
-                            (value) => setState(
-                              () {
-                                final editedValue = endTime.copyWith(
-                                  hour: value?.hour ?? endTime.hour,
-                                  minute: value?.minute ?? endTime.minute,
-                                );
-                                if (startTime.isAfter(editedValue) ||
-                                    startTime.isSame(editedValue)) {
-                                  startTime = startTime.subtract(
-                                      startTime.difference(editedValue) +
-                                          endTime.difference(startTime));
-                                }
-                                endTime = editedValue;
-                              },
+                      Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(startTime),
+                              ).then(
+                                (value) => setState(
+                                  () {
+                                    final editedvalue = startTime.copyWith(
+                                      hour: value?.hour ?? startTime.hour,
+                                      minute: value?.minute ?? startTime.minute,
+                                    );
+                                    if (editedvalue.isAfter(endTime) ||
+                                        editedvalue.isSame(endTime)) {
+                                      endTime = endTime.add(
+                                          endTime.difference(startTime) +
+                                              editedvalue.difference(endTime));
+                                    }
+                                    startTime = editedvalue;
+                                  },
+                                ),
+                              );
+                            },
+                            child: Text(
+                              AppDateUtils.toHHMM(startTime),
+                              style: AppTextStyles.semibold14,
                             ),
-                          );
-                        },
-                        child: Text(
-                          AppDateUtils.toHHMM(endTime),
-                          style: AppTextStyles.semibold14,
-                        ),
+                          ),
+                          10.h.heightBox,
+                          GestureDetector(
+                            onTap: () {
+                              showTimePicker(
+                                      context: context,
+                                      initialTime:
+                                          TimeOfDay.fromDateTime(endTime))
+                                  .then(
+                                (value) => setState(
+                                  () {
+                                    final editedValue = endTime.copyWith(
+                                      hour: value?.hour ?? endTime.hour,
+                                      minute: value?.minute ?? endTime.minute,
+                                    );
+                                    if (startTime.isAfter(editedValue) ||
+                                        startTime.isSame(editedValue)) {
+                                      startTime = startTime.subtract(
+                                          startTime.difference(editedValue) +
+                                              endTime.difference(startTime));
+                                    }
+                                    endTime = editedValue;
+                                  },
+                                ),
+                              );
+                            },
+                            child: Text(
+                              AppDateUtils.toHHMM(endTime),
+                              style: AppTextStyles.semibold14,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
+                  ).paddingSymmetric(horizontal: 15.w),
+                  10.h.heightBox,
+                  Divider(
+                    thickness: 1.h,
+                    color: AppColors.grey,
                   ),
-                ],
-              ).paddingSymmetric(horizontal: 15.w),
-              10.h.heightBox,
-              Divider(
-                thickness: 1.h,
-                color: AppColors.grey,
-              ),
-              20.h.heightBox,
-              Text(
-                'Выберите цвет',
-                style: AppTextStyles.semibold20.copyWith(fontSize: 18),
-              ).paddingOnly(left: 15.w).alignAtCenterLeft(),
-              5.h.heightBox,
-              Row(
-                children: [
-                  for (Color color in colors) ...[
-                    ColorPickItem(
-                      color: color,
-                      onTap: () => setState(() => selectedColor = color),
-                      isSelected: color == selectedColor,
-                    ),
-                    10.w.widthBox,
-                  ]
-                ],
-              ).paddingOnly(left: 15.w).alignAtCenterLeft(),
-              20.h.heightBox,
-              Text(
-                'Выберите категорию',
-                style: AppTextStyles.semibold20.copyWith(fontSize: 18),
-              ).paddingOnly(left: 15.w).alignAtCenterLeft(),
-              FutureBuilder(
-                future: context.read<CreateTaskCubit>().getCategories(),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null) {
-                    return const LinearProgressIndicator(
-                      color: AppColors.headblue,
-                    )
-                        .alignAtCenter()
-                        .paddingSymmetric(horizontal: 15.w)
-                        .paddingOnly(top: 45.h);
-                  }
-                  return DropdownButtonFormField<String?>(
+                  20.h.heightBox,
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.color_lens,
+                        color: AppColors.headblue,
+                      ),
+                      10.w.widthBox,
+                      Text(
+                        'Выберите цвет',
+                        style: AppTextStyles.semibold16,
+                      ),
+                    ],
+                  ).paddingOnly(left: 15.w).alignAtCenterLeft(),
+                  10.h.heightBox,
+                  Row(
+                    children: [
+                      for (Color color in colors) ...[
+                        ColorPickItem(
+                          color: color,
+                          onTap: () => setState(() => selectedColor = color),
+                          isSelected: color == selectedColor,
+                        ),
+                        10.w.widthBox,
+                      ]
+                    ],
+                  ).paddingOnly(left: 45.w).alignAtCenterLeft(),
+                  20.h.heightBox,
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.category,
+                        color: AppColors.headblue,
+                      ),
+                      10.w.widthBox,
+                      Text(
+                        'Выберите категорию',
+                        style: AppTextStyles.semibold16,
+                      ),
+                    ],
+                  ).paddingOnly(left: 15.w).alignAtCenterLeft(),
+                  DropdownButtonFormField<String?>(
                     value: selectedCategory,
-                    items: ([Category.getEmpty(), ...(snapshot.data!)])
+                    items: state.categories
                         .map(
                           (e) => DropdownMenuItem(
                             value: e.id,
@@ -286,70 +309,143 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     onChanged: (value) => setState(
                       () => selectedCategory = value != "" ? value : null,
                     ),
-                  ).paddingSymmetric(horizontal: 15.w);
-                },
-              ).alignAtCenterLeft(),
-              20.h.heightBox,
-              Row(
-                children: [
-                  Text(
-                    'Напомнить за:',
-                    style: AppTextStyles.semibold20.copyWith(fontSize: 18),
-                  ).paddingOnly(left: 15.w).alignAtCenterLeft(),
-                  SizedBox(
-                    width: 150.w,
-                    child: DropdownButtonFormField<int>(
-                      value: selectedRemindTime,
-                      items: [
-                        ("5 мин", 300),
-                        ("10 мин", 600),
-                        ("15 мин", 900),
-                        ("30 мин", 1800),
-                        ("1 час", 3600)
-                      ].map(
-                        (e) {
-                          return DropdownMenuItem(
-                            value: e.$2,
-                            child: Text(
-                              e.$1,
-                              style: AppTextStyles.semibold12,
-                            ),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (value) => setState(
-                        () => selectedRemindTime = value ?? selectedRemindTime,
+                  )
+                      .paddingSymmetric(horizontal: 15.w)
+                      .paddingOnly(left: 35.w, right: 15.w),
+                  20.h.heightBox,
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.notifications,
+                        color: AppColors.headblue,
                       ),
-                    ),
-                  ).paddingSymmetric(horizontal: 15.w),
-                ],
-              ),
-              if (widget.task != null) ...[
-                TextButton(
-                  onPressed: () async {
-                    await context
-                        .read<CreateTaskCubit>()
-                        .deleteTask(widget.task!);
-                    context.router.popUntil(
-                        (route) => route.settings.name == TaskPage.name);
-                    context.router.pop();
-                  },
-                  child: Text(
-                    "Удалить задачу",
-                    style: AppTextStyles.semibold12.copyWith(
-                      color: AppColors.red,
-                    ),
+                      10.w.widthBox,
+                      Text(
+                        'Напомнить за',
+                        style: AppTextStyles.semibold16,
+                      ),
+                      SizedBox(
+                        width: 150.w,
+                        child: DropdownButtonFormField<int>(
+                          value: selectedRemindTime,
+                          items: [
+                            ("5 мин", 300),
+                            ("10 мин", 600),
+                            ("15 мин", 900),
+                            ("30 мин", 1800),
+                            ("1 час", 3600)
+                          ].map(
+                            (e) {
+                              return DropdownMenuItem(
+                                value: e.$2,
+                                child: Text(
+                                  e.$1,
+                                  style: AppTextStyles.semibold12,
+                                ),
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (value) => setState(
+                            () => selectedRemindTime =
+                                value ?? selectedRemindTime,
+                          ),
+                        ),
+                      ).paddingSymmetric(horizontal: 15.w),
+                    ],
+                  ).paddingOnly(left: 15.w).alignAtCenterLeft(),
+                  10.h.heightBox,
+                  Divider(
+                    thickness: 1.h,
+                    color: AppColors.grey,
                   ),
-                ).alignAtBottomCenter().paddingOnly(top: 40.h),
-              ]
-            ],
-          ).toCenter(),
-        ),
+                  20.h.heightBox,
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.people,
+                        color: AppColors.headblue,
+                      ),
+                      10.w.widthBox,
+                      Text(
+                        'Участники',
+                        style: AppTextStyles.semibold16,
+                      ),
+                    ],
+                  ).paddingOnly(left: 15.w).alignAtCenterLeft(),
+                  10.h.heightBox,
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: state.contributors.length,
+                    itemBuilder: (context, index) {
+                      return UserCard.contributorList(
+                        key: GlobalKey(),
+                        user: state.contributors[index],
+                        onTap: () {},
+                        isAuthor: state.contributors[index] == state.author,
+                        onRemoveTap: () => context
+                            .read<CreateTaskCubit>()
+                            .removeFromContributors(state.contributors[index]),
+                        removeAvaliable: true,
+                      ).paddingLTRB(45.w, 7.h, 15.w, 7.h);
+                    },
+                  ),
+                  10.h.heightBox,
+                  CustomButton(
+                    width: 220.w,
+                    height: 35.h,
+                    onPressed: () => showModalBottomSheet(
+                      context: context,
+                      builder: (dialogContext) {
+                        return AddToContributorsList(
+                          friends: context.read<CreateTaskCubit>().getFriends(),
+                          onConfirm: (users) =>
+                              dialogContext.pop(result: users),
+                          initialContributors: state.contributors,
+                        );
+                      },
+                    ).then(
+                      (value) {
+                        if (value is List<UserModel>) {
+                          context
+                              .read<CreateTaskCubit>()
+                              .setContributors(value);
+                        }
+                      },
+                    ),
+                    text: "Добавить пользователей",
+                  ).paddingOnly(left: 45.w).alignAtCenterLeft(),
+                  if (widget.task != null) ...[
+                    TextButton(
+                      onPressed: () async {
+                        await context
+                            .read<CreateTaskCubit>()
+                            .deleteTask(widget.task!);
+                        context.router.popUntil(
+                            (route) => route.settings.name == TaskPage.name);
+                        context.router.pop();
+                      },
+                      child: Text(
+                        "Удалить задачу",
+                        style: AppTextStyles.semibold12.copyWith(
+                          color: AppColors.red,
+                        ),
+                      ),
+                    ).alignAtCenter().paddingOnly(top: 30.h),
+                  ]
+                ],
+              ).toCenter(),
+            );
+          }
+          return Container();
+        },
       ),
     );
   }
 
   Future<void> save() async {
+    final contributors =
+        (context.read<CreateTaskCubit>().state as Loaded).contributors;
     bool titleIsEmpty = titleController.text == '';
     final task = Task(
       title: titleController.text,
@@ -361,6 +457,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       description: descriptionController.text,
       category: selectedCategory,
       remindTimeInSeconds: selectedRemindTime,
+      contributors: contributors.map((e) => e.id).toList(),
     );
     if (titleIsEmpty) {
       Validation.showAppSnackBar(
@@ -378,6 +475,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   color: selectedColor.value,
                   category: selectedCategory,
                   remindTimeInSeconds: selectedRemindTime,
+                  contributors: contributors.map((e) => e.id).toList(),
                 ),
               )
           : await context.read<CreateTaskCubit>().addTask(task);
@@ -400,6 +498,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 color: selectedColor.value,
                 category: selectedCategory,
                 remindTimeInSeconds: selectedRemindTime,
+                contributors: contributors.map((e) => e.id).toList(),
               ),
             ),
           );

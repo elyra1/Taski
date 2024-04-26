@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/domain/entities/user_model.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
@@ -12,18 +13,16 @@ import 'package:taski/presentation/widgets/task_grids/week_markup.dart/week_task
 
 class WeekTaskGrid extends StatefulWidget {
   final List<Task> tasks;
-  final void Function(DateTime date) onDateChanged;
   final void Function(Task task) onTaskShifted;
   final DateTime selectedWeek;
-  final bool isDragAvaliable;
+  final UserModel currentUser;
 
   const WeekTaskGrid({
     Key? key,
     required this.tasks,
     required this.onTaskShifted,
-    required this.onDateChanged,
     required this.selectedWeek,
-    this.isDragAvaliable = false,
+    required this.currentUser,
   }) : super(key: key);
 
   @override
@@ -126,106 +125,31 @@ class _WeekTaskGridState extends State<WeekTaskGrid> {
                 ),
               ),
             if (widget.tasks.isNotEmpty) ...[
-              for (int i = 0; i < widget.tasks.length; i++) ...[
+              for (int index = 0; index < widget.tasks.length; index++) ...[
                 Positioned(
-                  key: keys[i],
-                  top: positions[i],
+                  key: keys[index],
+                  top: positions[index],
                   left: WeekTaskGridHelper.findPaddingLeft(
-                    widget.tasks[i],
+                    widget.tasks[index],
                   ),
                   child: GestureDetector(
-                    onLongPressStart: (details) {
-                      setState(() {
-                        startMove[i] = true;
-                      });
-                    },
-                    onLongPressEnd: startMove[i]
-                        ? (details) {
-                            setState(
-                              () {
-                                final newTask = widget.tasks[i].copyWith(
-                                  startTime: WeekTaskGridHelper.countPeriod(
-                                    widget.tasks[i],
-                                    positions[i],
-                                  ).$1,
-                                  endTime: WeekTaskGridHelper.countPeriod(
-                                    widget.tasks[i],
-                                    positions[i],
-                                  ).$2,
-                                );
-                                widget.onTaskShifted(newTask);
-                                selectedIndex = -1;
-                                needScroll = null;
-                                startMove[i] = false;
-                                _scrollController
-                                    .jumpTo(_scrollController.position.pixels);
-                              },
-                            );
-                          }
+                    onLongPressStart: (_) => _onTaskLongPressStart(index),
+                    onLongPressEnd: startMove[index]
+                        ? (_) => _onTaskLongPressEnd(index)
                         : null,
-                    onLongPressMoveUpdate: (details) {
-                      setState(
-                        () {
-                          if (previousOffsetDy == -1) {
-                            previousOffsetDy = details.globalPosition.dy;
-                          }
-                          if (positions[i] - _scrollController.position.pixels <
-                              10) {
-                            needScroll = AxisDirection.up;
-                            selectedIndex = i;
-                          } else if (700 -
-                                  (details.globalPosition.dy +
-                                      WeekTaskGridHelper.findHeight(
-                                              widget.tasks[i])
-                                          .$2) <
-                              100) {
-                            needScroll = AxisDirection.down;
-                            selectedIndex = i;
-                          } else {
-                            needScroll = null;
-                            _scrollController
-                                .jumpTo(_scrollController.position.pixels);
-                          }
-                          if (needScroll != null) {
-                            final hours = positions[i] ~/ 100.h;
-                            final duration = needScroll == AxisDirection.up
-                                ? hours ~/ 4
-                                : (24 - hours) ~/ 4;
-                            _scrollController.animateTo(
-                              needScroll == AxisDirection.up
-                                  ? 0.h
-                                  : 100.h * 24 - 20.h,
-                              duration: Duration(
-                                  seconds: duration > 0 ? duration : 1),
-                              curve: Curves.linear,
-                            );
-                          }
-                          currentDelta +=
-                              details.globalPosition.dy - previousOffsetDy;
-                          previousOffsetDy = details.globalPosition.dy;
-
-                          if (currentDelta.abs() > 100.h / 4) {
-                            if (WeekTaskGridHelper.shouldMove(
-                              positions[i],
-                              currentDelta,
-                              widget.tasks[i],
-                            )) {
-                              positions[i] +=
-                                  currentDelta > 0 ? 100.h / 4 : -100.h / 4;
-                              currentDelta = 0;
-                            }
-                          }
-                        },
-                      );
-                    },
+                    onLongPressMoveUpdate: startMove[index]
+                        ? (details) =>
+                            _onTaskLongPressMoveUpdate(details, index)
+                        : null,
                     child: TaskCard(
                       isWeekView: true,
-                      isShifting: startMove[i],
-                      task: widget.tasks[i],
-                      onTap: () =>
-                          context.router.push(TaskPage(task: widget.tasks[i])),
-                      height: WeekTaskGridHelper.findHeight(widget.tasks[i]).$2,
-                      width: taskWidth, //todo
+                      isShifting: startMove[index],
+                      task: widget.tasks[index],
+                      onTap: () => context.router
+                          .push(TaskPage(task: widget.tasks[index])),
+                      height:
+                          WeekTaskGridHelper.findHeight(widget.tasks[index]).$2,
+                      width: taskWidth,
                     ),
                   ),
                 ),
@@ -241,8 +165,8 @@ class _WeekTaskGridState extends State<WeekTaskGrid> {
                     positions[startMove.indexOf(true)],
                   ).$1,
                   style: AppTextStyles.medium12.copyWith(
-                      color:
-                          Color(widget.tasks[startMove.indexOf(true)].color)),
+                    color: Color(widget.tasks[startMove.indexOf(true)].color),
+                  ),
                 ),
               ),
               Positioned(
@@ -258,14 +182,90 @@ class _WeekTaskGridState extends State<WeekTaskGrid> {
                     positions[startMove.indexOf(true)],
                   ).$2,
                   style: AppTextStyles.medium12.copyWith(
-                      color:
-                          Color(widget.tasks[startMove.indexOf(true)].color)),
+                    color: Color(widget.tasks[startMove.indexOf(true)].color),
+                  ),
                 ),
               ),
             ],
           ],
         ),
       ),
+    );
+  }
+
+  void _onTaskLongPressStart(int i) {
+    return setState(() {
+      final isAuthor = widget.currentUser.id == widget.tasks[i].authorId;
+      startMove[i] = isAuthor;
+    });
+  }
+
+  void _onTaskLongPressMoveUpdate(
+      LongPressMoveUpdateDetails details, int index) {
+    return setState(
+      () {
+        if (previousOffsetDy == -1) {
+          previousOffsetDy = details.globalPosition.dy;
+        }
+        if (positions[index] - _scrollController.position.pixels < 10) {
+          needScroll = AxisDirection.up;
+          selectedIndex = index;
+        } else if (700 -
+                (details.globalPosition.dy +
+                    WeekTaskGridHelper.findHeight(widget.tasks[index]).$2) <
+            100) {
+          needScroll = AxisDirection.down;
+          selectedIndex = index;
+        } else {
+          needScroll = null;
+          _scrollController.jumpTo(_scrollController.position.pixels);
+        }
+        if (needScroll != null) {
+          final hours = positions[index] ~/ 100.h;
+          final duration =
+              needScroll == AxisDirection.up ? hours ~/ 4 : (24 - hours) ~/ 4;
+          _scrollController.animateTo(
+            needScroll == AxisDirection.up ? 0.h : 100.h * 24 - 20.h,
+            duration: Duration(seconds: duration > 0 ? duration : 1),
+            curve: Curves.linear,
+          );
+        }
+        currentDelta += details.globalPosition.dy - previousOffsetDy;
+        previousOffsetDy = details.globalPosition.dy;
+
+        if (currentDelta.abs() > 100.h / 4) {
+          if (WeekTaskGridHelper.shouldMove(
+            positions[index],
+            currentDelta,
+            widget.tasks[index],
+          )) {
+            positions[index] += currentDelta > 0 ? 100.h / 4 : -100.h / 4;
+            currentDelta = 0;
+          }
+        }
+      },
+    );
+  }
+
+  void _onTaskLongPressEnd(int index) {
+    return setState(
+      () {
+        final newTask = widget.tasks[index].copyWith(
+          startTime: WeekTaskGridHelper.countPeriod(
+            widget.tasks[index],
+            positions[index],
+          ).$1,
+          endTime: WeekTaskGridHelper.countPeriod(
+            widget.tasks[index],
+            positions[index],
+          ).$2,
+        );
+        widget.onTaskShifted(newTask);
+        selectedIndex = -1;
+        needScroll = null;
+        startMove[index] = false;
+        _scrollController.jumpTo(_scrollController.position.pixels);
+      },
     );
   }
 }

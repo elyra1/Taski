@@ -16,19 +16,29 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TasksSingleDayPageState {
+  List<Task> get tasks => throw _privateConstructorUsedError;
+  UserModel get currentUser => throw _privateConstructorUsedError;
+  DateTime get selectedDate => throw _privateConstructorUsedError;
+  int get page => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function(List<Task> tasks, UserModel currentUser,
+            DateTime selectedDate, int page)
+        initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function(List<Task> tasks, UserModel currentUser,
+            DateTime selectedDate, int page)?
+        initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function(List<Task> tasks, UserModel currentUser,
+            DateTime selectedDate, int page)?
+        initial,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -48,6 +58,10 @@ mixin _$TasksSingleDayPageState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $TasksSingleDayPageStateCopyWith<TasksSingleDayPageState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -55,6 +69,14 @@ abstract class $TasksSingleDayPageStateCopyWith<$Res> {
   factory $TasksSingleDayPageStateCopyWith(TasksSingleDayPageState value,
           $Res Function(TasksSingleDayPageState) then) =
       _$TasksSingleDayPageStateCopyWithImpl<$Res, TasksSingleDayPageState>;
+  @useResult
+  $Res call(
+      {List<Task> tasks,
+      UserModel currentUser,
+      DateTime selectedDate,
+      int page});
+
+  $UserModelCopyWith<$Res> get currentUser;
 }
 
 /// @nodoc
@@ -67,13 +89,60 @@ class _$TasksSingleDayPageStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? tasks = null,
+    Object? currentUser = null,
+    Object? selectedDate = null,
+    Object? page = null,
+  }) {
+    return _then(_value.copyWith(
+      tasks: null == tasks
+          ? _value.tasks
+          : tasks // ignore: cast_nullable_to_non_nullable
+              as List<Task>,
+      currentUser: null == currentUser
+          ? _value.currentUser
+          : currentUser // ignore: cast_nullable_to_non_nullable
+              as UserModel,
+      selectedDate: null == selectedDate
+          ? _value.selectedDate
+          : selectedDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res> get currentUser {
+    return $UserModelCopyWith<$Res>(_value.currentUser, (value) {
+      return _then(_value.copyWith(currentUser: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
+abstract class _$$InitialImplCopyWith<$Res>
+    implements $TasksSingleDayPageStateCopyWith<$Res> {
   factory _$$InitialImplCopyWith(
           _$InitialImpl value, $Res Function(_$InitialImpl) then) =
       __$$InitialImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {List<Task> tasks,
+      UserModel currentUser,
+      DateTime selectedDate,
+      int page});
+
+  @override
+  $UserModelCopyWith<$Res> get currentUser;
 }
 
 /// @nodoc
@@ -83,51 +152,123 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? tasks = null,
+    Object? currentUser = null,
+    Object? selectedDate = null,
+    Object? page = null,
+  }) {
+    return _then(_$InitialImpl(
+      tasks: null == tasks
+          ? _value._tasks
+          : tasks // ignore: cast_nullable_to_non_nullable
+              as List<Task>,
+      currentUser: null == currentUser
+          ? _value.currentUser
+          : currentUser // ignore: cast_nullable_to_non_nullable
+              as UserModel,
+      selectedDate: null == selectedDate
+          ? _value.selectedDate
+          : selectedDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+  const _$InitialImpl(
+      {required final List<Task> tasks,
+      required this.currentUser,
+      required this.selectedDate,
+      required this.page})
+      : _tasks = tasks;
+
+  final List<Task> _tasks;
+  @override
+  List<Task> get tasks {
+    if (_tasks is EqualUnmodifiableListView) return _tasks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tasks);
+  }
+
+  @override
+  final UserModel currentUser;
+  @override
+  final DateTime selectedDate;
+  @override
+  final int page;
 
   @override
   String toString() {
-    return 'TasksSingleDayPageState.initial()';
+    return 'TasksSingleDayPageState.initial(tasks: $tasks, currentUser: $currentUser, selectedDate: $selectedDate, page: $page)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$InitialImpl &&
+            const DeepCollectionEquality().equals(other._tasks, _tasks) &&
+            (identical(other.currentUser, currentUser) ||
+                other.currentUser == currentUser) &&
+            (identical(other.selectedDate, selectedDate) ||
+                other.selectedDate == selectedDate) &&
+            (identical(other.page, page) || other.page == page));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_tasks),
+      currentUser,
+      selectedDate,
+      page);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+      __$$InitialImplCopyWithImpl<_$InitialImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function(List<Task> tasks, UserModel currentUser,
+            DateTime selectedDate, int page)
+        initial,
   }) {
-    return initial();
+    return initial(tasks, currentUser, selectedDate, page);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function(List<Task> tasks, UserModel currentUser,
+            DateTime selectedDate, int page)?
+        initial,
   }) {
-    return initial?.call();
+    return initial?.call(tasks, currentUser, selectedDate, page);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function(List<Task> tasks, UserModel currentUser,
+            DateTime selectedDate, int page)?
+        initial,
     required TResult orElse(),
   }) {
     if (initial != null) {
-      return initial();
+      return initial(tasks, currentUser, selectedDate, page);
     }
     return orElse();
   }
@@ -162,5 +303,22 @@ class _$InitialImpl implements _Initial {
 }
 
 abstract class _Initial implements TasksSingleDayPageState {
-  const factory _Initial() = _$InitialImpl;
+  const factory _Initial(
+      {required final List<Task> tasks,
+      required final UserModel currentUser,
+      required final DateTime selectedDate,
+      required final int page}) = _$InitialImpl;
+
+  @override
+  List<Task> get tasks;
+  @override
+  UserModel get currentUser;
+  @override
+  DateTime get selectedDate;
+  @override
+  int get page;
+  @override
+  @JsonKey(ignore: true)
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
