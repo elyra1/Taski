@@ -140,13 +140,18 @@ class UserCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: height != null ? (height! / 2.7) : 18.r,
-            backgroundColor: Colors.white,
-            child: user.photoUrl != null
-                ? Image.network(user.photoUrl!)
-                : SvgPicture.asset(AppIcons.userIcon),
-          ),
+          if (user.photoUrl != null)
+            CircleAvatar(
+              radius: height != null ? (height! / 2.7) : 18.r,
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage(user.photoUrl!),
+            )
+          else
+            SizedBox(
+              width: height != null ? (height! / 1.35) : 36.r,
+              height: height != null ? (height! / 1.35) : 36.r,
+              child: SvgPicture.asset(AppIcons.userIcon),
+            ),
           10.w.widthBox,
           Expanded(
             flex: 2,
