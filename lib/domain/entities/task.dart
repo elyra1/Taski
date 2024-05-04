@@ -18,6 +18,7 @@ class Task with _$Task {
     @Default(null) String? category,
     @Default(false) bool notificationSended,
     @Default(900) int remindTimeInSeconds,
+    @Default("never") String repeatString,
     @Default([]) List<String> contributors,
   }) = _TaskEntity;
 

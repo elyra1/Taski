@@ -21,6 +21,9 @@ class TasksSingleDayPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) {
     final cubit = context.read<TasksSingleDayPageCubit>();
     return BlocBuilder<TasksSingleDayPageCubit, TasksSingleDayPageState>(
+      buildWhen: (previous, current) {
+        return previous.tasks != current.tasks;
+      },
       builder: (context, state) {
         return PageView.builder(
           physics: const CustomPageViewScrollPhysics(),
@@ -48,7 +51,7 @@ class TasksSingleDayPage extends StatelessWidget implements AutoRouteWrapper {
                 Expanded(
                   child: SingleDayTaskGrid(
                     selectedDate: state.selectedDate,
-                    onTaskShifted: (task) => cubit.editTask(task),
+                    onTaskShifted: cubit.editTask,
                     tasks: state.tasks,
                     currentUser: state.currentUser,
                   ),

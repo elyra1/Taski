@@ -18,6 +18,7 @@ _$TaskEntityImpl _$$TaskEntityImplFromJson(Map<String, dynamic> json) =>
       category: json['category'] as String? ?? null,
       notificationSended: json['notificationSended'] as bool? ?? false,
       remindTimeInSeconds: json['remindTimeInSeconds'] as int? ?? 900,
+      repeatString: json['repeatString'] as String? ?? "never",
       contributors: (json['contributors'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -36,5 +37,6 @@ Map<String, dynamic> _$$TaskEntityImplToJson(_$TaskEntityImpl instance) =>
       'category': instance.category,
       'notificationSended': instance.notificationSended,
       'remindTimeInSeconds': instance.remindTimeInSeconds,
+      'repeatString': instance.repeatString,
       'contributors': instance.contributors,
     };

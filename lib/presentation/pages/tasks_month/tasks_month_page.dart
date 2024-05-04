@@ -8,7 +8,6 @@ import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/task.dart';
 import 'package:taski/domain/entities/user_model.dart';
 import 'package:taski/presentation/pages/tasks_month/cubit/tasks_month_page_cubit.dart';
-import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/cards/abbreviated_task_card.dart';
 
@@ -63,6 +62,9 @@ class _TasksMonthPageState extends State<TasksMonthPage> {
           onFormatChanged: (format) {},
         ),
         BlocBuilder<TasksMonthPageCubit, TasksMonthPageState>(
+          buildWhen: (previous, current) {
+            return previous.tasks != current.tasks;
+          },
           builder: (context, state) {
             return Expanded(
               child: SingleChildScrollView(

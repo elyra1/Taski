@@ -9,6 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i18;
+import 'package:flutter/cupertino.dart' as _i23;
 import 'package:flutter/material.dart' as _i19;
 import 'package:taski/domain/entities/category.dart' as _i20;
 import 'package:taski/domain/entities/task.dart' as _i21;
@@ -465,7 +466,7 @@ class SignUpPage extends _i18.PageRouteInfo<void> {
 /// [_i13.TaskPage]
 class TaskPage extends _i18.PageRouteInfo<TaskPageArgs> {
   TaskPage({
-    _i19.Key? key,
+    _i23.Key? key,
     required _i21.Task task,
     List<_i18.PageRouteInfo>? children,
   }) : super(
@@ -489,7 +490,7 @@ class TaskPageArgs {
     required this.task,
   });
 
-  final _i19.Key? key;
+  final _i23.Key? key;
 
   final _i21.Task task;
 

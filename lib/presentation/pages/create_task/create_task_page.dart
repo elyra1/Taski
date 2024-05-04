@@ -9,8 +9,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/task.dart';
 import 'package:taski/domain/entities/user_model.dart';
+import 'package:taski/domain/enums/remind_time.dart';
+import 'package:taski/domain/enums/repeat_type.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/create_task/cubit/create_task_page_cubit.dart';
+import 'package:taski/presentation/pages/create_task/widgets/dropdown_picker.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_date_utils.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
@@ -58,7 +61,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   ];
   late Color selectedColor;
   String? selectedCategory = "";
-  int selectedRemindTime = 900;
+  RemindTime selectedRemindTime = RemindTime.min15;
+  RepeatType selectedRepeatType = RepeatType.never;
+
   @override
   void initState() {
     titleController = TextEditingController(text: widget.task?.title);
@@ -71,7 +76,12 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         ? AppColors.green
         : Color(widget.task!.color);
     selectedCategory = widget.task?.category;
-    selectedRemindTime = widget.task?.remindTimeInSeconds ?? selectedRemindTime;
+    selectedRemindTime = RemindTimeHelper.fromValue(
+      widget.task?.remindTimeInSeconds ?? selectedRemindTime.toValue(),
+    );
+    selectedRepeatType = RepeatTypeHelper.fromValue(
+      widget.task?.repeatString ?? selectedRepeatType.toValue(),
+    );
     super.initState();
   }
 
@@ -313,45 +323,35 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       .paddingSymmetric(horizontal: 15.w)
                       .paddingOnly(left: 35.w, right: 15.w),
                   20.h.heightBox,
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.notifications,
-                        color: AppColors.headblue,
-                      ),
-                      10.w.widthBox,
-                      Text(
-                        'Напомнить за',
-                        style: AppTextStyles.semibold16,
-                      ),
-                      SizedBox(
-                        width: 150.w,
-                        child: DropdownButtonFormField<int>(
-                          value: selectedRemindTime,
-                          items: [
-                            ("5 мин", 300),
-                            ("10 мин", 600),
-                            ("15 мин", 900),
-                            ("30 мин", 1800),
-                            ("1 час", 3600)
-                          ].map(
-                            (e) {
-                              return DropdownMenuItem(
-                                value: e.$2,
-                                child: Text(
-                                  e.$1,
-                                  style: AppTextStyles.semibold12,
-                                ),
-                              );
-                            },
-                          ).toList(),
-                          onChanged: (value) => setState(
-                            () => selectedRemindTime =
-                                value ?? selectedRemindTime,
-                          ),
-                        ),
-                      ).paddingSymmetric(horizontal: 15.w),
-                    ],
+                  Divider(
+                    thickness: 1.h,
+                    color: AppColors.grey,
+                  ),
+                  10.h.heightBox,
+                  DropdownPicker<RemindTime>(
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: AppColors.headblue,
+                    ),
+                    title: 'Напомнить за',
+                    items: RemindTimeHelper.remindValuesList,
+                    onChanged: (value) => setState(
+                      () => selectedRemindTime = value ?? selectedRemindTime,
+                    ),
+                    selectedItem: selectedRemindTime,
+                  ).paddingOnly(left: 15.w).alignAtCenterLeft(),
+                  20.h.heightBox,
+                  DropdownPicker<RepeatType>(
+                    icon: const Icon(
+                      Icons.repeat,
+                      color: AppColors.headblue,
+                    ),
+                    title: 'Повторять',
+                    items: RepeatTypeHelper.repeatValuesList,
+                    onChanged: (value) => setState(
+                      () => selectedRepeatType = value ?? selectedRepeatType,
+                    ),
+                    selectedItem: selectedRepeatType,
                   ).paddingOnly(left: 15.w).alignAtCenterLeft(),
                   10.h.heightBox,
                   Divider(
@@ -456,7 +456,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       color: selectedColor.value,
       description: descriptionController.text,
       category: selectedCategory,
-      remindTimeInSeconds: selectedRemindTime,
+      remindTimeInSeconds: selectedRemindTime.toValue(),
+      repeatString: selectedRepeatType.toValue(),
       contributors: contributors.map((e) => e.id).toList(),
     );
     if (titleIsEmpty) {
@@ -474,7 +475,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   description: descriptionController.text,
                   color: selectedColor.value,
                   category: selectedCategory,
-                  remindTimeInSeconds: selectedRemindTime,
+                  remindTimeInSeconds: selectedRemindTime.toValue(),
+                  repeatString: selectedRepeatType.toValue(),
                   contributors: contributors.map((e) => e.id).toList(),
                 ),
               )
@@ -497,7 +499,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 description: descriptionController.text,
                 color: selectedColor.value,
                 category: selectedCategory,
-                remindTimeInSeconds: selectedRemindTime,
+                remindTimeInSeconds: selectedRemindTime.toValue(),
+                repeatString: selectedRepeatType.toValue(),
                 contributors: contributors.map((e) => e.id).toList(),
               ),
             ),

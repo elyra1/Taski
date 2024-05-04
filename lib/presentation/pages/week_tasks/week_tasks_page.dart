@@ -23,6 +23,9 @@ class WeekTasksPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) {
     final cubit = context.read<WeekTasksPageCubit>();
     return BlocBuilder<WeekTasksPageCubit, WeekTasksPageState>(
+      buildWhen: (previous, current) {
+        return previous.tasks != current.tasks;
+      },
       builder: (context, state) {
         return PageView.builder(
           physics: const CustomPageViewScrollPhysics(),

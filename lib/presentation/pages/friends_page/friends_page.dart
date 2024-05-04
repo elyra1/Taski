@@ -82,7 +82,7 @@ class FriendsPage extends StatelessWidget implements AutoRouteWrapper {
                   cubit.declineFriendRequest(userId: user.id),
             );
           } else {
-            return nil;
+            return const SizedBox();
           }
         },
       ),
