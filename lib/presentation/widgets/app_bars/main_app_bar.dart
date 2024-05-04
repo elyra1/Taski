@@ -10,8 +10,14 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? child;
   final VoidCallback onTap;
   final bool isNonCurrent;
-  const MainAppBar(
-      {super.key, this.child, required this.onTap, this.isNonCurrent = false});
+  final String? photoUrl;
+  const MainAppBar({
+    super.key,
+    this.child,
+    required this.onTap,
+    this.isNonCurrent = false,
+    this.photoUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,21 +33,40 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               style: AppTextStyles.bold24,
             ).toCenter(),
       leadingWidth: isNonCurrent ? null : 90.w,
-      actions: isNonCurrent
-          ? null
-          : [
-              SizedBox(
-                width: 44.w,
-                height: 44.h,
-                child: IconButton(
-                  icon: SvgPicture.asset(
+      actions: [
+        IconButton(
+          onPressed: isNonCurrent ? null : onTap,
+          icon: photoUrl == null
+              ? SizedBox(
+                  width: 44.r,
+                  height: 44.r,
+                  child: SvgPicture.asset(
                     AppIcons.userIcon,
                     color: AppColors.headblue,
                   ),
-                  onPressed: onTap,
+                )
+              : CircleAvatar(
+                  radius: 22.r,
+                  backgroundColor: Colors.white,
+                  backgroundImage: NetworkImage(photoUrl!),
                 ),
-              )
-            ],
+        ),
+      ],
+      // isNonCurrent
+      //     ? null
+      //     : [
+      //         SizedBox(
+      //           width: 44.w,
+      //           height: 44.h,
+      //           child: IconButton(
+      //             icon: SvgPicture.asset(
+      //               AppIcons.userIcon,
+      //               color: AppColors.headblue,
+      //             ),
+      //             onPressed: onTap,
+      //           ),
+      //         )
+      //       ],
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(1.h),
         child: Container(
