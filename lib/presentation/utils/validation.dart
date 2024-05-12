@@ -40,8 +40,8 @@ abstract class Validation {
       return 'Имя пользователя должно быть длиннее 5 символов.';
     }
 
-    if (!(RegExp(r'[^a-z0-9]').hasMatch(username))) {
-      return 'Имя пользователя должно содержать только буквы и цифры.';
+    if (!(RegExp(r'^(?=.*[a-zA-Z])[a-zA-Z0-9]{5,}$').hasMatch(username))) {
+      return 'Имя пользователя должно содержать буквы. Может содержать цифры';
     }
 
     return null;
