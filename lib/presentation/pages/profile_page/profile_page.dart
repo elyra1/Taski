@@ -56,13 +56,19 @@ class _ProfilePageState extends State<ProfilePage> {
               loaded: (loaded) => Column(
                 children: [
                   45.h.heightBox,
-                  CircleAvatar(
-                    radius: 45.r,
-                    backgroundColor: Colors.white,
-                    child: loaded.user.photoUrl != null
-                        ? Image.network(loaded.user.photoUrl!)
-                        : SvgPicture.asset(AppIcons.userIcon),
-                  ),
+                  if (loaded.user.photoUrl != null) ...[
+                    CircleAvatar(
+                      radius: 65.r,
+                      backgroundColor: Colors.white,
+                      backgroundImage: NetworkImage(loaded.user.photoUrl!),
+                    ),
+                  ] else
+                    SizedBox(
+                      width: 100.r,
+                      height: 100.r,
+                      child: SvgPicture.asset(AppIcons.userIcon),
+                    ),
+                  15.h.heightBox,
                   Text(
                     loaded.user.username,
                     style: AppTextStyles.bold18,
