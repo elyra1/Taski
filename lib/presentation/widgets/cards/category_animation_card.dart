@@ -9,10 +9,10 @@ class CategoryAnimation extends StatefulWidget {
   const CategoryAnimation({Key? key, this.category}) : super(key: key);
 
   @override
-  _CategoryAnimationState createState() => _CategoryAnimationState();
+  CategoryAnimationState createState() => CategoryAnimationState();
 }
 
-class _CategoryAnimationState extends State<CategoryAnimation>
+class CategoryAnimationState extends State<CategoryAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _shapeAnimation;
@@ -45,7 +45,7 @@ class _CategoryAnimationState extends State<CategoryAnimation>
       animation: _controller,
       builder: (context, child) {
         return Container(
-          width: 200.w,
+          width: 50.w,
           height: 30.h,
           decoration: BoxDecoration(
             color: Color(widget.category?.color ?? Colors.white.value),

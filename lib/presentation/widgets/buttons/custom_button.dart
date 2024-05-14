@@ -11,6 +11,8 @@ class CustomButton extends StatelessWidget {
   final String text;
   final Widget? child;
   final TextStyle? textStyle;
+  final double? radius;
+  final double? elevation;
 
   const CustomButton({
     Key? key,
@@ -21,6 +23,8 @@ class CustomButton extends StatelessWidget {
     this.text = "",
     this.child,
     this.textStyle,
+    this.radius,
+    this.elevation,
   }) : super(key: key);
 
   @override
@@ -33,8 +37,9 @@ class CustomButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.r),
+            borderRadius: BorderRadius.circular(radius ?? 15.r),
           ),
+          elevation: elevation,
         ),
         child: child ??
             Text(

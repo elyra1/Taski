@@ -9,7 +9,6 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i19;
-import 'package:flutter/cupertino.dart' as _i24;
 import 'package:flutter/material.dart' as _i20;
 import 'package:taski/domain/entities/category.dart' as _i21;
 import 'package:taski/domain/entities/task.dart' as _i22;
@@ -555,7 +554,7 @@ class TaskPageArgs {
 /// [_i15.TasksMonthPage]
 class TasksMonthPage extends _i19.PageRouteInfo<TasksMonthPageArgs> {
   TasksMonthPage({
-    _i24.Key? key,
+    _i20.Key? key,
     _i23.UserModel? user,
     List<_i19.PageRouteInfo>? children,
   }) : super(
@@ -579,7 +578,7 @@ class TasksMonthPageArgs {
     this.user,
   });
 
-  final _i24.Key? key;
+  final _i20.Key? key;
 
   final _i23.UserModel? user;
 

@@ -6,4 +6,5 @@ abstract class AppIcons {
   static const String clockIcon = "assets/icons/Clock_icon.svg";
   static const String infoIcon = "assets/icons/info_icon.svg";
   static const String userIcon = "assets/icons/user_icon.svg";
+  static const String crownIcon = "assets/icons/crown_icon.svg";
 }

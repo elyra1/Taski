@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/domain/entities/user_model.dart';
 import 'package:taski/domain/repositories/user_repository.dart';
 import 'package:taski/domain/repositories/task_repository.dart';
 import 'package:taski/presentation/widgets/task_grids/week_markup.dart/week_task_grid_helper.dart';
@@ -14,9 +15,22 @@ class WeekTasksPageCubit extends Cubit<WeekTasksPageState> {
   final TaskRepository _taskRepository;
   final UserRepository _authRepository;
   WeekTasksPageCubit(this._taskRepository, this._authRepository)
-      : super(const WeekTasksPageState.initial());
+      : super(
+          WeekTasksPageState.initial(
+            tasks: [],
+            currentUser: UserModel.getEmpty(),
+            selectedWeek: DateTime.now(),
+            page: 0,
+          ),
+        );
 
-  Stream<List<Task>> getTasks({String? userId}) async* {
+  Future<void> init({String? userId}) async {
+    final currentUser = await _authRepository.getUser();
+    emit(state.copyWith(currentUser: currentUser));
+    await getTasks(userId: userId ?? currentUser.id);
+  }
+
+  Future<void> getTasks({String? userId}) async {
     String uid;
     if (userId == null) {
       final user = await _authRepository.getUser();
@@ -24,11 +38,10 @@ class WeekTasksPageCubit extends Cubit<WeekTasksPageState> {
     } else {
       uid = userId;
     }
-    final snapStream = _taskRepository.getUserTasks(userId: uid);
-    final taskStream = snapStream.map((event) => event.docs
-        .map((e) => Task.fromJson(e.data()! as Map<String, dynamic>))
-        .toList());
-    yield* taskStream;
+    final taskStream = _taskRepository.getUserTasks(userId: uid);
+    await taskStream.forEach((element) {
+      emit(state.copyWith(tasks: element));
+    });
   }
 
   Future<void> editTask(Task task) async {
@@ -37,11 +50,19 @@ class WeekTasksPageCubit extends Cubit<WeekTasksPageState> {
     );
   }
 
-  List<Task> getTasksThisWeek(List<Task> tasks, DateTime currentDate) {
-    final weekDates = WeekTaskGridHelper.getWeekDates(currentDate)
+  Future<void> onPageChanged({required int value, String? userId}) async {
+    final newWeek = value - state.page > 0
+        ? state.selectedWeek.add(const Duration(days: 7))
+        : state.selectedWeek.subtract(const Duration(days: 7));
+    emit(state.copyWith(page: value, selectedWeek: newWeek));
+    await getTasks(userId: userId ?? state.currentUser.id);
+  }
+
+  List<Task> getTasksThisWeek() {
+    final weekDates = WeekTaskGridHelper.getWeekDates(state.selectedWeek)
         .map((e) => getDateOnly(e)); // Получаем список дат текущей недели
 
-    return tasks.where((task) {
+    return state.tasks.where((task) {
       return weekDates.contains(getDateOnly(task.startTime.toDate()));
     }).toList();
   }

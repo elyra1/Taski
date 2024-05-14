@@ -10,97 +10,94 @@ import 'package:taski/presentation/pages/week_tasks/cubit/week_tasks_page_cubit.
 import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_date_utils.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
+import 'package:taski/presentation/utils/custom_page_view_scroll_physics.dart';
 import 'package:taski/presentation/widgets/task_grids/week_markup.dart/week_task_grid.dart';
 import 'package:taski/presentation/widgets/task_grids/week_markup.dart/week_task_grid_helper.dart';
 
 @RoutePage()
-class WeekTasksPage extends StatefulWidget implements AutoRouteWrapper {
+class WeekTasksPage extends StatelessWidget implements AutoRouteWrapper {
   final UserModel? user;
   const WeekTasksPage({Key? key, this.user}) : super(key: key);
 
   @override
-  State<WeekTasksPage> createState() => _WeekTasksPageState();
+  Widget build(BuildContext context) {
+    final cubit = context.read<WeekTasksPageCubit>();
+    return BlocBuilder<WeekTasksPageCubit, WeekTasksPageState>(
+      buildWhen: (previous, current) {
+        return previous.tasks != current.tasks;
+      },
+      builder: (context, state) {
+        return PageView.builder(
+          physics: const CustomPageViewScrollPhysics(),
+          allowImplicitScrolling: true,
+          onPageChanged: (value) => cubit.onPageChanged(
+            value: value,
+            userId: user?.id,
+          ),
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 62.w,
+                      child: Text(
+                        AppDateUtils.getMonthString(state.selectedWeek),
+                        style: AppTextStyles.medium12.copyWith(
+                          color: AppColors.headblue,
+                          fontSize: 10.sp,
+                        ),
+                      ).paddingOnly(left: 11.w),
+                    ),
+                    for (int i = 0; i < 7; i++)
+                      SizedBox(
+                        width: 44.5.w,
+                        child: Column(
+                          children: [
+                            Text(
+                              WeekTaskGridHelper.getDays()[i],
+                              style: AppTextStyles.medium12
+                                  .copyWith(color: AppColors.headblue),
+                            ),
+                            Text(
+                              WeekTaskGridHelper.getWeekDates(
+                                state.selectedWeek,
+                              )[i]
+                                  .day
+                                  .toString(),
+                              style: AppTextStyles.medium12
+                                  .copyWith(color: AppColors.headblue),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+                BlocBuilder<WeekTasksPageCubit, WeekTasksPageState>(
+                  builder: (context, state) {
+                    return Expanded(
+                      child: WeekTaskGrid(
+                        tasks: cubit.getTasksThisWeek(),
+                        onTaskShifted: (task) => cubit.editTask(task),
+                        selectedWeek: state.selectedWeek,
+                        currentUser: state.currentUser,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider<WeekTasksPageCubit>(
-      create: (context) => getIt<WeekTasksPageCubit>(),
+      create: (context) => getIt<WeekTasksPageCubit>()..init(userId: user?.id),
       child: this,
-    );
-  }
-}
-
-class _WeekTasksPageState extends State<WeekTasksPage> {
-  int page = 0;
-  DateTime selectedWeek = DateTime.now();
-  @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<WeekTasksPageCubit>();
-    return PageView.builder(
-      allowImplicitScrolling: true,
-      onPageChanged: (value) {
-        setState(() {
-          selectedWeek = value - page > 0
-              ? selectedWeek.add(const Duration(days: 7))
-              : selectedWeek.subtract(const Duration(days: 7));
-          page = value;
-        });
-      },
-      itemBuilder: (context, index) {
-        return Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 62.w,
-                  child: Text(
-                    AppDateUtils.getMonthString(selectedWeek),
-                    style: AppTextStyles.medium12.copyWith(
-                      color: AppColors.headblue,
-                      fontSize: 10.sp,
-                    ),
-                  ).paddingOnly(left: 11.w),
-                ),
-                for (int i = 0; i < 7; i++)
-                  SizedBox(
-                    width: 44.5.w,
-                    child: Column(
-                      children: [
-                        Text(
-                          WeekTaskGridHelper.getDays()[i],
-                          style: AppTextStyles.medium12
-                              .copyWith(color: AppColors.headblue),
-                        ),
-                        Text(
-                          WeekTaskGridHelper.getWeekDates(selectedWeek)[i]
-                              .day
-                              .toString(),
-                          style: AppTextStyles.medium12
-                              .copyWith(color: AppColors.headblue),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-            Expanded(
-              child: StreamBuilder(
-                stream: cubit.getTasks(userId: widget.user?.id),
-                builder: (context, snapshot) {
-                  return WeekTaskGrid(
-                    tasks: cubit.getTasksThisWeek(
-                        snapshot.data ?? [], selectedWeek),
-                    onTaskShifted: (task) => cubit.editTask(task),
-                    onDateChanged: (_) {},
-                    selectedWeek: selectedWeek,
-                    isDragAvaliable: widget.user == null,
-                  );
-                },
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

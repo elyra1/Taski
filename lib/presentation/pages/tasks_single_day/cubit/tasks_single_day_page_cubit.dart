@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/domain/entities/user_model.dart';
 import 'package:taski/domain/repositories/user_repository.dart';
 import 'package:taski/domain/repositories/task_repository.dart';
 
@@ -14,25 +17,44 @@ class TasksSingleDayPageCubit extends Cubit<TasksSingleDayPageState> {
   final TaskRepository _taskRepository;
   final UserRepository _authRepository;
   TasksSingleDayPageCubit(this._taskRepository, this._authRepository)
-      : super(const TasksSingleDayPageState.initial());
+      : super(
+          TasksSingleDayPageState.initial(
+            tasks: [],
+            currentUser: UserModel.getEmpty(),
+            page: 0,
+            selectedDate: DateTime.now(),
+          ),
+        );
 
-  Stream<List<Task>> getTasks({String? userId, DateTime? dayOfTasks}) async* {
-    String uid;
-    if (userId == null) {
-      final user = await _authRepository.getUser();
-      uid = user.id;
-    } else {
-      uid = userId;
-    }
-    final snapStream = _taskRepository.getUserTasks(userId: uid);
-    final taskStream = snapStream.map((event) => event.docs
-            .map((e) => Task.fromJson(e.data()! as Map<String, dynamic>))
-            .where((element) {
-          return element.startTime
-              .toDate()
-              .isSameDate(dayOfTasks ?? DateTime.now());
-        }).toList());
-    yield* taskStream;
+  Future<void> init({String? userId}) async {
+    final currentUser = await _authRepository.getUser();
+    emit(state.copyWith(currentUser: currentUser));
+    await getTasks(userId: userId ?? currentUser.id);
+  }
+
+  Future<void> getTasks({required String userId}) async {
+    final taskStream = _taskRepository.getUserTasks(userId: userId).map(
+          (event) => event.where(
+            (element) {
+              return element.startTime.toDate().isSameDate(state.selectedDate);
+            },
+          ).toList(),
+        );
+    await taskStream.forEach(
+      (element) {
+        if (!isClosed) {
+          emit(state.copyWith(tasks: element));
+        }
+      },
+    );
+  }
+
+  Future<void> onPageChanged({required int value, String? userId}) async {
+    final newDate = value - state.page > 0
+        ? state.selectedDate.add(const Duration(days: 1))
+        : state.selectedDate.subtract(const Duration(days: 1));
+    emit(state.copyWith(page: value, selectedDate: newDate));
+    await getTasks(userId: userId ?? state.currentUser.id);
   }
 
   Future<void> editTask(Task task) async {

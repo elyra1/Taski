@@ -22,12 +22,13 @@ class TaskRepoImpl implements TaskRepository {
   }
 
   @override
-  Stream<QuerySnapshot> getUserTasks({required String userId}) async* {
+  Stream<List<Task>> getUserTasks({required String userId}) async* {
     final stream = _firebaseFirestore
         .collection(FirebaseCollections.tasks)
-        .where('authorId', isEqualTo: userId)
+        .where('contributors', arrayContains: userId)
         .snapshots();
-    yield* stream;
+    yield* stream.map(
+        (event) => event.docs.map((e) => Task.fromJson(e.data())).toList());
   }
 
   @override

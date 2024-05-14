@@ -16,9 +16,9 @@ class TasksMonthPageCubit extends Cubit<TasksMonthPageState> {
   TasksMonthPageCubit(
     this._taskRepository,
     this._authRepository,
-  ) : super(const TasksMonthPageState.initial());
+  ) : super(const TasksMonthPageState.initial(tasks: []));
 
-  Stream<List<Task>> getTasks({String? userId, DateTime? dayOfTasks}) async* {
+  Future<void> getTasks({String? userId, DateTime? dayOfTasks}) async {
     String uid;
     if (userId == null) {
       final user = await _authRepository.getUser(userId: userId);
@@ -26,15 +26,17 @@ class TasksMonthPageCubit extends Cubit<TasksMonthPageState> {
     } else {
       uid = userId;
     }
-    final snapStream = _taskRepository.getUserTasks(userId: uid);
-    final taskStream = snapStream.map((event) => event.docs
-            .map((e) => Task.fromJson(e.data()! as Map<String, dynamic>))
-            .where((element) {
-          return element.startTime
-              .toDate()
-              .isSameDate(dayOfTasks ?? DateTime.now());
-        }).toList()
-          ..sort((a, b) => a.startTime.compareTo(b.startTime)));
-    yield* taskStream;
+    final taskStream =
+        _taskRepository.getUserTasks(userId: uid).map((event) => event.where(
+              (element) {
+                return element.startTime
+                    .toDate()
+                    .isSameDate(dayOfTasks ?? DateTime.now());
+              },
+            ).toList()
+              ..sort((a, b) => a.startTime.compareTo(b.startTime)));
+    await taskStream.forEach((element) {
+      emit(state.copyWith(tasks: element));
+    });
   }
 }

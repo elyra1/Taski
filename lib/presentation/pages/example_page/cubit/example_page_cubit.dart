@@ -15,15 +15,6 @@ class ExamplePageCubit extends Cubit<ExamplePage> {
   ExamplePageCubit(this._taskRepository, this._authRepository)
       : super(const ExamplePage.initial());
 
-  ///test
-  Stream<List<Task>> getTasks() async* {
-    final snapStream = _taskRepository.getUserTasks(userId: "4234234");
-    final taskStream = snapStream.map((event) => event.docs
-        .map((e) => Task.fromJson(e.data()! as Map<String, dynamic>))
-        .toList());
-    yield* taskStream;
-  }
-
   Future<void> addTask(Task task) async {
     await _taskRepository.addTask(task: task);
   }

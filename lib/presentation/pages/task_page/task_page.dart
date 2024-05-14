@@ -11,6 +11,7 @@ import 'package:taski/presentation/utils/app_colors.dart';
 import 'package:taski/presentation/utils/app_date_utils.dart';
 import 'package:taski/presentation/utils/app_text_styles.dart';
 import 'package:taski/presentation/widgets/cards/category_animation_card.dart';
+import 'package:taski/presentation/widgets/items/user_card.dart';
 
 @RoutePage()
 class TaskPage extends StatefulWidget implements AutoRouteWrapper {
@@ -23,7 +24,7 @@ class TaskPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider<TaskPageCubit>(
-      create: (context) => getIt<TaskPageCubit>(),
+      create: (context) => getIt<TaskPageCubit>()..isAuthor(task.authorId),
       child: this,
     );
   }
@@ -73,13 +74,21 @@ class _TaskPageState extends State<TaskPage>
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () =>
-                context.router.push(CreateTaskPage(task: widget.task)),
-            icon: const Icon(
-              Icons.edit,
-              color: AppColors.headblue,
-            ),
+          BlocBuilder<TaskPageCubit, TaskPageState>(
+            builder: (context, state) {
+              return AnimatedOpacity(
+                opacity: state.isAuthor ? 1 : 0,
+                duration: const Duration(milliseconds: 500),
+                child: IconButton(
+                  onPressed: () =>
+                      context.router.push(CreateTaskPage(task: widget.task)),
+                  icon: const Icon(
+                    Icons.edit,
+                    color: AppColors.headblue,
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -105,7 +114,7 @@ class _TaskPageState extends State<TaskPage>
                     ),
                   ),
                 ),
-                10.w.widthBox,
+                15.w.widthBox,
                 Text(
                   widget.task.title,
                   style: AppTextStyles.semibold24,
@@ -114,7 +123,7 @@ class _TaskPageState extends State<TaskPage>
             ),
             if (widget.task.description != null &&
                 widget.task.description != "") ...[
-              30.h.heightBox,
+              20.h.heightBox,
               Row(
                 children: [
                   const Icon(
@@ -124,22 +133,22 @@ class _TaskPageState extends State<TaskPage>
                   20.w.widthBox,
                   Text(
                     widget.task.description!,
-                    style: AppTextStyles.semibold14.copyWith(fontSize: 16.sp),
+                    style: AppTextStyles.semibold16,
                   ),
                 ],
               ),
-              30.h.heightBox,
             ],
-            if (widget.task.category != null)
+            if (widget.task.category != null) ...[
+              20.h.heightBox,
               SizedBox(
                 height: 30.h,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Категория",
-                      style: AppTextStyles.semibold18,
+                    const Icon(
+                      Icons.category,
+                      color: AppColors.headblue,
                     ),
+                    15.w.widthBox,
                     if (widget.task.category != null)
                       FutureBuilder(
                         future: context
@@ -147,21 +156,21 @@ class _TaskPageState extends State<TaskPage>
                             .getCategory(widget.task.category!),
                         builder: (context, snapshot) {
                           if (snapshot.data == null) {
-                            return SizedBox(
-                              width: 200.w,
+                            return Expanded(
                               child: const LinearProgressIndicator(
                                 color: AppColors.headblue,
                               ).paddingOnly(top: 25.h),
                             );
                           }
-                          return CategoryAnimation(
-                            category: snapshot.data,
+                          return Expanded(
+                            child: CategoryAnimation(category: snapshot.data),
                           );
                         },
                       ),
                   ],
                 ),
               ),
+            ],
             20.h.heightBox,
             Divider(
               color: AppColors.grey,
@@ -200,7 +209,7 @@ class _TaskPageState extends State<TaskPage>
               color: AppColors.grey,
               thickness: 1.h,
             ),
-            20.h.heightBox,
+            15.h.heightBox,
             Row(
               children: [
                 const Icon(
@@ -212,9 +221,57 @@ class _TaskPageState extends State<TaskPage>
                   widget.task.remindTimeInSeconds != 3600
                       ? "За ${widget.task.remindTimeInSeconds ~/ 60} минут"
                       : "За 1 час",
+                  style: AppTextStyles.semibold14,
                 ),
               ],
-            )
+            ),
+            20.h.heightBox,
+            Column(
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.people,
+                      color: AppColors.headblue,
+                    ),
+                    15.w.widthBox,
+                    Text(
+                      "Участники",
+                      style: AppTextStyles.semibold14,
+                    ),
+                  ],
+                ),
+                FutureBuilder(
+                  future: context
+                      .read<TaskPageCubit>()
+                      .getContributors(widget.task.contributors),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final contributors = snapshot.data!;
+                      return ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: contributors.length,
+                        itemBuilder: (context, index) {
+                          return UserCard.contributorList(
+                            user: contributors[index],
+                            onTap: () {},
+                            removeAvaliable: false,
+                            onRemoveTap: () {},
+                            isAuthor:
+                                contributors[index].id == widget.task.authorId,
+                          ).paddingLTRB(30.w, 5.h, 15.w, 5.h);
+                        },
+                      );
+                    } else {
+                      return const LinearProgressIndicator(
+                        color: AppColors.headblue,
+                      ).paddingOnly(top: 25.h, left: 30.w, right: 15.w);
+                    }
+                  },
+                ).paddingOnly(top: 10.h),
+              ],
+            ),
           ],
         ),
       ),

@@ -32,41 +32,46 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
       ),
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: MainAppBar(
-            isNonCurrent: user != null,
-            onTap: () => context.router.push(const ProfilePage()),
-          ),
-          body: Column(
-            children: [
-              if (user != null)
-                Container(
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: AppColors.lightblue,
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(10.r),
+        return BlocBuilder<HomePageCubit, HomePageState>(
+          builder: (context, state) {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              appBar: MainAppBar(
+                isNonCurrent: user != null,
+                onTap: () => context.router.push(const ProfilePage()),
+                photoUrl: state.user.photoUrl,
+              ),
+              body: Column(
+                children: [
+                  if (user != null)
+                    Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                        color: AppColors.lightblue,
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(10.r),
+                        ),
+                      ),
+                      child: Text(
+                        'Вы находитесь в профиле у пользователя ${user!.username}',
+                        style: AppTextStyles.semibold12
+                            .copyWith(color: AppColors.headblue),
+                      ).paddingSymmetric(horizontal: 15.w, vertical: 5.h),
                     ),
-                  ),
-                  child: Text(
-                    'Вы находитесь в профиле у пользователя ${user!.username}',
-                    style: AppTextStyles.semibold12
-                        .copyWith(color: AppColors.headblue),
-                  ).paddingSymmetric(horizontal: 15.w, vertical: 5.h),
-                ),
-              Expanded(child: child),
-            ],
-          ),
-          floatingActionButton: user == null
-              ? CircleAddButton(
-                  onTap: () => context.router.push(CreateTaskPage()),
-                )
-              : null,
-          bottomNavigationBar: AppBottomNavigationBar(
-            currentIndex: tabsRouter.activeIndex,
-            onTap: (index) => tabsRouter.setActiveIndex(index),
-          ),
+                  Expanded(child: child),
+                ],
+              ),
+              floatingActionButton: user == null
+                  ? CircleAddButton(
+                      onTap: () => context.router.push(CreateTaskPage()),
+                    )
+                  : null,
+              bottomNavigationBar: AppBottomNavigationBar(
+                currentIndex: tabsRouter.activeIndex,
+                onTap: (index) => tabsRouter.setActiveIndex(index),
+              ),
+            );
+          },
         );
       },
     );
@@ -75,7 +80,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider<HomePageCubit>(
-      create: (context) => getIt<HomePageCubit>(),
+      create: (context) => getIt<HomePageCubit>()..init(user: user),
       child: this,
     );
   }

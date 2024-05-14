@@ -3,6 +3,7 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/profile_page/cubit/profile_page_cubit.dart';
@@ -55,13 +56,18 @@ class _ProfilePageState extends State<ProfilePage> {
               loaded: (loaded) => Column(
                 children: [
                   45.h.heightBox,
-                  CircleAvatar(
-                    radius: 65.r,
-                    backgroundColor: Colors.white,
-                    backgroundImage: loaded.user.photoUrl != null
-                        ? NetworkImage(loaded.user.photoUrl!)
-                        : Image.asset(AppIcons.userIcon).image,
-                  ),
+                  if (loaded.user.photoUrl != null) ...[
+                    CircleAvatar(
+                      radius: 65.r,
+                      backgroundColor: Colors.white,
+                      backgroundImage: NetworkImage(loaded.user.photoUrl!),
+                    ),
+                  ] else
+                    SizedBox(
+                      width: 100.r,
+                      height: 100.r,
+                      child: SvgPicture.asset(AppIcons.userIcon),
+                    ),
                   15.h.heightBox,
                   Text(
                     loaded.user.username,
