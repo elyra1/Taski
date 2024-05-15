@@ -8,6 +8,7 @@ class AppTextField extends StatefulWidget {
   final double? width;
   final double? height;
   final String? title;
+  final TextStyle? titleTextStyle;
   final bool obscure;
   final TextEditingController? controller;
   final String? hintText;
@@ -27,6 +28,7 @@ class AppTextField extends StatefulWidget {
     this.onChanged,
     this.enabledBorder,
     this.focusedBorder,
+    this.titleTextStyle,
   });
 
   @override
@@ -44,7 +46,7 @@ class _AppTextFieldState extends State<AppTextField> {
           if (widget.title != null) ...[
             Text(
               widget.title!,
-              style: AppTextStyles.semibold18,
+              style: widget.titleTextStyle ?? AppTextStyles.semibold18,
             ),
             5.h.heightBox,
           ],

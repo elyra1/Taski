@@ -59,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (loaded.user.photoUrl != null) ...[
                     CircleAvatar(
                       radius: 65.r,
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.transparent,
                       backgroundImage: NetworkImage(loaded.user.photoUrl!),
                     ),
                   ] else
@@ -73,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     loaded.user.username,
                     style: AppTextStyles.bold18,
                   ),
-                  60.h.heightBox,
+                  45.h.heightBox,
                   CustomButton(
                     width: double.maxFinite,
                     height: 40.h,
@@ -84,7 +84,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   CustomButton(
                     width: double.maxFinite,
                     height: 40.h,
-                    onPressed: () {},
+                    onPressed: () => context.router
+                        .push(EditProfilePage(user: loaded.user))
+                        .then(
+                          (value) async =>
+                              await context.read<ProfilePageCubit>().init(),
+                        ),
                     text: "Редактировать профиль",
                   ),
                   20.h.heightBox,

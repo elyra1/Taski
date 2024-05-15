@@ -184,4 +184,12 @@ class UserRepoImpl implements UserRepository {
         .doc(userId)
         .set(updatedRequestUser.toJson());
   }
+
+  @override
+  Future<void> editProfile({required UserModel user}) async {
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(user.id)
+        .set(user.toJson());
+  }
 }

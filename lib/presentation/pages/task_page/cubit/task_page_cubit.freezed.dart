@@ -17,19 +17,23 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TaskPageState {
   bool get isAuthor => throw _privateConstructorUsedError;
+  bool get isContributor => throw _privateConstructorUsedError;
+  bool get isSaving => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool isAuthor) initial,
+    required TResult Function(bool isAuthor, bool isContributor, bool isSaving)
+        initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool isAuthor)? initial,
+    TResult? Function(bool isAuthor, bool isContributor, bool isSaving)?
+        initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool isAuthor)? initial,
+    TResult Function(bool isAuthor, bool isContributor, bool isSaving)? initial,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -61,7 +65,7 @@ abstract class $TaskPageStateCopyWith<$Res> {
           TaskPageState value, $Res Function(TaskPageState) then) =
       _$TaskPageStateCopyWithImpl<$Res, TaskPageState>;
   @useResult
-  $Res call({bool isAuthor});
+  $Res call({bool isAuthor, bool isContributor, bool isSaving});
 }
 
 /// @nodoc
@@ -78,11 +82,21 @@ class _$TaskPageStateCopyWithImpl<$Res, $Val extends TaskPageState>
   @override
   $Res call({
     Object? isAuthor = null,
+    Object? isContributor = null,
+    Object? isSaving = null,
   }) {
     return _then(_value.copyWith(
       isAuthor: null == isAuthor
           ? _value.isAuthor
           : isAuthor // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isContributor: null == isContributor
+          ? _value.isContributor
+          : isContributor // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSaving: null == isSaving
+          ? _value.isSaving
+          : isSaving // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -96,7 +110,7 @@ abstract class _$$InitialImplCopyWith<$Res>
       __$$InitialImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isAuthor});
+  $Res call({bool isAuthor, bool isContributor, bool isSaving});
 }
 
 /// @nodoc
@@ -111,11 +125,21 @@ class __$$InitialImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isAuthor = null,
+    Object? isContributor = null,
+    Object? isSaving = null,
   }) {
     return _then(_$InitialImpl(
       isAuthor: null == isAuthor
           ? _value.isAuthor
           : isAuthor // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isContributor: null == isContributor
+          ? _value.isContributor
+          : isContributor // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSaving: null == isSaving
+          ? _value.isSaving
+          : isSaving // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -124,14 +148,24 @@ class __$$InitialImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$InitialImpl implements _Initial {
-  const _$InitialImpl({required this.isAuthor});
+  const _$InitialImpl(
+      {this.isAuthor = false,
+      this.isContributor = false,
+      this.isSaving = false});
 
   @override
+  @JsonKey()
   final bool isAuthor;
+  @override
+  @JsonKey()
+  final bool isContributor;
+  @override
+  @JsonKey()
+  final bool isSaving;
 
   @override
   String toString() {
-    return 'TaskPageState.initial(isAuthor: $isAuthor)';
+    return 'TaskPageState.initial(isAuthor: $isAuthor, isContributor: $isContributor, isSaving: $isSaving)';
   }
 
   @override
@@ -140,11 +174,16 @@ class _$InitialImpl implements _Initial {
         (other.runtimeType == runtimeType &&
             other is _$InitialImpl &&
             (identical(other.isAuthor, isAuthor) ||
-                other.isAuthor == isAuthor));
+                other.isAuthor == isAuthor) &&
+            (identical(other.isContributor, isContributor) ||
+                other.isContributor == isContributor) &&
+            (identical(other.isSaving, isSaving) ||
+                other.isSaving == isSaving));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isAuthor);
+  int get hashCode =>
+      Object.hash(runtimeType, isAuthor, isContributor, isSaving);
 
   @JsonKey(ignore: true)
   @override
@@ -155,27 +194,29 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool isAuthor) initial,
+    required TResult Function(bool isAuthor, bool isContributor, bool isSaving)
+        initial,
   }) {
-    return initial(isAuthor);
+    return initial(isAuthor, isContributor, isSaving);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool isAuthor)? initial,
+    TResult? Function(bool isAuthor, bool isContributor, bool isSaving)?
+        initial,
   }) {
-    return initial?.call(isAuthor);
+    return initial?.call(isAuthor, isContributor, isSaving);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool isAuthor)? initial,
+    TResult Function(bool isAuthor, bool isContributor, bool isSaving)? initial,
     required TResult orElse(),
   }) {
     if (initial != null) {
-      return initial(isAuthor);
+      return initial(isAuthor, isContributor, isSaving);
     }
     return orElse();
   }
@@ -210,10 +251,17 @@ class _$InitialImpl implements _Initial {
 }
 
 abstract class _Initial implements TaskPageState {
-  const factory _Initial({required final bool isAuthor}) = _$InitialImpl;
+  const factory _Initial(
+      {final bool isAuthor,
+      final bool isContributor,
+      final bool isSaving}) = _$InitialImpl;
 
   @override
   bool get isAuthor;
+  @override
+  bool get isContributor;
+  @override
+  bool get isSaving;
   @override
   @JsonKey(ignore: true)
   _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
