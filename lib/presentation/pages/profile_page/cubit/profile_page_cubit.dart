@@ -14,9 +14,12 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       : super(const ProfilePageState.loading());
 
   Future<void> init() async {
-    final user = await _authRepository.getUser();
-    await Future.delayed(const Duration(milliseconds: 500));
-    emit(ProfilePageState.loaded(user: user));
+    if (!isClosed) {
+      emit(const ProfilePageState.loading());
+      final user = await _authRepository.getUser();
+      await Future.delayed(const Duration(milliseconds: 500));
+      emit(ProfilePageState.loaded(user: user));
+    }
   }
 
   Future<void> signOut() async {

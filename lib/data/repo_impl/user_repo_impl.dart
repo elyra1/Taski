@@ -186,8 +186,10 @@ class UserRepoImpl implements UserRepository {
   }
 
   @override
-  Future<void> editProfile({required UserModel user}) {
-    // TODO: implement editProfile
-    throw UnimplementedError();
+  Future<void> editProfile({required UserModel user}) async {
+    await _firebaseFirestore
+        .collection(FirebaseCollections.users)
+        .doc(user.id)
+        .set(user.toJson());
   }
 }

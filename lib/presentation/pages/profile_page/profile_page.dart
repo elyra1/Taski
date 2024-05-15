@@ -3,7 +3,7 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/profile_page/cubit/profile_page_cubit.dart';
@@ -59,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (loaded.user.photoUrl != null) ...[
                     CircleAvatar(
                       radius: 65.r,
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.transparent,
                       backgroundImage: NetworkImage(loaded.user.photoUrl!),
                     ),
                   ] else
@@ -84,8 +84,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   CustomButton(
                     width: double.maxFinite,
                     height: 40.h,
-                    onPressed: () =>
-                        context.router.push(EditProfilePage(user: loaded.user)),
+                    onPressed: () => context.router
+                        .push(EditProfilePage(user: loaded.user))
+                        .then(
+                          (value) async =>
+                              await context.read<ProfilePageCubit>().init(),
+                        ),
                     text: "Редактировать профиль",
                   ),
                   20.h.heightBox,
