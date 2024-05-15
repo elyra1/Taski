@@ -133,6 +133,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i30.TaskPageCubit>(() => _i30.TaskPageCubit(
           gh<_i18.CategoryRepository>(),
           gh<_i13.UserRepository>(),
+          gh<_i11.TaskRepository>(),
         ));
     gh.factory<_i31.TasksMonthPageCubit>(() => _i31.TasksMonthPageCubit(
           gh<_i11.TaskRepository>(),
