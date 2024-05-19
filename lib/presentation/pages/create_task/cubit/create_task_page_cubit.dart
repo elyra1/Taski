@@ -28,6 +28,9 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
     required List<String> contributorsIds,
   }) async {
     List<Category> categories = await _categoryRepository.getUserCategories();
+    Category emptyCategory =
+        const Category(title: "", id: "", authorId: '', color: 0);
+    categories.insert(0, emptyCategory);
     final currentUser = await _userRepository.getUser(userId: authorId);
     List<UserModel> contributors = [];
 

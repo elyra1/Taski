@@ -304,12 +304,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   ).paddingOnly(left: 15.w).alignAtCenterLeft(),
                   DropdownButtonFormField<String?>(
                     value: selectedCategory,
+                    isExpanded: true,
                     items: state.categories
                         .map(
                           (e) => DropdownMenuItem(
                             value: e.id,
                             child: Text(
                               e.id == "" ? "Без категории" : e.title,
+                              overflow: TextOverflow.ellipsis,
                               style: AppTextStyles.semibold12.copyWith(
                                   color: e.id == "" ? AppColors.grey : null),
                             ),

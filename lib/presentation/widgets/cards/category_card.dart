@@ -37,6 +37,8 @@ class CategoryCard extends StatelessWidget {
           children: [
             Text(
               category.title,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
               style: AppTextStyles.semibold20,
             ),
             5.h.heightBox,

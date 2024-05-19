@@ -1,3 +1,4 @@
+import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/domain/entities/category.dart';
@@ -56,8 +57,9 @@ class CategoryAnimationState extends State<CategoryAnimation>
           child: Center(
             child: Text(
               widget.category?.title ?? "",
+              overflow: TextOverflow.ellipsis,
               style: AppTextStyles.bold12,
-            ),
+            ).paddingSymmetric(horizontal: 20.w),
           ),
         );
       },
