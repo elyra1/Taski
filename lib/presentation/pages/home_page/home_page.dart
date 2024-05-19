@@ -38,7 +38,11 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
               resizeToAvoidBottomInset: false,
               appBar: MainAppBar(
                 isNonCurrent: user != null,
-                onTap: () => context.router.push(const ProfilePage()),
+                onTap: () => context.router.push(const ProfilePage()).then(
+                      (value) async => await context.read<HomePageCubit>().init(
+                            user: user,
+                          ),
+                    ),
                 photoUrl: state.user.photoUrl,
               ),
               body: Column(

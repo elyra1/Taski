@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taski/di/locator.dart';
 import 'package:taski/domain/entities/task.dart';
+import 'package:taski/domain/enums/repeat_type.dart';
 import 'package:taski/presentation/navigation/auto_router.gr.dart';
 import 'package:taski/presentation/pages/task_page/cubit/task_page_cubit.dart';
 import 'package:taski/presentation/utils/app_colors.dart';
@@ -135,6 +137,7 @@ class _TaskPageState extends State<TaskPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AnimatedBuilder(
                     animation: _controller,
@@ -149,9 +152,11 @@ class _TaskPageState extends State<TaskPage>
                     ),
                   ),
                   15.w.widthBox,
-                  Text(
-                    widget.task.title,
-                    style: AppTextStyles.semibold24,
+                  Flexible(
+                    child: Text(
+                      widget.task.title,
+                      style: AppTextStyles.semibold24,
+                    ),
                   ),
                 ],
               ),
@@ -159,15 +164,18 @@ class _TaskPageState extends State<TaskPage>
                   widget.task.description != "") ...[
                 20.h.heightBox,
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Icon(
                       Icons.description,
                       color: AppColors.headblue,
                     ),
                     20.w.widthBox,
-                    Text(
-                      widget.task.description!,
-                      style: AppTextStyles.semibold16,
+                    Flexible(
+                      child: Text(
+                        widget.task.description!,
+                        style: AppTextStyles.semibold16,
+                      ),
                     ),
                   ],
                 ),
@@ -258,6 +266,26 @@ class _TaskPageState extends State<TaskPage>
                     style: AppTextStyles.semibold14,
                   ),
                 ],
+              ),
+              15.h.heightBox,
+              Row(
+                children: [
+                  const Icon(
+                    Icons.repeat,
+                    color: AppColors.headblue,
+                  ),
+                  15.w.widthBox,
+                  Text(
+                    RepeatTypeHelper.fromValue(widget.task.repeatString)
+                        .getString(),
+                    style: AppTextStyles.semibold14,
+                  ),
+                ],
+              ),
+              15.h.heightBox,
+              Divider(
+                color: AppColors.grey,
+                thickness: 1.h,
               ),
               20.h.heightBox,
               Column(

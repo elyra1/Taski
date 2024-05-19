@@ -20,6 +20,21 @@ extension RepeateToValue on RepeatType {
         return "never";
     }
   }
+
+  String getString() {
+    switch (this) {
+      case RepeatType.day:
+        return "Каждый день";
+      case RepeatType.week:
+        return "Каждую неделю";
+      case RepeatType.month:
+        return "Каждый месяц";
+      case RepeatType.never:
+        return "Никогда";
+      default:
+        return "Никогда";
+    }
+  }
 }
 
 abstract class RepeatTypeHelper {
